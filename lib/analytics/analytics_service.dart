@@ -1,7 +1,4 @@
-import 'dart:async';
-
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 String _toSnakeCase(String value) {
@@ -13,38 +10,40 @@ String _toSnakeCase(String value) {
       .toLowerCase();
 }
 
+typedef AnalyticsLogger = void Function(
+  String name,
+  Map<String, Object?> parameters,
+);
+
 class AnalyticsService {
-  AnalyticsService({
-    FirebaseAnalytics? analytics,
-    FirebaseCrashlytics? crashlytics,
-  })  : _analytics = analytics ?? FirebaseAnalytics.instance,
-        _crashlytics = crashlytics ?? FirebaseCrashlytics.instance;
+  AnalyticsService({AnalyticsLogger? logger})
+      : _logger = logger ?? _debugLogger;
 
-  final FirebaseAnalytics _analytics;
-  final FirebaseCrashlytics _crashlytics;
+  final AnalyticsLogger _logger;
+  final Map<String, String> _context = {};
 
-  Future<void> logAppOpen() => _analytics.logAppOpen();
+  static void _debugLogger(String name, Map<String, Object?> parameters) {
+    if (kDebugMode) {
+      debugPrint('AnalyticsEvent($name): $parameters');
+    }
+  }
+
+  Future<void> logAppOpen() => _log('app_open');
 
   Future<void> logStartRound({
     required String mode,
     required String category,
   }) {
-    return _analytics.logEvent(
-      name: 'start_round',
-      parameters: {
-        'mode': mode,
-        'category': category,
-      },
-    );
+    return _log('start_round', {
+      'mode': mode,
+      'category': category,
+    });
   }
 
   Future<void> logUseHint({required String type}) {
-    return _analytics.logEvent(
-      name: 'use_hint',
-      parameters: {
-        'type': type,
-      },
-    );
+    return _log('use_hint', {
+      'type': type,
+    });
   }
 
   Future<void> logCheckAnswer({
@@ -52,14 +51,11 @@ class AnalyticsService {
     required int timeSpentMillis,
     required int hintsUsed,
   }) {
-    return _analytics.logEvent(
-      name: 'check_answer',
-      parameters: {
-        'delta': delta,
-        'time_spent': timeSpentMillis,
-        'hints_used': hintsUsed,
-      },
-    );
+    return _log('check_answer', {
+      'delta': delta,
+      'time_spent': timeSpentMillis,
+      'hints_used': hintsUsed,
+    });
   }
 
   Future<void> logFinishRound({
@@ -69,53 +65,47 @@ class AnalyticsService {
     required String mode,
     required String category,
   }) {
-    return _analytics.logEvent(
-      name: 'finish_round',
-      parameters: {
-        'score': score,
-        'avg_delta': averageDelta,
-        'streak_best': bestStreak,
-        'mode': mode,
-        'category': category,
-      },
-    );
+    return _log('finish_round', {
+      'score': score,
+      'avg_delta': averageDelta,
+      'streak_best': bestStreak,
+      'mode': mode,
+      'category': category,
+    });
   }
 
   Future<void> logOpenEventBanner(String eventId) {
-    return _analytics.logEvent(
-      name: 'open_event_banner',
-      parameters: {'event_id': eventId},
-    );
+    return _log('open_event_banner', {'event_id': eventId});
   }
 
   Future<void> setContext({
     String? mode,
     String? category,
     String? questionId,
-  }) async {
-    Future<void> setKey(String key, String? value) {
-      final safe = value ?? '';
-      return _crashlytics.setCustomKey(key, safe);
-    }
-
-    final futures = <Future<void>>[];
+  }) {
     if (mode != null) {
-      futures.add(setKey('mode', mode));
+      _context['mode'] = mode;
     }
     if (category != null) {
-      futures.add(setKey('category', category));
+      _context['category'] = category;
     }
     if (questionId != null) {
-      futures.add(setKey('question_id', questionId));
+      _context['question_id'] = questionId;
     }
-    await Future.wait(futures);
+    return _log('set_context', Map<String, Object?>.from(_context));
   }
 
   Future<void> clearQuestionContext() {
-    return _crashlytics.setCustomKey('question_id', '');
+    _context.remove('question_id');
+    return _log('set_context', Map<String, Object?>.from(_context));
   }
 
   String hintTypeKey(Enum value) => _toSnakeCase(value.name);
+
+  Future<void> _log(String name, [Map<String, Object?> parameters = const {}])
+      async {
+    _logger(name, parameters);
+  }
 }
 
 final analyticsServiceProvider = Provider<AnalyticsService>((ref) {
