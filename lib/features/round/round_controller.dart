@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../content/models.dart';
 import '../../content/repository.dart';
+import '../../analytics/analytics_service.dart';
+import '../../analytics/dev_diagnostics.dart';
 import '../modes/daily_service.dart';
 import '../modes/duel_service.dart';
 import '../modes/game_mode.dart';
@@ -191,6 +194,8 @@ class RoundController extends StateNotifier<RoundState> {
     required this.config,
     required this.duelCoordinator,
     required this.dailyLeaderboard,
+    required this.analytics,
+    required this.diagnostics,
   }) : super(RoundState(config: config));
 
   final String categoryId;
@@ -198,6 +203,8 @@ class RoundController extends StateNotifier<RoundState> {
   final RoundConfig config;
   final DuelCoordinator duelCoordinator;
   final DailyLeaderboard dailyLeaderboard;
+  final AnalyticsService analytics;
+  final DevDiagnosticsService diagnostics;
 
   bool _initialized = false;
 
@@ -209,6 +216,11 @@ class RoundController extends StateNotifier<RoundState> {
 
   Future<void> load() async {
     state = state.copyWith(phase: RoundPhase.loading);
+    diagnostics.clear();
+    unawaited(analytics.setContext(
+      mode: config.modeId.key,
+      category: categoryId,
+    ));
     final questions = await repository.loadByCategory(
       categoryId,
       limit: config.questionCount,
@@ -255,6 +267,16 @@ class RoundController extends StateNotifier<RoundState> {
       timeLimit: config.timerEnabled ? config.timeLimit : null,
       questionStartTime: DateTime.now(),
     );
+
+    unawaited(analytics.setContext(
+      mode: config.modeId.key,
+      category: categoryId,
+      questionId: first.id,
+    ));
+    unawaited(analytics.logStartRound(
+      mode: config.modeId.key,
+      category: categoryId,
+    ));
   }
 
   void adjustYear(int delta) {
@@ -319,6 +341,10 @@ class RoundController extends StateNotifier<RoundState> {
       lastDigitsHint: lastDigitsHint,
       selectedYear: selectedYear,
     );
+
+    final hintKey = analytics.hintTypeKey(type);
+    unawaited(analytics.logUseHint(type: hintKey));
+    diagnostics.logHint(questionId: question.id, hintType: hintKey);
   }
 
   int _hintCost(int baseCost) {
@@ -492,6 +518,19 @@ class RoundController extends StateNotifier<RoundState> {
       adaptiveScalingEnabled: difficulty.adaptiveScalingEnabled,
     );
 
+    final elapsedMillis = elapsed.inMilliseconds;
+    unawaited(analytics.logCheckAnswer(
+      delta: delta,
+      timeSpentMillis: elapsedMillis,
+      hintsUsed: result.usedHints.length,
+    ));
+    diagnostics.logAnswer(
+      questionId: question.id,
+      delta: delta,
+      timeSpent: elapsed,
+      hintsUsed: result.usedHints.length,
+    );
+
     return result;
   }
 
@@ -531,6 +570,7 @@ class RoundController extends StateNotifier<RoundState> {
     final isLast = state.currentIndex >= state.questions.length - 1;
     if (isLast) {
       state = state.copyWith(phase: RoundPhase.completed);
+      unawaited(analytics.clearQuestionContext());
       return true;
     }
     final nextIndex = state.currentIndex + 1;
@@ -555,6 +595,7 @@ class RoundController extends StateNotifier<RoundState> {
       adaptiveRange: adaptiveRange,
       questionStartTime: DateTime.now(),
     );
+    unawaited(analytics.setContext(questionId: nextQuestion.id));
     return false;
   }
 
@@ -597,6 +638,14 @@ class RoundController extends StateNotifier<RoundState> {
       leaderboard = dailyLeaderboard.record(config.leaderboardKey!, summary);
     }
 
+    unawaited(analytics.logFinishRound(
+      score: summary.score,
+      averageDelta: summary.averageDelta,
+      bestStreak: summary.bestStreak,
+      mode: config.modeId.key,
+      category: categoryId,
+    ));
+
     return RoundCompletion(
       summary: summary,
       duelReport: duelReport,
@@ -606,6 +655,7 @@ class RoundController extends StateNotifier<RoundState> {
 
   void resetForReplay() {
     _initialized = false;
+    unawaited(analytics.clearQuestionContext());
   }
 }
 
@@ -702,6 +752,8 @@ final roundControllerProvider = StateNotifierProvider.autoDispose
     config: config,
     duelCoordinator: duelCoordinator,
     dailyLeaderboard: dailyBoard,
+    analytics: ref.watch(analyticsServiceProvider),
+    diagnostics: ref.watch(devDiagnosticsServiceProvider),
   );
   ref.onDispose(controller.resetForReplay);
   controller.ensureLoaded();
