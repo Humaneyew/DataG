@@ -20,10 +20,10 @@ class CategoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardTile(
-      leading: Icon(icon, color: AppColors.accentSecondary, size: 28),
+      leading: Icon(icon, color: AppColors.accentSecondary, size: 24),
       title: Text(title),
       subtitle: ClipRRect(
-        borderRadius: BorderRadius.circular(999),
+        borderRadius: AppRadius.pill,
         child: LinearProgressIndicator(
           value: progress,
           minHeight: AppComponentSpecs.progressBarHeight,

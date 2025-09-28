@@ -48,7 +48,7 @@ class TimelineSlider extends StatelessWidget {
     final inactiveTrack = AppColors.borderMuted.withOpacity(0.6);
 
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.grid),
+      padding: const EdgeInsets.all(AppSpacing.l),
       decoration: BoxDecoration(
         color: AppColors.bgElevated,
         borderRadius: AppRadius.medium,
@@ -91,29 +91,25 @@ class TimelineSlider extends StatelessWidget {
           const SizedBox(height: 12),
           Align(
             alignment: Alignment.centerRight,
-            child: ToggleButtons(
-              isSelected: [era == Era.bce, era == Era.ce],
-              onPressed: onEraChanged == null
-                  ? null
-                  : (index) => onEraChanged!(index == 0 ? Era.bce : Era.ce),
-              borderRadius: BorderRadius.circular(20),
-              borderColor: AppColors.borderMuted,
-              selectedBorderColor: AppColors.accentSecondary,
-              fillColor: AppColors.accentSecondary.withOpacity(0.2),
-              selectedColor: AppColors.accentSecondary,
-              textStyle: const TextStyle(fontSize: 13),
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  child: Text(Era.bce.labelForLocale(locale)),
+            child: SegmentedButton<Era>(
+              segments: [
+                ButtonSegment<Era>(
+                  value: Era.bce,
+                  label: Text(Era.bce.labelForLocale(locale)),
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  child: Text(Era.ce.labelForLocale(locale)),
+                ButtonSegment<Era>(
+                  value: Era.ce,
+                  label: Text(Era.ce.labelForLocale(locale)),
                 ),
               ],
+              style: AppButtonStyles.segmented,
+              multiSelectionEnabled: false,
+              showSelectedIcon: false,
+              selected: {era},
+              onSelectionChanged: onEraChanged == null
+                  ? null
+                  : (selection) =>
+                      onEraChanged!(selection.contains(Era.bce) ? Era.bce : Era.ce),
             ),
           ),
         ],

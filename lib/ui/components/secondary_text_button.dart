@@ -16,13 +16,7 @@ class SecondaryTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPressed,
-      style: TextButton.styleFrom(
-        foregroundColor: AppColors.accentSecondary,
-        textStyle: const TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
+      style: AppButtonStyles.text,
       child: Text(label),
     );
   }

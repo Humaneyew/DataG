@@ -19,17 +19,7 @@ class PrimaryButton extends StatelessWidget {
       width: double.infinity,
       child: FilledButton(
         onPressed: onPressed,
-        style: FilledButton.styleFrom(
-          backgroundColor: AppColors.accentPrimary,
-          foregroundColor: Colors.black,
-          textStyle: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: AppRadius.medium,
-          ),
-        ),
+        style: AppButtonStyles.primary,
         child: Text(label),
       ),
     );

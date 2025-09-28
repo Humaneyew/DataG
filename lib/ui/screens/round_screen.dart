@@ -1,22 +1,25 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../content/models.dart';
 import '../../features/modes/game_mode.dart';
 import '../../features/round/round_controller.dart';
 import '../../features/round/round_models.dart';
 import '../components/app_top_bar.dart';
+import '../components/empty_error_state.dart';
 import '../components/hint_button.dart';
 import '../components/locale_menu.dart';
 import '../components/primary_button.dart';
 import '../components/resource_chip.dart';
 import '../components/result_sheet.dart';
 import '../components/timeline_slider.dart';
+import '../components/shimmer_placeholders.dart';
+import '../state/feedback_settings.dart';
 import '../tokens.dart';
 
 class RoundScreen extends ConsumerStatefulWidget {
@@ -78,9 +81,13 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
   void _emitHaptics(int value) {
     if (_lastHapticValue == value) return;
     if (value % 100 == 0) {
-      HapticFeedback.heavyImpact();
+      Haptics.play(HapticType.heavy);
+      Sfx.play(SfxName.pop);
     } else if (value % 10 == 0) {
-      HapticFeedback.mediumImpact();
+      Haptics.play(HapticType.medium);
+      Sfx.play(SfxName.tick);
+    } else {
+      Haptics.play(HapticType.selection);
     }
     _lastHapticValue = value;
   }
@@ -124,6 +131,7 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
 
   void _useHint(HintType type) {
     _controller.useHint(type);
+    Sfx.play(SfxName.tick);
   }
 
   @override
@@ -132,8 +140,16 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
     final l = AppLocalizations.of(context)!;
 
     if (state.isLoading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+      return Scaffold(
+        appBar: AppTopBar(
+          leading: IconButton(
+            onPressed: () => context.go('/home'),
+            icon: const Icon(LucideIcons.arrowLeft, size: 20),
+          ),
+          title: Text(l.roundTitleFallback),
+          actions: const [LocaleMenu()],
+        ),
+        body: const RoundQuestionShimmer(),
       );
     }
 
@@ -142,15 +158,19 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
     if (question == null) {
       return Scaffold(
         appBar: AppTopBar(
-          title: Text(l.roundTitleFallback),
           leading: IconButton(
             onPressed: () => context.go('/home'),
-            icon: const Icon(Icons.close),
+            icon: const Icon(LucideIcons.x, size: 20),
           ),
+          title: Text(l.roundTitleFallback),
           actions: const [LocaleMenu()],
         ),
         body: Center(
-          child: Text(l.roundNoQuestions),
+          child: EmptyState(
+            icon: LucideIcons.calendarClock,
+            title: l.roundNoQuestions,
+            message: l.roundDetailsComingSoon,
+          ),
         ),
       );
     }
@@ -189,16 +209,26 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
 
     return Scaffold(
       appBar: AppTopBar(
+        leading: IconButton(
+          onPressed: () => context.go('/home'),
+          icon: const Icon(LucideIcons.arrowLeft, size: 20),
+        ),
         title: Text('${state.currentIndex + 1}/${state.questionCount}'),
         actions: [
           const LocaleMenu(),
-          ResourceChip(icon: Icons.star, label: state.score.toString()),
           ResourceChip(
-            icon: Icons.local_fire_department,
+            icon: LucideIcons.star,
+            label: state.score.toString(),
+          ),
+          ResourceChip(
+            icon: LucideIcons.flame,
             label: state.streak.toString(),
           ),
           if (state.lives > 0)
-            ResourceChip(icon: Icons.favorite, label: state.lives.toString()),
+            ResourceChip(
+              icon: LucideIcons.heart,
+              label: state.lives.toString(),
+            ),
         ],
       ),
       body: Column(
@@ -214,7 +244,9 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
           if (timeProgress != null) ...[
             const SizedBox(height: 4),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.l,
+              ),
               child: LinearProgressIndicator(
                 value: timeProgress,
                 minHeight: 6,
@@ -224,14 +256,25 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
                 ),
               ),
             ),
-            if (timerText != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Text(
-                  '⏱ $timerText',
-                  style: AppTypography.secondary,
-                ),
-              ),
+                        if (timerText != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  LucideIcons.timer,
+                                  size: 18,
+                                  color: AppColors.textSecondary,
+                                ),
+                                const SizedBox(width: AppSpacing.s),
+                                Text(
+                                  timerText,
+                                  style: AppTypography.secondary,
+                                ),
+                              ],
+                            ),
+                          ),
           ],
           Expanded(
             child: Padding(
@@ -274,7 +317,7 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             _YearControlButton(
-                              icon: Icons.remove,
+                              icon: LucideIcons.minus,
                               onPressed: canSubmit
                                   ? () => _adjustYear(-1)
                                   : null,
@@ -286,7 +329,7 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
                             ),
                             const SizedBox(width: AppSpacing.grid * 1.5),
                             _YearControlButton(
-                              icon: Icons.add,
+                              icon: LucideIcons.plus,
                               onPressed:
                                   canSubmit ? () => _adjustYear(1) : null,
                             ),
@@ -306,16 +349,17 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
                               canSubmit ? (era) => _controller.setEra(era) : null,
                         ),
                         if (abOptions != null) ...[
-                          const SizedBox(height: AppSpacing.grid * 1.5),
+                          const SizedBox(height: AppSpacing.xl),
                           Wrap(
-                            spacing: AppSpacing.grid,
-                            runSpacing: AppSpacing.grid,
+                            spacing: AppSpacing.m,
+                            runSpacing: AppSpacing.m,
                             alignment: WrapAlignment.center,
                             children: [
                               for (final option in abOptions)
                                 ChoiceChip(
                                   label: Text(
                                       '$option ${state.selectedEra.labelForLocale(locale)}'),
+                                  labelStyle: AppTypography.chip,
                                   selected: state.selectedYear == option,
                                   onSelected: canSubmit
                                       ? (_) => _controller.setYear(option)
@@ -324,10 +368,10 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
                             ],
                           ),
                         ],
-                        const SizedBox(height: AppSpacing.grid * 1.5),
+                        const SizedBox(height: AppSpacing.xl),
                         Wrap(
-                          spacing: AppSpacing.grid,
-                          runSpacing: AppSpacing.grid,
+                          spacing: AppSpacing.m,
+                          runSpacing: AppSpacing.m,
                           alignment: WrapAlignment.center,
                           children: [
                             HintButton(
@@ -402,15 +446,10 @@ class _YearControlButton extends StatelessWidget {
     return SizedBox(
       width: AppComponentSpecs.minTouchTarget,
       height: AppComponentSpecs.minTouchTarget,
-      child: OutlinedButton(
+      child: IconButton(
         onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
-          shape: const CircleBorder(),
-          side: const BorderSide(color: AppColors.borderMuted),
-          padding: EdgeInsets.zero,
-          disabledForegroundColor: AppColors.textSecondary,
-        ),
-        child: Icon(icon, color: AppColors.textPrimary),
+        style: AppButtonStyles.icon,
+        icon: Icon(icon, color: AppColors.textPrimary, size: 20),
       ),
     );
   }
