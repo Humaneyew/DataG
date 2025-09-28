@@ -1,10 +1,10 @@
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../data/question_repository.dart';
-import '../../models/question.dart';
+import '../../content/models.dart';
+import '../../content/repository.dart';
 
 enum RoundPhase { loading, playing, reviewing, completed }
 
@@ -50,10 +50,13 @@ class QuestionResult {
   final Set<HintType> usedHints;
   final bool streakBoostApplied;
 
-  bool get isPerfect => delta == 0;
+  bool get isPerfect => delta <= question.acceptableDelta;
 
-  bool get isCloseHit => delta <= 5;
+  bool get isCloseHit =>
+      delta <= math.max(question.acceptableDelta, _closeHitThreshold);
 }
+
+const int _closeHitThreshold = 5;
 
 class RoundSummary {
   const RoundSummary({
@@ -182,7 +185,7 @@ class RoundController extends StateNotifier<RoundState> {
   }) : super(const RoundState());
 
   final String categoryId;
-  final QuestionRepository repository;
+  final ContentRepository repository;
 
   bool _initialized = false;
 
@@ -263,9 +266,8 @@ class RoundController extends StateNotifier<RoundState> {
 
     switch (type) {
       case HintType.lastDigits:
-        final digits = question.correctYear % 100;
-        final formatted = digits.toString().padLeft(2, '0');
-        lastDigitsHint = 'Год заканчивается на $formatted';
+        lastDigitsHint =
+            question.hints.lastDigits ?? _fallbackLastDigits(question);
         penalty += 50;
         break;
       case HintType.abQuiz:
@@ -291,22 +293,38 @@ class RoundController extends StateNotifier<RoundState> {
   }
 
   List<int> _buildAbOptions(Question question) {
-    final random = Random(question.id.hashCode);
-    final offset = max(2, min(80, question.range ~/ 4));
-    final delta = random.nextInt(offset) + 1;
-    final altValue = (random.nextBool()
-            ? question.correctYear + delta
-            : question.correctYear - delta)
-        .clamp(question.minYear, question.maxYear);
-    final alt = altValue is double ? altValue.round() : altValue as int;
-    final options = <int>{question.correctYear, alt}.toList();
-    options.shuffle(random);
-    return options;
+    final provided = question.hints.abChoices;
+    final options = <int>{};
+    for (final choice in provided) {
+      final parsed = int.tryParse(choice);
+      if (parsed != null) {
+        options.add(parsed);
+      }
+    }
+    options.add(question.correctYear);
+    if (options.length < 2) {
+      final random = math.Random(question.id.hashCode);
+      final offset = math.max(2, math.min(80, question.range ~/ 4));
+      final delta = random.nextInt(offset) + 1;
+      final altValue = (random.nextBool()
+              ? question.correctYear + delta
+              : question.correctYear - delta)
+          .clamp(question.minYear, question.maxYear);
+      final alt = altValue is double ? altValue.round() : altValue as int;
+      options.add(alt);
+    }
+    final shuffled = options.toList();
+    shuffled.shuffle(math.Random(question.id.hashCode ^ 0x9E3779B9));
+    return shuffled;
   }
 
   YearRange _buildNarrowRange(Question question) {
-    final span = max(1, question.range);
-    final narrowSpan = max(5, (span * 0.2).round());
+    final hinted = _parseRangeHint(question);
+    if (hinted != null) {
+      return hinted;
+    }
+    final span = math.max(1, question.range);
+    final narrowSpan = math.max(5, (span * 0.2).round());
     final half = narrowSpan ~/ 2;
     var minYear = question.correctYear - half;
     var maxYear = question.correctYear + (narrowSpan - half);
@@ -321,9 +339,41 @@ class RoundController extends StateNotifier<RoundState> {
     minYear = _clampInt(minYear, question.minYear, question.maxYear);
     maxYear = _clampInt(maxYear, question.minYear, question.maxYear);
     if (minYear == maxYear) {
-      maxYear = min(maxYear + 1, question.maxYear);
+      maxYear = math.min(maxYear + 1, question.maxYear);
     }
     return YearRange(minYear, maxYear);
+  }
+
+  YearRange? _parseRangeHint(Question question) {
+    final hint = question.hints.narrowRange;
+    if (hint == null) {
+      return null;
+    }
+    final match = RegExp(r'(-?\d+)\s*[-–]\s*(-?\d+)').firstMatch(hint);
+    if (match == null) {
+      return null;
+    }
+    final start = int.tryParse(match.group(1)!);
+    final end = int.tryParse(match.group(2)!);
+    if (start == null || end == null) {
+      return null;
+    }
+    final minValue = math.min(start, end);
+    final maxValue = math.max(start, end);
+    final clampedMin =
+        _clampInt(minValue, question.minYear, question.maxYear);
+    final clampedMax =
+        _clampInt(maxValue, question.minYear, question.maxYear);
+    if (clampedMin >= clampedMax) {
+      return null;
+    }
+    return YearRange(clampedMin, clampedMax);
+  }
+
+  String _fallbackLastDigits(Question question) {
+    return (question.correctYear.abs() % 100)
+        .toString()
+        .padLeft(2, '0');
   }
 
   int _clampInt(int value, int minValue, int maxValue) {
@@ -342,14 +392,17 @@ class RoundController extends StateNotifier<RoundState> {
     final playerSigned = playerEra.signedYear(playerYear);
     final correctSigned = question.era.signedYear(question.correctYear);
     final delta = (playerSigned - correctSigned).abs();
-    final baseScore = max(0, 1000 - delta * 2);
+    final tolerance = question.acceptableDelta;
+    final effectiveDelta = math.max(0, delta - tolerance);
+    final baseScore = math.max(0, 1000 - effectiveDelta * 2);
     var bonus = 0;
-    if (delta <= 1) {
+    if (effectiveDelta <= 1) {
       bonus += 200;
-    } else if (delta <= 5) {
+    } else if (effectiveDelta <= _closeHitThreshold) {
       bonus += 100;
     }
-    var streak = delta <= 5 ? state.streak + 1 : 0;
+    var streak =
+        effectiveDelta <= _closeHitThreshold ? state.streak + 1 : 0;
     var streakBoostApplied = false;
     var multiplier = 1.0;
     if (streak >= 3) {
@@ -358,7 +411,7 @@ class RoundController extends StateNotifier<RoundState> {
     }
     final totalPoints = ((baseScore + bonus) * multiplier).round();
     final netPoints = totalPoints - state.currentHintPenalty;
-    final bestStreak = max(state.bestStreak, streak);
+    final bestStreak = math.max(state.bestStreak, streak);
 
     final result = QuestionResult(
       question: question,
@@ -422,8 +475,11 @@ class RoundController extends StateNotifier<RoundState> {
     final totalDelta =
         state.results.fold<int>(0, (sum, result) => sum + result.delta);
     final average = totalDelta / state.results.length;
-    final closeHits =
-        state.results.where((result) => result.delta <= 5).length;
+    final closeHits = state.results
+        .where((result) =>
+            result.delta <=
+            math.max(result.question.acceptableDelta, _closeHitThreshold))
+        .length;
     return RoundSummary(
       score: state.score,
       averageDelta: average,
@@ -439,8 +495,8 @@ class RoundController extends StateNotifier<RoundState> {
   }
 }
 
-final questionRepositoryProvider = Provider<QuestionRepository>((ref) {
-  return QuestionRepository();
+final questionRepositoryProvider = Provider<ContentRepository>((ref) {
+  return ContentRepository();
 });
 
 final roundControllerProvider =

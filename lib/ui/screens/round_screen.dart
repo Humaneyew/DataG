@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../models/question.dart';
+import '../../content/models.dart';
 import '../components/app_top_bar.dart';
 import '../components/hint_button.dart';
+import '../components/locale_menu.dart';
 import '../components/primary_button.dart';
 import '../components/resource_chip.dart';
 import '../components/result_sheet.dart';
@@ -57,6 +59,7 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
         stateBefore.currentIndex == stateBefore.questionCount - 1;
     final result = controller.evaluate();
     if (result == null) return;
+    final l = AppLocalizations.of(context)!;
 
     final proceed = await showModalBottomSheet<bool>(
       context: context,
@@ -73,8 +76,8 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
     if (!mounted) return;
     if (proceed == false) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Экран с подробностями появится позже.'),
+        SnackBar(
+          content: Text(l.roundDetailsComingSoon),
         ),
       );
     }
@@ -93,6 +96,7 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(roundControllerProvider(widget.categoryId));
+    final l = AppLocalizations.of(context)!;
 
     if (state.isLoading) {
       return const Scaffold(
@@ -105,14 +109,15 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
     if (question == null) {
       return Scaffold(
         appBar: AppTopBar(
-          title: const Text('Раунд'),
+          title: Text(l.roundTitleFallback),
           leading: IconButton(
             onPressed: () => context.go('/home'),
             icon: const Icon(Icons.close),
           ),
+          actions: const [LocaleMenu()],
         ),
-        body: const Center(
-          child: Text('Нет доступных вопросов для этой категории.'),
+        body: Center(
+          child: Text(l.roundNoQuestions),
         ),
       );
     }
@@ -123,11 +128,16 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
     final abOptions = state.abOptions;
     final lastDigitsHint = state.lastDigitsHint;
     final canSubmit = state.phase == RoundPhase.playing;
+    final locale = Localizations.localeOf(context);
+    final lastDigitsText =
+        lastDigitsHint == null ? null : l.roundLastDigitsHint(lastDigitsHint);
+    final promptText = question.promptForLocale(locale);
 
     return Scaffold(
       appBar: AppTopBar(
         title: Text('${state.currentIndex + 1}/${state.questionCount}'),
         actions: [
+          const LocaleMenu(),
           ResourceChip(icon: Icons.star, label: state.score.toString()),
           ResourceChip(
             icon: Icons.local_fire_department,
@@ -159,11 +169,11 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          question.prompt,
+                          promptText,
                           textAlign: TextAlign.center,
                           style: AppTypography.h2Fact,
                         ),
-                        if (lastDigitsHint != null) ...[
+                        if (lastDigitsText != null) ...[
                           const SizedBox(height: AppSpacing.grid),
                           Container(
                             padding: const EdgeInsets.symmetric(
@@ -176,7 +186,7 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
                               border: Border.all(color: AppColors.accentSecondary),
                             ),
                             child: Text(
-                              lastDigitsHint,
+                              lastDigitsText,
                               style: AppTypography.secondary,
                             ),
                           ),
@@ -213,6 +223,7 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
                           era: state.selectedEra,
                           correctYear: question.correctYear,
                           correctEra: question.era,
+                          locale: locale,
                           onChanged: canSubmit ? _onSliderChanged : (_) {},
                           onEraChanged:
                               canSubmit ? (era) => _controller.setEra(era) : null,
@@ -226,7 +237,8 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
                             children: [
                               for (final option in abOptions)
                                 ChoiceChip(
-                                  label: Text('$option ${state.selectedEra.label}'),
+                                  label: Text(
+                                      '$option ${state.selectedEra.labelForLocale(locale)}'),
                                   selected: state.selectedYear == option,
                                   onSelected: canSubmit
                                       ? (_) => _controller.setYear(option)
@@ -242,7 +254,7 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
                           alignment: WrapAlignment.center,
                           children: [
                             HintButton(
-                              label: 'Last (-50)',
+                              label: l.roundHintLast(50),
                               onPressed: canSubmit &&
                                       !state.usedHints.contains(
                                         HintType.lastDigits,
@@ -251,7 +263,7 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
                                   : null,
                             ),
                             HintButton(
-                              label: 'A/B (-100)',
+                              label: l.roundHintAB(100),
                               onPressed: canSubmit &&
                                       !state.usedHints.contains(
                                         HintType.abQuiz,
@@ -260,7 +272,7 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
                                   : null,
                             ),
                             HintButton(
-                              label: 'Narrow (-150)',
+                              label: l.roundHintNarrow(150),
                               onPressed: canSubmit &&
                                       !state.usedHints.contains(
                                         HintType.narrowTimeline,
@@ -280,7 +292,7 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
           SafeArea(
             minimum: const EdgeInsets.all(AppSpacing.screenPadding),
             child: PrimaryButton(
-              label: 'Проверить дату',
+              label: l.roundSubmit,
               onPressed: canSubmit ? _showResult : null,
             ),
           ),

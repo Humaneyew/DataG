@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../models/question.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../content/models.dart';
 import '../state/round_controller.dart';
 import '../tokens.dart';
 import 'primary_button.dart';
@@ -19,26 +21,26 @@ class ResultSheet extends StatelessWidget {
   final VoidCallback onNext;
   final VoidCallback onDetails;
 
-  String get _deltaText {
-    if (result.delta == 0) {
-      return 'Вы попали точно!';
-    }
-    return 'Вы промахнулись на ${result.delta} ${_pluralYears(result.delta)}';
-  }
-
-  String get _pointsText {
-    final points = result.netPoints;
-    final prefix = points >= 0 ? '+' : '';
-    return '$prefix$points';
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context);
+    final eraPlayer = result.playerEra.labelForLocale(locale);
+    final eraCorrect = result.question.era.labelForLocale(locale);
+    final deltaText =
+        result.isPerfect ? l.resultPerfect : l.resultMissedBy(result.delta);
     final bonus = result.totalPoints - result.baseScore;
     final hints = result.usedHints.isEmpty
-        ? 'Без подсказок'
-        : 'Подсказки: ${result.usedHints.map(_hintLabel).join(', ')}';
+        ? l.resultNoHints
+        : l.resultHintsPrefix(
+            result.usedHints.map((type) => _hintLabel(type, l)).join(', '),
+          );
+    final streakText = result.streakBoostApplied
+        ? l.resultStreak(result.streakAfterAnswer)
+        : null;
+    final bonusText = l.resultBonus(_formatSigned(bonus));
+    final questionPoints = _formatSigned(result.netPoints);
 
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.screenPadding),
@@ -57,37 +59,39 @@ class ResultSheet extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Твой ответ: ${result.playerYear} ${result.playerEra.label}',
+                  l.resultYourAnswer(result.playerYear, eraPlayer),
                   style: theme.textTheme.bodyLarge,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Правильный ответ: ${result.question.correctYear} ${result.question.era.label}',
+                  l.resultCorrectAnswer(
+                    result.question.correctYear,
+                    eraCorrect,
+                  ),
                   style: theme.textTheme.bodyLarge,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  _deltaText,
+                  deltaText,
                   style: theme.textTheme.bodyLarge,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Базовые очки: ${result.baseScore}',
+                  l.resultBaseScore(result.baseScore),
                   style: AppTypography.secondary,
                 ),
                 Text(
-                  'Бонусы: ${bonus >= 0 ? '+$bonus' : bonus}',
+                  bonusText,
                   style: AppTypography.secondary,
                 ),
-                if (result.hintPenalty > 0) ...[
+                if (result.hintPenalty > 0)
                   Text(
-                    'Штраф за подсказки: -${result.hintPenalty}',
+                    l.resultHintPenalty(result.hintPenalty),
                     style: AppTypography.secondary,
                   ),
-                ],
                 const SizedBox(height: 8),
                 Text(
-                  'Очки за вопрос: $_pointsText',
+                  l.resultQuestionPoints(questionPoints),
                   style: theme.textTheme.bodyLarge?.copyWith(
                     color: result.netPoints >= 0
                         ? AppColors.success
@@ -100,11 +104,11 @@ class ResultSheet extends StatelessWidget {
                   hints,
                   style: AppTypography.secondary,
                 ),
-                if (result.streakBoostApplied)
+                if (streakText != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      'Серия ${result.streakAfterAnswer}: множитель 1.5×!',
+                      streakText,
                       style: AppTypography.secondary,
                     ),
                   ),
@@ -113,37 +117,29 @@ class ResultSheet extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.grid * 1.5),
           PrimaryButton(
-            label: isLast ? 'Завершить' : 'Дальше',
+            label: isLast ? l.resultFinish : l.resultNext,
             onPressed: onNext,
           ),
           const SizedBox(height: AppSpacing.grid),
           TextButton(
             onPressed: onDetails,
-            child: const Text('Подробнее'),
+            child: Text(l.resultDetails),
           ),
         ],
       ),
     );
   }
 
-  String _hintLabel(HintType type) {
+  String _hintLabel(HintType type, AppLocalizations l) {
     switch (type) {
       case HintType.lastDigits:
-        return 'Last digits';
+        return l.hintLabelLastDigits;
       case HintType.abQuiz:
-        return 'A/B';
+        return l.hintLabelAB;
       case HintType.narrowTimeline:
-        return 'Narrow';
+        return l.hintLabelNarrow;
     }
   }
 
-  String _pluralYears(int value) {
-    final mod10 = value % 10;
-    final mod100 = value % 100;
-    if (mod10 == 1 && mod100 != 11) return 'год';
-    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) {
-      return 'года';
-    }
-    return 'лет';
-  }
+  String _formatSigned(int value) => value >= 0 ? '+$value' : value.toString();
 }

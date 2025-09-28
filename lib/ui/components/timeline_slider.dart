@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../../models/question.dart';
+import '../../content/models.dart';
 import '../tokens.dart';
 
 class TimelineSlider extends StatelessWidget {
@@ -14,6 +14,7 @@ class TimelineSlider extends StatelessWidget {
     required this.correctYear,
     required this.correctEra,
     required this.era,
+    required this.locale,
     required this.onChanged,
     this.onEraChanged,
   });
@@ -24,6 +25,7 @@ class TimelineSlider extends StatelessWidget {
   final int correctYear;
   final Era correctEra;
   final Era era;
+  final Locale locale;
   final ValueChanged<int> onChanged;
   final ValueChanged<Era>? onEraChanged;
 
@@ -70,7 +72,7 @@ class TimelineSlider extends StatelessWidget {
               max: maxYear.toDouble(),
               divisions: divisions,
               value: value.clamp(minYear, maxYear).toDouble(),
-              label: '$value ${era.label}',
+              label: '$value ${era.labelForLocale(locale)}',
               onChanged: (newValue) => onChanged(newValue.round()),
             ),
           ),
@@ -100,14 +102,16 @@ class TimelineSlider extends StatelessWidget {
               fillColor: AppColors.accentSecondary.withOpacity(0.2),
               selectedColor: AppColors.accentSecondary,
               textStyle: const TextStyle(fontSize: 13),
-              children: const [
+              children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  child: Text('BCE'),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  child: Text(Era.bce.labelForLocale(locale)),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  child: Text('CE'),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  child: Text(Era.ce.labelForLocale(locale)),
                 ),
               ],
             ),
