@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:csv/csv.dart';
-
 const _rawDir = 'assets/data_raw';
 const _outputDir = 'assets/data';
 const _reportFile = 'tool/out/report.txt';
@@ -30,7 +28,6 @@ void main(List<String> args) async {
 
   final reportBuffer = StringBuffer();
   final jsonEncoder = const JsonEncoder.withIndent('  ');
-  final csvConverter = const CsvToListConverter();
 
   final csvFiles = await rawDirectory
       .list()
@@ -49,7 +46,7 @@ void main(List<String> args) async {
   for (final csvFile in csvFiles) {
     final name = csvFile.uri.pathSegments.last;
     final content = await csvFile.readAsString();
-    final rows = csvConverter.convert(content, shouldParseNumbers: false);
+    final rows = _parseCsv(content);
     if (rows.isEmpty) {
       reportBuffer.writeln('$name: empty file');
       continue;
@@ -65,8 +62,8 @@ void main(List<String> args) async {
     }
 
     final indices = {
-      for (final header in headerRow)
-        header.toLowerCase(): headerRow.indexOf(header)
+      for (var i = 0; i < headerRow.length; i++)
+        headerRow[i].toLowerCase(): i,
     };
 
     final records = <Map<String, dynamic>>[];
@@ -75,7 +72,7 @@ void main(List<String> args) async {
 
     for (var i = 1; i < rows.length; i++) {
       final row = rows[i];
-      if (row.length == 1 && row.first.toString().trim().isEmpty) {
+      if (row.isEmpty || (row.length == 1 && row.first.trim().isEmpty)) {
         continue;
       }
       final location = 'row ${i + 1}';
@@ -216,11 +213,73 @@ void main(List<String> args) async {
   stdout.writeln('Import complete. See $_reportFile for details.');
 }
 
-String _readString(List<dynamic> row, int index, String defaultValue) {
+List<List<String>> _parseCsv(String input) {
+  final rows = <List<String>>[];
+  var row = <String>[];
+  final cell = StringBuffer();
+  var insideQuotes = false;
+
+  for (var i = 0; i < input.length; i++) {
+    final char = input[i];
+    if (insideQuotes) {
+      if (char == '"') {
+        final isEscapedQuote = i + 1 < input.length && input[i + 1] == '"';
+        if (isEscapedQuote) {
+          cell.write('"');
+          i++;
+        } else {
+          insideQuotes = false;
+        }
+      } else {
+        cell.write(char);
+      }
+    } else {
+      switch (char) {
+        case '"':
+          insideQuotes = true;
+          break;
+        case ',':
+          row.add(cell.toString());
+          cell.clear();
+          break;
+        case '\r':
+          if (i + 1 < input.length && input[i + 1] == '\n') {
+            i++;
+          }
+          row.add(cell.toString());
+          cell.clear();
+          rows.add(row);
+          row = <String>[];
+          break;
+        case '\n':
+          row.add(cell.toString());
+          cell.clear();
+          rows.add(row);
+          row = <String>[];
+          break;
+        default:
+          cell.write(char);
+      }
+    }
+  }
+
+  if (insideQuotes) {
+    throw const FormatException('Unterminated quoted field in CSV input.');
+  }
+
+  if (cell.isNotEmpty || row.isNotEmpty) {
+    row.add(cell.toString());
+    rows.add(row);
+  }
+
+  return rows;
+}
+
+String _readString(List<String> row, int index, String defaultValue) {
   if (index < 0 || index >= row.length) return defaultValue;
   final value = row[index];
-  if (value == null) return defaultValue;
-  return value.toString().trim();
+  if (value.isEmpty) return defaultValue;
+  return value.trim();
 }
 
 Future<void> _writeReport(String report) async {
