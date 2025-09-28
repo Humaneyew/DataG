@@ -1,0 +1,73 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import 'ui/screens/categories_screen.dart';
+import 'ui/screens/home_screen.dart';
+import 'ui/screens/round_screen.dart';
+import 'ui/screens/summary_screen.dart';
+import 'ui/screens/stub_screen.dart';
+import 'ui/tokens.dart';
+
+void main() {
+  runApp(const DataGApp());
+}
+
+class DataGApp extends StatelessWidget {
+  const DataGApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final router = GoRouter(
+      initialLocation: '/home',
+      routes: [
+        GoRoute(
+          path: '/home',
+          builder: (context, state) => const HomeScreen(),
+        ),
+        GoRoute(
+          path: '/categories',
+          builder: (context, state) => const CategoriesScreen(),
+        ),
+        GoRoute(
+          path: '/round/:categoryId',
+          builder: (context, state) {
+            final categoryId = state.pathParameters['categoryId'] ?? 'history';
+            return RoundScreen(categoryId: categoryId);
+          },
+        ),
+        GoRoute(
+          path: '/summary',
+          builder: (context, state) => const SummaryScreen(),
+        ),
+        GoRoute(
+          path: '/stub',
+          builder: (context, state) {
+            final title = state.uri.queryParameters['title'] ?? 'Stub';
+            return StubScreen(title: title);
+          },
+        ),
+      ],
+    );
+
+    return MaterialApp.router(
+      title: 'DataG',
+      theme: ThemeData(
+        scaffoldBackgroundColor: AppColors.bgBase,
+        colorScheme: const ColorScheme.dark(
+          surface: AppColors.bgElevated,
+          background: AppColors.bgBase,
+          primary: AppColors.accentPrimary,
+          secondary: AppColors.accentSecondary,
+          error: AppColors.error,
+          onBackground: AppColors.textPrimary,
+          onSurface: AppColors.textPrimary,
+        ),
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(color: AppColors.textPrimary),
+        ),
+        useMaterial3: true,
+      ),
+      routerConfig: router,
+    );
+  }
+}
