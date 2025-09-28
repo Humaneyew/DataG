@@ -1,24 +1,29 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../features/modes/duel_service.dart';
+import '../../features/modes/game_mode.dart';
+import '../../features/round/round_controller.dart';
+import '../../features/round/round_models.dart';
 import '../components/app_top_bar.dart';
-import '../components/primary_button.dart';
 import '../components/locale_menu.dart';
+import '../components/primary_button.dart';
 import '../components/secondary_text_button.dart';
-import '../state/round_controller.dart';
 import '../tokens.dart';
 
 class SummaryScreen extends StatelessWidget {
-  const SummaryScreen({super.key, this.summary});
+  const SummaryScreen({super.key, this.completion});
 
-  final RoundSummary? summary;
+  final RoundCompletion? completion;
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final data = summary;
+    final data = completion?.summary;
     final totalScore = data?.score ?? 0;
     final locale = Localizations.localeOf(context);
     final averageDelta = data == null
@@ -90,15 +95,32 @@ class SummaryScreen extends StatelessWidget {
                     l.summaryBestStreak(streak),
                     style: AppTypography.secondary,
                   ),
+                  if (data != null) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      'Time bonus: ${data.timeBonusTotal}',
+                      style: AppTypography.secondary,
+                    ),
+                  ],
                 ],
               ),
             ),
             const Spacer(),
+            if (completion?.duelReport != null)
+              _DuelResultCard(report: completion!.duelReport!),
+            if (completion?.dailyLeaderboard != null &&
+                completion!.dailyLeaderboard!.isNotEmpty)
+              _DailyLeaderboardCard(
+                leaderboard: completion!.dailyLeaderboard!,
+                current: completion!.summary,
+              ),
+            const SizedBox(height: AppSpacing.grid * 2),
             PrimaryButton(
               label: l.summaryPlayAgain,
               onPressed: () {
-                final category = summary?.categoryId ?? 'history';
-                context.go('/round/$category');
+                final category = completion?.summary.categoryId ?? 'history';
+                final mode = completion?.summary.modeId ?? GameModeId.classic10;
+                context.go('/round/$category?mode=${mode.key}');
               },
             ),
             const SizedBox(height: 8),
@@ -109,6 +131,105 @@ class SummaryScreen extends StatelessWidget {
             const SizedBox(height: AppSpacing.grid),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _DuelResultCard extends StatelessWidget {
+  const _DuelResultCard({required this.report});
+
+  final DuelReport report;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context).textTheme;
+    final statusText = report.isPending
+        ? 'Waiting for opponent to finish…'
+        : report.isDraw
+            ? 'Draw! Both scored ${report.playerSummary.score}.'
+            : report.isPlayerWinner
+                ? 'You won by ${report.scoreDelta} points!'
+                : 'You lost by ${report.scoreDelta} points.';
+    final opponentScore = report.opponentSummary?.score;
+
+    return Container(
+      margin: const EdgeInsets.only(top: AppSpacing.grid * 2),
+      padding: const EdgeInsets.all(AppSpacing.grid),
+      decoration: BoxDecoration(
+        color: AppColors.bgElevated,
+        borderRadius: AppRadius.medium,
+        border: Border.all(color: AppColors.borderMuted),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Duel result',
+            style: theme.titleMedium?.copyWith(color: AppColors.accentSecondary),
+          ),
+          const SizedBox(height: 8),
+          Text(statusText, style: AppTypography.secondary),
+          if (!report.isPending && opponentScore != null) ...[
+            const SizedBox(height: 8),
+            Text(
+              'Opponent: $opponentScore',
+              style: AppTypography.secondary,
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _DailyLeaderboardCard extends StatelessWidget {
+  const _DailyLeaderboardCard({
+    required this.leaderboard,
+    required this.current,
+  });
+
+  final List<RoundSummary> leaderboard;
+  final RoundSummary current;
+
+  @override
+  Widget build(BuildContext context) {
+    final displayCount = math.min(leaderboard.length, 5);
+    return Container(
+      margin: const EdgeInsets.only(top: AppSpacing.grid * 2),
+      padding: const EdgeInsets.all(AppSpacing.grid),
+      decoration: BoxDecoration(
+        color: AppColors.bgElevated,
+        borderRadius: AppRadius.medium,
+        border: Border.all(color: AppColors.borderMuted),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Daily leaderboard (${current.leaderboardKey ?? ''})',
+            style: AppTypography.secondary,
+          ),
+          const SizedBox(height: 8),
+          for (var i = 0; i < displayCount; i++)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('${i + 1}. ${leaderboard[i].score}',
+                      style: AppTypography.secondary),
+                  Text(
+                    leaderboard[i].modeId == current.modeId &&
+                            leaderboard[i].completedAt == current.completedAt
+                        ? 'You'
+                        : '',
+                    style: AppTypography.secondary,
+                  ),
+                ],
+              ),
+            ),
+        ],
       ),
     );
   }

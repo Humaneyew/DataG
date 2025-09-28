@@ -3,14 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
+import 'features/modes/game_mode.dart';
+import 'features/round/round_controller.dart';
 import 'ui/screens/categories_screen.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/screens/round_screen.dart';
 import 'ui/screens/summary_screen.dart';
 import 'ui/screens/stub_screen.dart';
-import 'ui/tokens.dart';
-import 'ui/state/round_controller.dart';
 import 'ui/state/locale_controller.dart';
+import 'ui/tokens.dart';
 
 void main() {
   runApp(const ProviderScope(child: DataGApp()));
@@ -36,14 +37,22 @@ class DataGApp extends ConsumerWidget {
           path: '/round/:categoryId',
           builder: (context, state) {
             final categoryId = state.pathParameters['categoryId'] ?? 'history';
-            return RoundScreen(categoryId: categoryId);
+            final modeKey = state.uri.queryParameters['mode'];
+            final mode = GameModeId.values.firstWhere(
+              (mode) => mode.key == modeKey,
+              orElse: () => GameModeId.classic10,
+            );
+            return RoundScreen(
+              categoryId: categoryId,
+              modeId: mode,
+            );
           },
         ),
         GoRoute(
           path: '/summary',
           builder: (context, state) {
-            final summary = state.extra as RoundSummary?;
-            return SummaryScreen(summary: summary);
+            final completion = state.extra as RoundCompletion?;
+            return SummaryScreen(completion: completion);
           },
         ),
         GoRoute(

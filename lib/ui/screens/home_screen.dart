@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/modes/game_mode.dart';
+import '../../features/modes/mode_controller.dart';
 import '../components/app_top_bar.dart';
 import '../components/card_tile.dart';
 import '../components/locale_menu.dart';
@@ -10,12 +13,15 @@ import '../components/resource_chip.dart';
 import '../components/secondary_text_button.dart';
 import '../tokens.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
+    final selectedMode = ref.watch(selectedModeProvider);
+    final timerEnabled = ref.watch(timerEnabledForModeProvider(selectedMode));
+    final modeNames = GameModeId.values;
 
     return Scaffold(
       appBar: AppTopBar(
@@ -62,9 +68,38 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.grid * 1.5),
+            Text(
+              'Game mode',
+              style: AppTypography.secondary,
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: AppSpacing.grid,
+              runSpacing: AppSpacing.grid,
+              children: [
+                for (final mode in modeNames)
+                  ChoiceChip(
+                    label: Text(mode.displayName),
+                    selected: mode == selectedMode,
+                    onSelected: (_) =>
+                        ref.read(selectedModeProvider.notifier).state = mode,
+                  ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.grid),
+            SwitchListTile.adaptive(
+              value: timerEnabled,
+              onChanged: (value) => ref
+                  .read(modePreferencesProvider.notifier)
+                  .setTimer(selectedMode, value),
+              title: const Text('Per-question timer'),
+              subtitle: const Text('Toggle 20-30 second countdown'),
+            ),
+            const SizedBox(height: AppSpacing.grid * 1.5),
             PrimaryButton(
               label: l.homePlayButton,
-              onPressed: () => context.go('/round/history'),
+              onPressed: () =>
+                  context.go('/round/history?mode=${selectedMode.key}'),
             ),
             const SizedBox(height: 8),
             SecondaryTextButton(

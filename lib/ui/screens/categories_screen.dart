@@ -3,13 +3,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/modes/game_mode.dart';
+import '../../features/modes/mode_controller.dart';
+import '../../features/round/round_controller.dart';
 import '../components/app_top_bar.dart';
 import '../components/category_tile.dart';
 import '../components/locale_menu.dart';
 import '../components/primary_button.dart';
 import '../components/resource_chip.dart';
 import '../tokens.dart';
-import '../state/round_controller.dart';
 
 class CategoriesScreen extends ConsumerWidget {
   const CategoriesScreen({super.key});
@@ -59,6 +61,7 @@ class CategoriesScreen extends ConsumerWidget {
           if (categories.isEmpty) {
             return Center(child: Text(l.categoriesEmpty));
           }
+          final selectedMode = ref.watch(selectedModeProvider);
           return Column(
             children: [
               Expanded(
@@ -72,7 +75,8 @@ class CategoriesScreen extends ConsumerWidget {
                       icon: icon,
                       title: category.nameFor(locale),
                       progress: progress.clamp(0.0, 1.0),
-                      onTap: () => context.go('/round/${category.id}'),
+                      onTap: () => context
+                          .go('/round/${category.id}?mode=${selectedMode.key}'),
                     );
                   },
                   separatorBuilder: (_, __) =>

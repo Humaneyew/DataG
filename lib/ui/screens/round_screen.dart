@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,6 +7,9 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../content/models.dart';
+import '../../features/modes/game_mode.dart';
+import '../../features/round/round_controller.dart';
+import '../../features/round/round_models.dart';
 import '../components/app_top_bar.dart';
 import '../components/hint_button.dart';
 import '../components/locale_menu.dart';
@@ -13,12 +18,16 @@ import '../components/resource_chip.dart';
 import '../components/result_sheet.dart';
 import '../components/timeline_slider.dart';
 import '../tokens.dart';
-import '../state/round_controller.dart';
 
 class RoundScreen extends ConsumerStatefulWidget {
-  const RoundScreen({super.key, required this.categoryId});
+  const RoundScreen({
+    super.key,
+    required this.categoryId,
+    required this.modeId,
+  });
 
   final String categoryId;
+  final GameModeId modeId;
 
   @override
   ConsumerState<RoundScreen> createState() => _RoundScreenState();
@@ -26,11 +35,35 @@ class RoundScreen extends ConsumerStatefulWidget {
 
 class _RoundScreenState extends ConsumerState<RoundScreen> {
   int? _lastHapticValue;
+  late final RoundSessionRequest _request;
+  Timer? _ticker;
+  DateTime _now = DateTime.now();
 
   RoundController get _controller =>
-      ref.read(roundControllerProvider(widget.categoryId).notifier);
+      ref.read(roundControllerProvider(_request).notifier);
 
-  RoundState get _state => ref.read(roundControllerProvider(widget.categoryId));
+  RoundState get _state => ref.read(roundControllerProvider(_request));
+
+  @override
+  void initState() {
+    super.initState();
+    _request = RoundSessionRequest(
+      categoryId: widget.categoryId,
+      modeId: widget.modeId,
+    );
+    _ticker = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted) return;
+      setState(() {
+        _now = DateTime.now();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _ticker?.cancel();
+    super.dispose();
+  }
 
   void _adjustYear(int delta) {
     _controller.adjustYear(delta);
@@ -84,8 +117,8 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
 
     final completed = controller.advance();
     if (completed) {
-      final summary = controller.buildSummary();
-      context.go('/summary', extra: summary);
+      final completion = controller.buildSummary();
+      context.go('/summary', extra: completion);
     }
   }
 
@@ -95,7 +128,7 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(roundControllerProvider(widget.categoryId));
+    final state = ref.watch(roundControllerProvider(_request));
     final l = AppLocalizations.of(context)!;
 
     if (state.isLoading) {
@@ -132,6 +165,27 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
     final lastDigitsText =
         lastDigitsHint == null ? null : l.roundLastDigitsHint(lastDigitsHint);
     final promptText = question.promptForLocale(locale);
+    final timeLimit = state.timerEnabled ? state.timeLimit : null;
+    Duration? timeRemaining;
+    double? timeProgress;
+    if (timeLimit != null && state.questionStartTime != null) {
+      final elapsed = _now.difference(state.questionStartTime!);
+      final remaining = timeLimit - elapsed;
+      timeRemaining = remaining.isNegative ? Duration.zero : remaining;
+      final ratio = remaining.isNegative
+          ? 1.0
+          : (elapsed.inMilliseconds / timeLimit.inMilliseconds)
+              .clamp(0.0, 1.0);
+      timeProgress = ratio;
+    }
+    final timerText = timeRemaining == null
+        ? null
+        : _formatDuration(timeRemaining);
+
+    final hintMultiplier = state.hintCostMultiplier;
+    final lastCost = (50 * hintMultiplier).round();
+    final abCost = (100 * hintMultiplier).round();
+    final narrowCost = (150 * hintMultiplier).round();
 
     return Scaffold(
       appBar: AppTopBar(
@@ -143,7 +197,8 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
             icon: Icons.local_fire_department,
             label: state.streak.toString(),
           ),
-          ResourceChip(icon: Icons.favorite, label: state.lives.toString()),
+          if (state.lives > 0)
+            ResourceChip(icon: Icons.favorite, label: state.lives.toString()),
         ],
       ),
       body: Column(
@@ -156,6 +211,28 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
               AppColors.accentSecondary,
             ),
           ),
+          if (timeProgress != null) ...[
+            const SizedBox(height: 4),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: LinearProgressIndicator(
+                value: timeProgress,
+                minHeight: 6,
+                backgroundColor: AppColors.borderMuted,
+                valueColor: const AlwaysStoppedAnimation<Color>(
+                  AppColors.accentPrimary,
+                ),
+              ),
+            ),
+            if (timerText != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(
+                  '⏱ $timerText',
+                  style: AppTypography.secondary,
+                ),
+              ),
+          ],
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(AppSpacing.screenPadding),
@@ -254,8 +331,11 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
                           alignment: WrapAlignment.center,
                           children: [
                             HintButton(
-                              label: l.roundHintLast(50),
+                              label: l.roundHintLast(lastCost),
                               onPressed: canSubmit &&
+                                      state.isHintAvailable(
+                                        HintType.lastDigits,
+                                      ) &&
                                       !state.usedHints.contains(
                                         HintType.lastDigits,
                                       )
@@ -263,7 +343,7 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
                                   : null,
                             ),
                             HintButton(
-                              label: l.roundHintAB(100),
+                              label: l.roundHintAB(abCost),
                               onPressed: canSubmit &&
                                       !state.usedHints.contains(
                                         HintType.abQuiz,
@@ -272,7 +352,7 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
                                   : null,
                             ),
                             HintButton(
-                              label: l.roundHintNarrow(150),
+                              label: l.roundHintNarrow(narrowCost),
                               onPressed: canSubmit &&
                                       !state.usedHints.contains(
                                         HintType.narrowTimeline,
@@ -300,6 +380,15 @@ class _RoundScreenState extends ConsumerState<RoundScreen> {
       ),
     );
   }
+}
+
+String _formatDuration(Duration duration) {
+  final seconds = duration.inSeconds;
+  final minutes = seconds ~/ 60;
+  final remaining = seconds % 60;
+  final minPart = minutes.toString().padLeft(2, '0');
+  final secPart = remaining.toString().padLeft(2, '0');
+  return '$minPart:$secPart';
 }
 
 class _YearControlButton extends StatelessWidget {
