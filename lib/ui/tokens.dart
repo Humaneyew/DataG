@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 /// Centralized design tokens for the dark MVP theme described in the
@@ -25,14 +27,21 @@ class AppColors {
 class AppSpacing {
   const AppSpacing._();
 
-  static const double grid = 12.0;
-  static const double screenPadding = 16.0;
+  static const double s = 8.0;
+  static const double m = 12.0;
+  static const double l = 16.0;
+  static const double xl = 24.0;
+
+  /// Legacy grid spacing kept for backwards compatibility.
+  static const double grid = m;
+  static const double screenPadding = l;
 }
 
 class AppRadius {
   const AppRadius._();
 
   static const BorderRadius medium = BorderRadius.all(Radius.circular(12));
+  static const BorderRadius pill = BorderRadius.all(Radius.circular(999));
 }
 
 class AppBorders {
@@ -42,61 +51,117 @@ class AppBorders {
     color: AppColors.borderMuted,
     width: 1.0,
   );
+
+  static const BorderSide focus = BorderSide(
+    color: AppColors.accentSecondary,
+    width: 2.0,
+  );
+}
+
+class AppShadows {
+  const AppShadows._();
+
+  static const List<BoxShadow> soft = <BoxShadow>[
+    BoxShadow(
+      color: Color(0x330C111D),
+      offset: Offset(0, 6),
+      blurRadius: 18,
+      spreadRadius: 0,
+    ),
+  ];
+
+  static const List<BoxShadow> deep = <BoxShadow>[
+    BoxShadow(
+      color: Color(0x1F0C111D),
+      offset: Offset(0, 24),
+      blurRadius: 48,
+      spreadRadius: -12,
+    ),
+  ];
 }
 
 class AppTypography {
   const AppTypography._();
 
-  static const _fontFamily = 'Inter';
-  static const _fontFallback = <String>['Roboto'];
-  static const _fontFeatures = <FontFeature>[
+  static const String fontFamily = 'Inter';
+  static const List<String> fontFallback = <String>['Roboto'];
+  static const List<FontFeature> fontFeatures = <FontFeature>[
     FontFeature.tabularFigures(),
     FontFeature.liningFigures(),
   ];
 
-  static const TextStyle h1Year = TextStyle(
-    fontFamily: _fontFamily,
-    fontFamilyFallback: _fontFallback,
-    fontFeatures: _fontFeatures,
-    fontSize: 50,
-    fontWeight: FontWeight.w600,
-    height: 1.1,
-    color: AppColors.textPrimary,
+  static TextStyle _base({
+    required double size,
+    FontWeight weight = FontWeight.w400,
+    double height = 1.4,
+    double? letterSpacing,
+    Color color = AppColors.textPrimary,
+  }) {
+    return TextStyle(
+      fontFamily: fontFamily,
+      fontFamilyFallback: fontFallback,
+      fontFeatures: fontFeatures,
+      fontSize: size,
+      fontWeight: weight,
+      height: height,
+      letterSpacing: letterSpacing,
+      color: color,
+    );
+  }
+
+  static final TextStyle h1Year = _base(
+    size: 50,
+    weight: FontWeight.w600,
+    height: 1.08,
   );
 
-  static const TextStyle h2Fact = TextStyle(
-    fontFamily: _fontFamily,
-    fontFamilyFallback: _fontFallback,
-    fontFeatures: _fontFeatures,
-    fontSize: 19,
-    fontWeight: FontWeight.w500,
-    height: 1.4,
-    color: AppColors.textPrimary,
+  static final TextStyle h2Fact = _base(
+    size: 20,
+    weight: FontWeight.w500,
+    height: 1.35,
   );
 
-  static TextStyle h2FactEmphasis(BuildContext context) => h2Fact.copyWith(
-        fontWeight: FontWeight.w600,
-        color: AppColors.textPrimary,
-      );
+  static TextStyle h2FactEmphasis(BuildContext context) =>
+      h2Fact.copyWith(fontWeight: FontWeight.w600);
 
-  static const TextStyle chip = TextStyle(
-    fontFamily: _fontFamily,
-    fontFamilyFallback: _fontFallback,
-    fontFeatures: _fontFeatures,
-    fontSize: 15,
-    fontWeight: FontWeight.w500,
+  static final TextStyle chip = _base(
+    size: 15,
+    weight: FontWeight.w500,
     letterSpacing: 0.1,
-    color: AppColors.textPrimary,
   );
 
-  static const TextStyle secondary = TextStyle(
-    fontFamily: _fontFamily,
-    fontFamilyFallback: _fontFallback,
-    fontFeatures: _fontFeatures,
-    fontSize: 14,
-    fontWeight: FontWeight.w400,
-    height: 1.4,
+  static final TextStyle secondary = _base(
+    size: 14,
     color: AppColors.textSecondary,
+  );
+
+  static final TextStyle buttonLarge = _base(
+    size: 18,
+    weight: FontWeight.w600,
+    height: 1.2,
+    color: Colors.black,
+  );
+
+  static final TextStyle label = _base(
+    size: 14,
+    weight: FontWeight.w500,
+  );
+
+  static final TextTheme textTheme = TextTheme(
+    displayLarge: h1Year,
+    headlineSmall: h2Fact,
+    titleLarge: _base(size: 22, weight: FontWeight.w600, height: 1.3),
+    titleMedium: _base(size: 18, weight: FontWeight.w600, height: 1.3),
+    titleSmall: _base(size: 16, weight: FontWeight.w600, height: 1.3),
+    bodyLarge: _base(size: 16, height: 1.6),
+    bodyMedium: _base(size: 14, height: 1.5),
+    bodySmall: _base(size: 12, height: 1.4, color: AppColors.textSecondary),
+    labelLarge: label,
+    labelMedium: _base(
+      size: 13,
+      weight: FontWeight.w500,
+      color: AppColors.textSecondary,
+    ),
   );
 }
 
@@ -114,4 +179,314 @@ class AppComponentSpecs {
   static const double primaryButtonHeight = 56.0;
   static const double progressBarHeight = 3.0;
   static const double minTouchTarget = 48.0;
+}
+
+class AppStateLayers {
+  const AppStateLayers._();
+
+  static Color primary(Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled)) {
+      return AppColors.accentPrimary.withOpacity(0.28);
+    }
+    var color = AppColors.accentPrimary;
+    if (states.contains(MaterialState.pressed)) {
+      color = _blend(color, Colors.black, 0.18);
+    } else if (states.contains(MaterialState.hovered)) {
+      color = _blend(color, Colors.white, 0.08);
+    }
+    return color;
+  }
+
+  static Color secondary(Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled)) {
+      return AppColors.bgBase.withOpacity(0.32);
+    }
+    var color = AppColors.bgBase;
+    if (states.contains(MaterialState.pressed)) {
+      color = _blend(color, Colors.white, 0.08);
+    } else if (states.contains(MaterialState.hovered)) {
+      color = _blend(color, Colors.white, 0.04);
+    }
+    return color;
+  }
+
+  static Color elevatedSurface(Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled)) {
+      return AppColors.bgElevated.withOpacity(0.5);
+    }
+    var color = AppColors.bgElevated;
+    if (states.contains(MaterialState.pressed)) {
+      color = _blend(color, Colors.black, 0.22);
+    } else if (states.contains(MaterialState.hovered)) {
+      color = _blend(color, Colors.white, 0.06);
+    }
+    return color;
+  }
+
+  static Color accentSurface(Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled)) {
+      return AppColors.accentSecondary.withOpacity(0.12);
+    }
+    var color = AppColors.accentSecondary.withOpacity(0.18);
+    if (states.contains(MaterialState.pressed)) {
+      color = AppColors.accentSecondary.withOpacity(0.26);
+    } else if (states.contains(MaterialState.hovered)) {
+      color = AppColors.accentSecondary.withOpacity(0.22);
+    }
+    return color;
+  }
+
+  static Color _blend(Color base, Color overlay, double opacity) {
+    return Color.alphaBlend(overlay.withOpacity(opacity), base);
+  }
+}
+
+class AppButtonStyles {
+  const AppButtonStyles._();
+
+  static final ButtonStyle primary = ButtonStyle(
+    minimumSize: MaterialStatePropertyAll<Size>(
+      const Size.fromHeight(AppComponentSpecs.primaryButtonHeight),
+    ),
+    padding: const MaterialStatePropertyAll<EdgeInsets>(
+      EdgeInsets.symmetric(horizontal: AppSpacing.l),
+    ),
+    shape: const MaterialStatePropertyAll<OutlinedBorder>(
+      RoundedRectangleBorder(borderRadius: AppRadius.medium),
+    ),
+    textStyle: MaterialStatePropertyAll<TextStyle>(AppTypography.buttonLarge),
+    backgroundColor:
+        MaterialStateProperty.resolveWith(AppStateLayers.primary),
+    foregroundColor: MaterialStateProperty.resolveWith((states) {
+      if (states.contains(MaterialState.disabled)) {
+        return AppColors.textSecondary.withOpacity(0.6);
+      }
+      return Colors.black;
+    }),
+    side: MaterialStateProperty.resolveWith((states) {
+      if (states.contains(MaterialState.focused)) {
+        return AppBorders.focus;
+      }
+      return const BorderSide(color: Colors.transparent, width: 0);
+    }),
+    shadowColor: const MaterialStatePropertyAll<Color>(
+      Color(0x33FFD66B),
+    ),
+    elevation: MaterialStateProperty.resolveWith((states) {
+      if (states.contains(MaterialState.disabled)) {
+        return 0.0;
+      }
+      if (states.contains(MaterialState.pressed)) {
+        return 1.0;
+      }
+      if (states.contains(MaterialState.hovered)) {
+        return 4.0;
+      }
+      return 2.0;
+    }),
+    splashFactory: InkRipple.splashFactory,
+    animationDuration: AppAnimations.standard,
+    enableFeedback: true,
+  );
+
+  static final ButtonStyle outline = ButtonStyle(
+    minimumSize: const MaterialStatePropertyAll<Size>(
+      Size.fromHeight(AppComponentSpecs.minTouchTarget),
+    ),
+    padding: const MaterialStatePropertyAll<EdgeInsets>(
+      EdgeInsets.symmetric(horizontal: AppSpacing.l, vertical: AppSpacing.s),
+    ),
+    shape: const MaterialStatePropertyAll<OutlinedBorder>(
+      RoundedRectangleBorder(borderRadius: AppRadius.medium),
+    ),
+    side: MaterialStateProperty.resolveWith((states) {
+      if (states.contains(MaterialState.focused)) {
+        return AppBorders.focus;
+      }
+      return AppBorders.muted;
+    }),
+    foregroundColor: MaterialStateProperty.resolveWith((states) {
+      if (states.contains(MaterialState.disabled)) {
+        return AppColors.textSecondary.withOpacity(0.6);
+      }
+      return AppColors.textPrimary;
+    }),
+    backgroundColor:
+        MaterialStateProperty.resolveWith(AppStateLayers.secondary),
+    textStyle: MaterialStatePropertyAll<TextStyle>(AppTypography.label),
+    splashFactory: InkRipple.splashFactory,
+    animationDuration: AppAnimations.standard,
+  );
+
+  static final ButtonStyle text = ButtonStyle(
+    foregroundColor: const MaterialStatePropertyAll<Color>(
+      AppColors.accentSecondary,
+    ),
+    textStyle: MaterialStatePropertyAll<TextStyle>(
+      AppTypography.label.copyWith(color: AppColors.accentSecondary),
+    ),
+    overlayColor: MaterialStateProperty.resolveWith((states) {
+      if (states.contains(MaterialState.pressed)) {
+        return AppColors.accentSecondary.withOpacity(0.24);
+      }
+      if (states.contains(MaterialState.hovered)) {
+        return AppColors.accentSecondary.withOpacity(0.12);
+      }
+      return AppColors.accentSecondary.withOpacity(0.06);
+    }),
+    side: MaterialStateProperty.resolveWith((states) {
+      if (states.contains(MaterialState.focused)) {
+        return AppBorders.focus;
+      }
+      return const BorderSide(color: Colors.transparent);
+    }),
+    splashFactory: InkRipple.splashFactory,
+  );
+
+  static final ButtonStyle icon = ButtonStyle(
+    minimumSize: const MaterialStatePropertyAll<Size>(
+      Size.square(AppComponentSpecs.minTouchTarget),
+    ),
+    shape: const MaterialStatePropertyAll<OutlinedBorder>(CircleBorder()),
+    padding: const MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.zero),
+    foregroundColor: const MaterialStatePropertyAll<Color>(
+      AppColors.textPrimary,
+    ),
+    overlayColor: MaterialStateProperty.resolveWith((states) {
+      if (states.contains(MaterialState.pressed)) {
+        return AppColors.textPrimary.withOpacity(0.24);
+      }
+      if (states.contains(MaterialState.hovered)) {
+        return AppColors.textPrimary.withOpacity(0.12);
+      }
+      return AppColors.textPrimary.withOpacity(0.08);
+    }),
+    side: MaterialStateProperty.resolveWith((states) {
+      if (states.contains(MaterialState.focused)) {
+        return AppBorders.focus;
+      }
+      return const BorderSide(color: Colors.transparent);
+    }),
+    splashFactory: InkRipple.splashFactory,
+  );
+
+  static final ButtonStyle segmented = ButtonStyle(
+    minimumSize: const MaterialStatePropertyAll<Size>(
+      Size(AppComponentSpecs.minTouchTarget, AppComponentSpecs.minTouchTarget),
+    ),
+    padding: const MaterialStatePropertyAll<EdgeInsets>(
+      EdgeInsets.symmetric(horizontal: AppSpacing.m, vertical: AppSpacing.s),
+    ),
+    backgroundColor:
+        MaterialStateProperty.resolveWith(AppStateLayers.elevatedSurface),
+    foregroundColor: MaterialStateProperty.resolveWith((states) {
+      if (states.contains(MaterialState.disabled)) {
+        return AppColors.textSecondary.withOpacity(0.5);
+      }
+      if (states.contains(MaterialState.selected)) {
+        return AppColors.accentSecondary;
+      }
+      return AppColors.textPrimary;
+    }),
+    side: MaterialStateProperty.resolveWith((states) {
+      if (states.contains(MaterialState.focused)) {
+        return AppBorders.focus;
+      }
+      if (states.contains(MaterialState.selected)) {
+        return BorderSide(color: AppColors.accentSecondary, width: 1.5);
+      }
+      return AppBorders.muted;
+    }),
+    overlayColor: MaterialStateProperty.resolveWith((states) {
+      if (states.contains(MaterialState.pressed)) {
+        return AppColors.accentSecondary.withOpacity(0.24);
+      }
+      if (states.contains(MaterialState.hovered)) {
+        return AppColors.accentSecondary.withOpacity(0.12);
+      }
+      return Colors.transparent;
+    }),
+    shape: const MaterialStatePropertyAll<OutlinedBorder>(
+      RoundedRectangleBorder(borderRadius: AppRadius.pill),
+    ),
+    splashFactory: InkRipple.splashFactory,
+  );
+}
+
+class AppTheme {
+  const AppTheme._();
+
+  static ThemeData get dark {
+    final colorScheme = const ColorScheme.dark(
+      surface: AppColors.bgElevated,
+      background: AppColors.bgBase,
+      primary: AppColors.accentPrimary,
+      secondary: AppColors.accentSecondary,
+      error: AppColors.error,
+      onBackground: AppColors.textPrimary,
+      onSurface: AppColors.textPrimary,
+      onPrimary: Colors.black,
+      onSecondary: AppColors.textPrimary,
+      onError: Colors.black,
+    );
+
+    return ThemeData(
+      useMaterial3: true,
+      colorScheme: colorScheme,
+      scaffoldBackgroundColor: AppColors.bgBase,
+      fontFamily: AppTypography.fontFamily,
+      fontFamilyFallback: AppTypography.fontFallback,
+      textTheme: AppTypography.textTheme,
+      splashFactory: InkRipple.splashFactory,
+      iconButtonTheme: IconButtonThemeData(style: AppButtonStyles.icon),
+      filledButtonTheme: FilledButtonThemeData(style: AppButtonStyles.primary),
+      outlinedButtonTheme: OutlinedButtonThemeData(style: AppButtonStyles.outline),
+      textButtonTheme: TextButtonThemeData(style: AppButtonStyles.text),
+      segmentedButtonTheme:
+          SegmentedButtonThemeData(style: AppButtonStyles.segmented),
+      chipTheme: ChipThemeData(
+        backgroundColor: AppColors.bgElevated,
+        disabledColor: AppColors.bgElevated.withOpacity(0.4),
+        selectedColor: AppColors.accentSecondary.withOpacity(0.2),
+        secondarySelectedColor: AppColors.accentSecondary.withOpacity(0.26),
+        labelStyle: AppTypography.chip,
+        secondaryLabelStyle:
+            AppTypography.chip.copyWith(color: AppColors.textSecondary),
+        side: AppBorders.muted,
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.m,
+          vertical: AppSpacing.s,
+        ),
+        shape: const StadiumBorder(),
+        showCheckmark: false,
+      ),
+      cardTheme: CardTheme(
+        color: AppColors.bgElevated,
+        shape: const RoundedRectangleBorder(borderRadius: AppRadius.medium),
+        elevation: 0,
+        margin: EdgeInsets.zero,
+        clipBehavior: Clip.antiAlias,
+      ),
+      popupMenuTheme: PopupMenuThemeData(
+        color: AppColors.bgElevated,
+        textStyle: AppTypography.bodyMedium,
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.medium),
+      ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: AppColors.accentSecondary,
+        linearTrackColor: AppColors.borderMuted,
+      ),
+      dividerColor: AppColors.borderMuted,
+      checkboxTheme: CheckboxThemeData(
+        fillColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.selected)) {
+            return AppColors.accentSecondary;
+          }
+          return AppColors.borderMuted;
+        }),
+        side: const BorderSide(color: AppColors.borderMuted, width: 1.5),
+        shape: const RoundedRectangleBorder(borderRadius: AppRadius.medium),
+      ),
+    );
+  }
 }

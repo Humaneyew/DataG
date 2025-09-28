@@ -189,6 +189,8 @@
       }
     }
   },
+  "stubSoundToggle": "Sound effects",
+  "stubHapticsToggle": "Haptic feedback",
   "localeEnglish": "English",
   "localeUkrainian": "Ukrainian",
   "localeRussian": "Russian",

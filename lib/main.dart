@@ -72,22 +72,7 @@ class DataGApp extends ConsumerWidget {
       locale: locale,
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
-      theme: ThemeData(
-        scaffoldBackgroundColor: AppColors.bgBase,
-        colorScheme: const ColorScheme.dark(
-          surface: AppColors.bgElevated,
-          background: AppColors.bgBase,
-          primary: AppColors.accentPrimary,
-          secondary: AppColors.accentSecondary,
-          error: AppColors.error,
-          onBackground: AppColors.textPrimary,
-          onSurface: AppColors.textPrimary,
-        ),
-        textTheme: const TextTheme(
-          bodyMedium: TextStyle(color: AppColors.textPrimary),
-        ),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.dark,
       routerConfig: router,
     );
   }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 import '../state/locale_controller.dart';
+import '../tokens.dart';
 
 class LocaleMenu extends ConsumerWidget {
   const LocaleMenu({super.key});
@@ -15,7 +17,11 @@ class LocaleMenu extends ConsumerWidget {
     final supported = AppLocalizations.supportedLocales;
 
     return PopupMenuButton<Locale>(
-      icon: const Icon(Icons.language),
+      icon: const Icon(
+        LucideIcons.languages,
+        size: 20,
+        color: AppColors.textSecondary,
+      ),
       tooltip: l.localeMenuTooltip,
       onSelected: controller.setLocale,
       itemBuilder: (context) {

@@ -189,6 +189,8 @@
       }
     }
   },
+  "stubSoundToggle": "Звукові ефекти",
+  "stubHapticsToggle": "Вібровідгук",
   "localeEnglish": "Англійська",
   "localeUkrainian": "Українська",
   "localeRussian": "Російська",
