@@ -1,93 +1,27 @@
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../content/models.dart';
 import '../../content/repository.dart';
+import '../modes/daily_service.dart';
+import '../modes/duel_service.dart';
+import '../modes/game_mode.dart';
+import '../modes/mode_controller.dart';
+import 'round_models.dart';
 
-enum RoundPhase { loading, playing, reviewing, completed }
-
-enum HintType { lastDigits, abQuiz, narrowTimeline }
-
-class YearRange {
-  const YearRange(this.min, this.max);
-
-  final int min;
-  final int max;
-
-  int clamp(int value) {
-    if (value < min) return min;
-    if (value > max) return max;
-    return value;
-  }
-}
-
-class QuestionResult {
-  QuestionResult({
-    required this.question,
-    required this.playerYear,
-    required this.playerEra,
-    required this.delta,
-    required this.baseScore,
-    required this.totalPoints,
-    required this.hintPenalty,
-    required this.netPoints,
-    required this.streakAfterAnswer,
-    required this.usedHints,
-    required this.streakBoostApplied,
-  });
-
-  final Question question;
-  final int playerYear;
-  final Era playerEra;
-  final int delta;
-  final int baseScore;
-  final int totalPoints;
-  final int hintPenalty;
-  final int netPoints;
-  final int streakAfterAnswer;
-  final Set<HintType> usedHints;
-  final bool streakBoostApplied;
-
-  bool get isPerfect => delta <= question.acceptableDelta;
-
-  bool get isCloseHit =>
-      delta <= math.max(question.acceptableDelta, _closeHitThreshold);
-}
-
-const int _closeHitThreshold = 5;
-
-class RoundSummary {
-  const RoundSummary({
-    required this.score,
-    required this.averageDelta,
-    required this.bestStreak,
-    required this.closeHits,
-    required this.totalQuestions,
-    required this.categoryId,
-  });
-
-  final int score;
-  final double averageDelta;
-  final int bestStreak;
-  final int closeHits;
-  final int totalQuestions;
-  final String categoryId;
-}
-
-@immutable
 class RoundState {
   static const _sentinel = Object();
 
   const RoundState({
+    required this.config,
     this.phase = RoundPhase.loading,
     this.questions = const [],
     this.currentIndex = 0,
     this.selectedYear = 0,
     this.selectedEra = Era.ce,
     this.score = 0,
-    this.lives = 3,
+    this.lives = 0,
     this.streak = 0,
     this.bestStreak = 0,
     this.usedHints = const {},
@@ -97,8 +31,16 @@ class RoundState {
     this.narrowedRange,
     this.abOptions,
     this.lastDigitsHint,
+    this.hintCostMultiplier = 1.0,
+    this.lastHintEnabled = true,
+    this.adaptiveScalingEnabled = false,
+    this.adaptiveRange,
+    this.timerEnabled = false,
+    this.timeLimit,
+    this.questionStartTime,
   });
 
+  final RoundConfig config;
   final RoundPhase phase;
   final List<Question> questions;
   final int currentIndex;
@@ -115,6 +57,13 @@ class RoundState {
   final YearRange? narrowedRange;
   final List<int>? abOptions;
   final String? lastDigitsHint;
+  final double hintCostMultiplier;
+  final bool lastHintEnabled;
+  final bool adaptiveScalingEnabled;
+  final YearRange? adaptiveRange;
+  final bool timerEnabled;
+  final Duration? timeLimit;
+  final DateTime? questionStartTime;
 
   bool get isLoading => phase == RoundPhase.loading;
 
@@ -127,9 +76,32 @@ class RoundState {
 
   int get questionCount => questions.length;
 
-  int get currentMinYear => narrowedRange?.min ?? currentQuestion?.minYear ?? 0;
+  int get currentMinYear {
+    final baseRange = narrowedRange ?? adaptiveRange;
+    final question = currentQuestion;
+    if (baseRange != null) {
+      return baseRange.min;
+    }
+    if (question == null) return 0;
+    return question.minYear;
+  }
 
-  int get currentMaxYear => narrowedRange?.max ?? currentQuestion?.maxYear ?? 0;
+  int get currentMaxYear {
+    final baseRange = narrowedRange ?? adaptiveRange;
+    final question = currentQuestion;
+    if (baseRange != null) {
+      return baseRange.max;
+    }
+    if (question == null) return 0;
+    return question.maxYear;
+  }
+
+  bool isHintAvailable(HintType type) {
+    if (type == HintType.lastDigits && !lastHintEnabled) {
+      return false;
+    }
+    return true;
+  }
 
   RoundState copyWith({
     RoundPhase? phase,
@@ -148,8 +120,16 @@ class RoundState {
     Object? narrowedRange = _sentinel,
     Object? abOptions = _sentinel,
     Object? lastDigitsHint = _sentinel,
+    double? hintCostMultiplier,
+    bool? lastHintEnabled,
+    bool? adaptiveScalingEnabled,
+    Object? adaptiveRange = _sentinel,
+    bool? timerEnabled,
+    Object? timeLimit = _sentinel,
+    Object? questionStartTime = _sentinel,
   }) {
     return RoundState(
+      config: config,
       phase: phase ?? this.phase,
       questions: questions ?? this.questions,
       currentIndex: currentIndex ?? this.currentIndex,
@@ -174,18 +154,50 @@ class RoundState {
       lastDigitsHint: identical(lastDigitsHint, _sentinel)
           ? this.lastDigitsHint
           : lastDigitsHint as String?,
+      hintCostMultiplier: hintCostMultiplier ?? this.hintCostMultiplier,
+      lastHintEnabled: lastHintEnabled ?? this.lastHintEnabled,
+      adaptiveScalingEnabled:
+          adaptiveScalingEnabled ?? this.adaptiveScalingEnabled,
+      adaptiveRange: identical(adaptiveRange, _sentinel)
+          ? this.adaptiveRange
+          : adaptiveRange as YearRange?,
+      timerEnabled: timerEnabled ?? this.timerEnabled,
+      timeLimit: identical(timeLimit, _sentinel)
+          ? this.timeLimit
+          : timeLimit as Duration?,
+      questionStartTime: identical(questionStartTime, _sentinel)
+          ? this.questionStartTime
+          : questionStartTime as DateTime?,
     );
   }
+}
+
+class RoundCompletion {
+  const RoundCompletion({
+    required this.summary,
+    this.duelReport,
+    this.dailyLeaderboard,
+  });
+
+  final RoundSummary summary;
+  final DuelReport? duelReport;
+  final List<RoundSummary>? dailyLeaderboard;
 }
 
 class RoundController extends StateNotifier<RoundState> {
   RoundController({
     required this.categoryId,
     required this.repository,
-  }) : super(const RoundState());
+    required this.config,
+    required this.duelCoordinator,
+    required this.dailyLeaderboard,
+  }) : super(RoundState(config: config));
 
   final String categoryId;
   final ContentRepository repository;
+  final RoundConfig config;
+  final DuelCoordinator duelCoordinator;
+  final DailyLeaderboard dailyLeaderboard;
 
   bool _initialized = false;
 
@@ -197,7 +209,11 @@ class RoundController extends StateNotifier<RoundState> {
 
   Future<void> load() async {
     state = state.copyWith(phase: RoundPhase.loading);
-    final questions = await repository.loadByCategory(categoryId);
+    final questions = await repository.loadByCategory(
+      categoryId,
+      limit: config.questionCount,
+      seed: config.seed,
+    );
     if (questions.isEmpty) {
       state = state.copyWith(
         phase: RoundPhase.completed,
@@ -206,18 +222,23 @@ class RoundController extends StateNotifier<RoundState> {
         streak: 0,
         bestStreak: 0,
         results: const [],
+        lives: config.lives,
       );
       return;
     }
     final first = questions.first;
-    state = RoundState(
+    final adaptiveRange =
+        state.adaptiveScalingEnabled ? _buildAdaptiveRange(first) : null;
+    final selectedYear = (adaptiveRange ?? YearRange(first.minYear, first.maxYear))
+        .clamp(first.defaultYear);
+    state = state.copyWith(
       phase: RoundPhase.playing,
       questions: questions,
       currentIndex: 0,
-      selectedYear: first.defaultYear,
+      selectedYear: selectedYear,
       selectedEra: first.era,
       score: 0,
-      lives: state.lives,
+      lives: config.lives,
       streak: 0,
       bestStreak: 0,
       usedHints: const <HintType>{},
@@ -226,6 +247,13 @@ class RoundController extends StateNotifier<RoundState> {
       narrowedRange: null,
       abOptions: null,
       lastDigitsHint: null,
+      hintCostMultiplier: 1.0,
+      lastHintEnabled: config.allowLastHint,
+      adaptiveScalingEnabled: state.adaptiveScalingEnabled,
+      adaptiveRange: adaptiveRange,
+      timerEnabled: config.timerEnabled,
+      timeLimit: config.timerEnabled ? config.timeLimit : null,
+      questionStartTime: DateTime.now(),
     );
   }
 
@@ -256,6 +284,7 @@ class RoundController extends StateNotifier<RoundState> {
     final question = state.currentQuestion;
     if (question == null || state.phase != RoundPhase.playing) return;
     if (state.usedHints.contains(type)) return;
+    if (!state.isHintAvailable(type)) return;
 
     final newUsed = {...state.usedHints, type};
     var penalty = state.currentHintPenalty;
@@ -268,17 +297,17 @@ class RoundController extends StateNotifier<RoundState> {
       case HintType.lastDigits:
         lastDigitsHint =
             question.hints.lastDigits ?? _fallbackLastDigits(question);
-        penalty += 50;
+        penalty += _hintCost(50);
         break;
       case HintType.abQuiz:
         final options = _buildAbOptions(question);
         abOptions = options;
-        penalty += 100;
+        penalty += _hintCost(100);
         break;
       case HintType.narrowTimeline:
         newRange = _buildNarrowRange(question);
         selectedYear = newRange.clamp(selectedYear);
-        penalty += 150;
+        penalty += _hintCost(150);
         break;
     }
 
@@ -290,6 +319,11 @@ class RoundController extends StateNotifier<RoundState> {
       lastDigitsHint: lastDigitsHint,
       selectedYear: selectedYear,
     );
+  }
+
+  int _hintCost(int baseCost) {
+    final value = (baseCost * state.hintCostMultiplier).round();
+    return math.max(1, value);
   }
 
   List<int> _buildAbOptions(Question question) {
@@ -349,7 +383,7 @@ class RoundController extends StateNotifier<RoundState> {
     if (hint == null) {
       return null;
     }
-    final match = RegExp(r'(-?\d+)\s*[-–]\s*(-?\d+)').firstMatch(hint);
+    final match = RegExp(r'(-?\\d+)\\s*[-–]\\s*(-?\\d+)').firstMatch(hint);
     if (match == null) {
       return null;
     }
@@ -392,24 +426,36 @@ class RoundController extends StateNotifier<RoundState> {
     final playerSigned = playerEra.signedYear(playerYear);
     final correctSigned = question.era.signedYear(question.correctYear);
     final delta = (playerSigned - correctSigned).abs();
-    final tolerance = question.acceptableDelta;
-    final effectiveDelta = math.max(0, delta - tolerance);
-    final baseScore = math.max(0, 1000 - effectiveDelta * 2);
+    final baseScore = math.max(0, 1000 - delta * 2);
+
+    final acceptable = question.acceptableDelta;
+    final bonusDelta =
+        (acceptable > 0 && delta <= acceptable) ? math.max(acceptable, delta) : delta;
+
     var bonus = 0;
-    if (effectiveDelta <= 1) {
+    if (bonusDelta <= 1) {
       bonus += 200;
-    } else if (effectiveDelta <= _closeHitThreshold) {
+    } else if (bonusDelta <= closeHitThreshold) {
       bonus += 100;
     }
-    var streak =
-        effectiveDelta <= _closeHitThreshold ? state.streak + 1 : 0;
+
+    var streak = bonusDelta <= closeHitThreshold ? state.streak + 1 : 0;
     var streakBoostApplied = false;
     var multiplier = 1.0;
     if (streak >= 3) {
-      multiplier *= 1.5;
+      multiplier *= config.streakMultiplier;
       streakBoostApplied = true;
     }
-    final totalPoints = ((baseScore + bonus) * multiplier).round();
+
+    final totalPointsWithoutTime =
+        ((baseScore + bonus) * multiplier).round();
+
+    final elapsed = state.questionStartTime == null
+        ? Duration.zero
+        : DateTime.now().difference(state.questionStartTime!);
+    final timeBonus =
+        state.timerEnabled && elapsed <= const Duration(seconds: 5) ? 100 : 0;
+    final totalPoints = totalPointsWithoutTime + timeBonus;
     final netPoints = totalPoints - state.currentHintPenalty;
     final bestStreak = math.max(state.bestStreak, streak);
 
@@ -419,15 +465,19 @@ class RoundController extends StateNotifier<RoundState> {
       playerEra: playerEra,
       delta: delta,
       baseScore: baseScore,
+      bonusPoints: bonus,
+      timeBonus: timeBonus,
       totalPoints: totalPoints,
       hintPenalty: state.currentHintPenalty,
       netPoints: netPoints,
       streakAfterAnswer: streak,
       usedHints: Set<HintType>.unmodifiable(state.usedHints),
       streakBoostApplied: streakBoostApplied,
+      answerTime: elapsed,
     );
 
     final updatedResults = [...state.results, result];
+    final difficulty = _resolveDifficulty(updatedResults);
 
     state = state.copyWith(
       score: state.score + netPoints,
@@ -437,9 +487,41 @@ class RoundController extends StateNotifier<RoundState> {
       lastResult: result,
       results: updatedResults,
       currentHintPenalty: 0,
+      hintCostMultiplier: difficulty.hintCostMultiplier,
+      lastHintEnabled: difficulty.lastHintEnabled,
+      adaptiveScalingEnabled: difficulty.adaptiveScalingEnabled,
     );
 
     return result;
+  }
+
+  _DifficultyState _resolveDifficulty(List<QuestionResult> results) {
+    if (results.isEmpty) {
+      return _DifficultyState.defaults(config.allowLastHint);
+    }
+    final recent = results
+        .skip(results.length >= 3 ? results.length - 3 : 0)
+        .toList();
+    if (recent.isEmpty) {
+      return _DifficultyState.defaults(config.allowLastHint);
+    }
+    final avg = recent.fold<int>(0, (sum, item) => sum + item.delta) /
+        recent.length;
+    if (avg > 50) {
+      return _DifficultyState(
+        hintCostMultiplier: 0.75,
+        lastHintEnabled: config.allowLastHint,
+        adaptiveScalingEnabled: true,
+      );
+    }
+    if (avg < 10) {
+      return _DifficultyState(
+        hintCostMultiplier: 1.0,
+        lastHintEnabled: false,
+        adaptiveScalingEnabled: false,
+      );
+    }
+    return _DifficultyState.defaults(config.allowLastHint);
   }
 
   bool advance() {
@@ -453,10 +535,16 @@ class RoundController extends StateNotifier<RoundState> {
     }
     final nextIndex = state.currentIndex + 1;
     final nextQuestion = state.questions[nextIndex];
+    final adaptiveRange = state.adaptiveScalingEnabled
+        ? _buildAdaptiveRange(nextQuestion)
+        : null;
+    final selectedYear =
+        (adaptiveRange ?? YearRange(nextQuestion.minYear, nextQuestion.maxYear))
+            .clamp(nextQuestion.defaultYear);
     state = state.copyWith(
       phase: RoundPhase.playing,
       currentIndex: nextIndex,
-      selectedYear: nextQuestion.defaultYear,
+      selectedYear: selectedYear,
       selectedEra: nextQuestion.era,
       usedHints: const <HintType>{},
       narrowedRange: null,
@@ -464,11 +552,13 @@ class RoundController extends StateNotifier<RoundState> {
       lastDigitsHint: null,
       lastResult: null,
       currentHintPenalty: 0,
+      adaptiveRange: adaptiveRange,
+      questionStartTime: DateTime.now(),
     );
     return false;
   }
 
-  RoundSummary? buildSummary() {
+  RoundCompletion? buildSummary() {
     if (state.results.isEmpty) {
       return null;
     }
@@ -478,15 +568,39 @@ class RoundController extends StateNotifier<RoundState> {
     final closeHits = state.results
         .where((result) =>
             result.delta <=
-            math.max(result.question.acceptableDelta, _closeHitThreshold))
+            math.max(result.question.acceptableDelta, closeHitThreshold))
         .length;
-    return RoundSummary(
+    final totalTimeBonus =
+        state.results.fold<int>(0, (sum, result) => sum + result.timeBonus);
+
+    final summary = RoundSummary(
       score: state.score,
       averageDelta: average,
       bestStreak: state.bestStreak,
       closeHits: closeHits,
       totalQuestions: state.results.length,
       categoryId: categoryId,
+      modeId: config.modeId,
+      leaderboardKey: config.leaderboardKey,
+      completedAt: DateTime.now(),
+      timeBonusTotal: totalTimeBonus,
+    );
+
+    DuelReport? duelReport;
+    List<RoundSummary>? leaderboard;
+
+    if (config.modeId == GameModeId.duel && config.compareLocal) {
+      duelReport = duelCoordinator.submit(summary);
+    }
+
+    if (config.modeId == GameModeId.daily3 && config.leaderboardKey != null) {
+      leaderboard = dailyLeaderboard.record(config.leaderboardKey!, summary);
+    }
+
+    return RoundCompletion(
+      summary: summary,
+      duelReport: duelReport,
+      dailyLeaderboard: leaderboard,
     );
   }
 
@@ -495,20 +609,101 @@ class RoundController extends StateNotifier<RoundState> {
   }
 }
 
+class _DifficultyState {
+  const _DifficultyState({
+    required this.hintCostMultiplier,
+    required this.lastHintEnabled,
+    required this.adaptiveScalingEnabled,
+  });
+
+  factory _DifficultyState.defaults(bool allowLastHint) => _DifficultyState(
+        hintCostMultiplier: 1.0,
+        lastHintEnabled: allowLastHint,
+        adaptiveScalingEnabled: false,
+      );
+
+  final double hintCostMultiplier;
+  final bool lastHintEnabled;
+  final bool adaptiveScalingEnabled;
+}
+
+YearRange _buildAdaptiveRange(Question question) {
+  final span = math.max(10, question.range ~/ 2);
+  final half = span ~/ 2;
+  var minYear = question.correctYear - half;
+  var maxYear = question.correctYear + (span - half);
+  if (minYear < question.minYear) {
+    maxYear += question.minYear - minYear;
+    minYear = question.minYear;
+  }
+  if (maxYear > question.maxYear) {
+    minYear -= maxYear - question.maxYear;
+    maxYear = question.maxYear;
+  }
+  minYear = minYear.clamp(question.minYear, question.maxYear).toInt();
+  maxYear = maxYear.clamp(question.minYear, question.maxYear).toInt();
+  return YearRange(minYear, maxYear);
+}
+
+class RoundSessionRequest {
+  const RoundSessionRequest({required this.categoryId, required this.modeId});
+
+  final String categoryId;
+  final GameModeId modeId;
+
+  @override
+  bool operator ==(Object other) {
+    return other is RoundSessionRequest &&
+        other.categoryId == categoryId &&
+        other.modeId == modeId;
+  }
+
+  @override
+  int get hashCode => Object.hash(categoryId, modeId);
+}
+
+RoundConfig _buildRoundConfig(
+  ModeSettings settings,
+  bool timerEnabled,
+) {
+  final seedData = settings.seedFor(DateTime.now());
+  return RoundConfig(
+    modeId: settings.id,
+    questionCount: settings.questionCount,
+    streakMultiplier: settings.streakMultiplier,
+    allowLastHint: settings.allowLastHint,
+    compareLocal: settings.compareLocal,
+    timerEnabled: timerEnabled,
+    timeLimit:
+        timerEnabled && settings.timerSeconds > 0
+            ? Duration(seconds: settings.timerSeconds)
+            : null,
+    seed: seedData?.seed,
+    leaderboardKey: seedData?.leaderboardKey,
+    lives: settings.lives,
+  );
+}
+
 final questionRepositoryProvider = Provider<ContentRepository>((ref) {
   return ContentRepository();
 });
 
-final roundControllerProvider =
-    StateNotifierProvider.autoDispose.family<RoundController, RoundState, String>(
-  (ref, categoryId) {
-    final repository = ref.watch(questionRepositoryProvider);
-    final controller = RoundController(
-      categoryId: categoryId,
-      repository: repository,
-    );
-    ref.onDispose(controller.resetForReplay);
-    controller.ensureLoaded();
-    return controller;
-  },
-);
+final roundControllerProvider = StateNotifierProvider.autoDispose
+    .family<RoundController, RoundState, RoundSessionRequest>((ref, request) {
+  final repository = ref.watch(questionRepositoryProvider);
+  final settings = ref.watch(modeSettingsProvider(request.modeId));
+  final timerEnabled = ref.watch(timerEnabledForModeProvider(request.modeId));
+  final config = _buildRoundConfig(settings, timerEnabled);
+  final duelCoordinator = ref.watch(duelCoordinatorProvider.notifier);
+  final dailyBoard = ref.watch(dailyLeaderboardProvider.notifier);
+  final controller = RoundController(
+    categoryId: request.categoryId,
+    repository: repository,
+    config: config,
+    duelCoordinator: duelCoordinator,
+    dailyLeaderboard: dailyBoard,
+  );
+  ref.onDispose(controller.resetForReplay);
+  controller.ensureLoaded();
+  return controller;
+});
