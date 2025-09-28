@@ -1,0 +1,722 @@
+[
+  {
+    "id": "movie_the_jazz_singer_premiere",
+    "prompts": {
+      "en": "Premiere of \"The Jazz Singer\"",
+      "uk": "Прем'єра \"Співака джазу\"",
+      "ru": "Премьера \"Певца джаза\""
+    },
+    "year": 1927,
+    "min": 1920,
+    "max": 1935,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Sound", "Hollywood"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "27",
+      "ab": ["1927", "1930"],
+      "narrow": "1925-1930"
+    },
+    "source": "wikipedia/The_Jazz_Singer",
+    "license": "own"
+  },
+  {
+    "id": "movie_gone_with_the_wind_release",
+    "prompts": {
+      "en": "\"Gone with the Wind\" premieres",
+      "uk": "Прем'єра \"Віднесених вітром\"",
+      "ru": "Премьера \"Унесённых ветром\""
+    },
+    "year": 1939,
+    "min": 1930,
+    "max": 1950,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Classic", "Oscar"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "39",
+      "ab": ["1939", "1945"],
+      "narrow": "1935-1942"
+    },
+    "source": "wikipedia/Gone_with_the_Wind_(film)",
+    "license": "own"
+  },
+  {
+    "id": "movie_citizen_kane_release",
+    "prompts": {
+      "en": "Release of \"Citizen Kane\"",
+      "uk": "Вихід \"Громадянина Кейна\"",
+      "ru": "Выход \"Гражданина Кейна\""
+    },
+    "year": 1941,
+    "min": 1935,
+    "max": 1950,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Orson Welles", "Classic"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "41",
+      "ab": ["1941", "1947"],
+      "narrow": "1940-1945"
+    },
+    "source": "wikipedia/Citizen_Kane",
+    "license": "own"
+  },
+  {
+    "id": "movie_cannes_first_festival",
+    "prompts": {
+      "en": "First Cannes Film Festival",
+      "uk": "Перший Каннський кінофестиваль",
+      "ru": "Первый Каннский кинофестиваль"
+    },
+    "year": 1946,
+    "min": 1940,
+    "max": 1955,
+    "era": "CE",
+    "category": "movies",
+    "region": "europe",
+    "tags": ["Festival", "Cannes"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "46",
+      "ab": ["1946", "1950"],
+      "narrow": "1945-1948"
+    },
+    "source": "wikipedia/Cannes_Film_Festival",
+    "license": "own"
+  },
+  {
+    "id": "movie_seven_samurai_release",
+    "prompts": {
+      "en": "Release of \"Seven Samurai\"",
+      "uk": "Прем'єра \"Семи самураїв\"",
+      "ru": "Премьера \"Семи самураев\""
+    },
+    "year": 1954,
+    "min": 1950,
+    "max": 1960,
+    "era": "CE",
+    "category": "movies",
+    "region": "asia",
+    "tags": ["Japan", "Akira Kurosawa"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "54",
+      "ab": ["1954", "1957"],
+      "narrow": "1953-1956"
+    },
+    "source": "wikipedia/Seven_Samurai",
+    "license": "own"
+  },
+  {
+    "id": "movie_psycho_release",
+    "prompts": {
+      "en": "Alfred Hitchcock releases \"Psycho\"",
+      "uk": "Альфред Гічкок випускає \"Психо\"",
+      "ru": "Альфред Хичкок выпускает \"Психо\""
+    },
+    "year": 1960,
+    "min": 1955,
+    "max": 1970,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Thriller", "Hitchcock"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "60",
+      "ab": ["1960", "1965"],
+      "narrow": "1959-1961"
+    },
+    "source": "wikipedia/Psycho_(1960_film)",
+    "license": "own"
+  },
+  {
+    "id": "movie_spartacus_release",
+    "prompts": {
+      "en": "Stanley Kubrick's \"Spartacus\" debuts",
+      "uk": "Вихід \"Спартака\" Кубрика",
+      "ru": "Выход \"Спартака\" Кубрика"
+    },
+    "year": 1960,
+    "min": 1955,
+    "max": 1970,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Epic", "Kubrick"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "60",
+      "ab": ["1960", "1963"],
+      "narrow": "1958-1962"
+    },
+    "source": "wikipedia/Spartacus_(film)",
+    "license": "own"
+  },
+  {
+    "id": "movie_space_odyssey_release",
+    "prompts": {
+      "en": "\"2001: A Space Odyssey\" premieres",
+      "uk": "Прем'єра \"2001: Космічна одіссея\"",
+      "ru": "Премьера \"2001: Космическая одиссея\""
+    },
+    "year": 1968,
+    "min": 1965,
+    "max": 1975,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Sci-Fi", "Kubrick"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "68",
+      "ab": ["1968", "1971"],
+      "narrow": "1967-1970"
+    },
+    "source": "wikipedia/2001:_A_Space_Odyssey_(film)",
+    "license": "own"
+  },
+  {
+    "id": "movie_godfather_premiere",
+    "prompts": {
+      "en": "\"The Godfather\" premieres",
+      "uk": "Прем'єра \"Хрещеного батька\"",
+      "ru": "Премьера \"Крестного отца\""
+    },
+    "year": 1972,
+    "min": 1970,
+    "max": 1980,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Crime", "Coppola"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "72",
+      "ab": ["1972", "1974"],
+      "narrow": "1971-1973"
+    },
+    "source": "wikipedia/The_Godfather",
+    "license": "own"
+  },
+  {
+    "id": "movie_star_wars_release",
+    "prompts": {
+      "en": "Original \"Star Wars\" opens",
+      "uk": "Прем'єра оригінальних \"Зоряних війн\"",
+      "ru": "Премьера оригинальных \"Звёздных войн\""
+    },
+    "year": 1977,
+    "min": 1970,
+    "max": 1985,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Star Wars", "Sci-Fi"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "77",
+      "ab": ["1977", "1980"],
+      "narrow": "1976-1979"
+    },
+    "source": "wikipedia/Star_Wars_(film)",
+    "license": "own"
+  },
+  {
+    "id": "movie_empire_strikes_back",
+    "prompts": {
+      "en": "\"The Empire Strikes Back\" hits theaters",
+      "uk": "Вихід \"Імперія завдає удару у відповідь\"",
+      "ru": "Выход \"Империя наносит ответный удар\""
+    },
+    "year": 1980,
+    "min": 1975,
+    "max": 1985,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Star Wars", "Sequel"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "80",
+      "ab": ["1980", "1983"],
+      "narrow": "1979-1981"
+    },
+    "source": "wikipedia/The_Empire_Strikes_Back",
+    "license": "own"
+  },
+  {
+    "id": "movie_blade_runner_release",
+    "prompts": {
+      "en": "\"Blade Runner\" premieres",
+      "uk": "Прем'єра \"Того, хто біжить по лезу\"",
+      "ru": "Премьера \"Бегущего по лезвию\""
+    },
+    "year": 1982,
+    "min": 1980,
+    "max": 1990,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Sci-Fi", "Ridley Scott"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "82",
+      "ab": ["1982", "1986"],
+      "narrow": "1981-1984"
+    },
+    "source": "wikipedia/Blade_Runner",
+    "license": "own"
+  },
+  {
+    "id": "movie_back_to_future_release",
+    "prompts": {
+      "en": "\"Back to the Future\" hits cinemas",
+      "uk": "Прем'єра \"Назад у майбутнє\"",
+      "ru": "Премьера \"Назад в будущее\""
+    },
+    "year": 1985,
+    "min": 1980,
+    "max": 1990,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Time Travel", "Spielberg"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "85",
+      "ab": ["1985", "1989"],
+      "narrow": "1984-1986"
+    },
+    "source": "wikipedia/Back_to_the_Future",
+    "license": "own"
+  },
+  {
+    "id": "movie_terminator2_release",
+    "prompts": {
+      "en": "Release of \"Terminator 2: Judgment Day\"",
+      "uk": "Вихід \"Термінатор 2: Судний день\"",
+      "ru": "Выход \"Терминатор 2: Судный день\""
+    },
+    "year": 1991,
+    "min": 1985,
+    "max": 1995,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Action", "James Cameron"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "91",
+      "ab": ["1991", "1994"],
+      "narrow": "1990-1992"
+    },
+    "source": "wikipedia/Terminator_2:_Judgment_Day",
+    "license": "own"
+  },
+  {
+    "id": "movie_pulp_fiction_premiere",
+    "prompts": {
+      "en": "\"Pulp Fiction\" premieres",
+      "uk": "Прем'єра \"Кримінального чтива\"",
+      "ru": "Премьера \"Криминального чтива\""
+    },
+    "year": 1994,
+    "min": 1990,
+    "max": 2000,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Tarantino", "Cult"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "94",
+      "ab": ["1994", "1996"],
+      "narrow": "1993-1995"
+    },
+    "source": "wikipedia/Pulp_Fiction",
+    "license": "own"
+  },
+  {
+    "id": "movie_titanic_release",
+    "prompts": {
+      "en": "\"Titanic\" releases worldwide",
+      "uk": "Світовий реліз \"Титаніка\"",
+      "ru": "Мировой релиз \"Титаника\""
+    },
+    "year": 1997,
+    "min": 1995,
+    "max": 2005,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Blockbuster", "James Cameron"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "97",
+      "ab": ["1997", "1999"],
+      "narrow": "1996-1998"
+    },
+    "source": "wikipedia/Titanic_(1997_film)",
+    "license": "own"
+  },
+  {
+    "id": "movie_matrix_release",
+    "prompts": {
+      "en": "\"The Matrix\" premieres",
+      "uk": "Прем'єра \"Матриці\"",
+      "ru": "Премьера \"Матрицы\""
+    },
+    "year": 1999,
+    "min": 1995,
+    "max": 2005,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Sci-Fi", "Wachowski"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "99",
+      "ab": ["1999", "2001"],
+      "narrow": "1998-2000"
+    },
+    "source": "wikipedia/The_Matrix",
+    "license": "own"
+  },
+  {
+    "id": "movie_lotr_fellowship_release",
+    "prompts": {
+      "en": "\"The Fellowship of the Ring\" premieres",
+      "uk": "Прем'єра \"Братства персня\"",
+      "ru": "Премьера \"Братства кольца\""
+    },
+    "year": 2001,
+    "min": 1998,
+    "max": 2005,
+    "era": "CE",
+    "category": "movies",
+    "region": "nz",
+    "tags": ["Fantasy", "Peter Jackson"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "01",
+      "ab": ["2001", "2003"],
+      "narrow": "2000-2002"
+    },
+    "source": "wikipedia/The_Lord_of_the_Rings:_The_Fellowship_of_the_Ring",
+    "license": "own"
+  },
+  {
+    "id": "movie_spirited_away_oscar",
+    "prompts": {
+      "en": "\"Spirited Away\" wins the Oscar",
+      "uk": "\"Віднесені привидами\" отримує Оскар",
+      "ru": "\"Унесённые призраками\" получают Оскар"
+    },
+    "year": 2003,
+    "min": 2001,
+    "max": 2006,
+    "era": "CE",
+    "category": "movies",
+    "region": "asia",
+    "tags": ["Anime", "Awards"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "03",
+      "ab": ["2003", "2004"],
+      "narrow": "2002-2004"
+    },
+    "source": "wikipedia/Spirited_Away",
+    "license": "own"
+  },
+  {
+    "id": "movie_return_of_the_king_oscar",
+    "prompts": {
+      "en": "\"Return of the King\" sweeps the Oscars",
+      "uk": "\"Повернення короля\" тріумфує на Оскарах",
+      "ru": "\"Возвращение короля\" триумфует на Оскарах"
+    },
+    "year": 2004,
+    "min": 2003,
+    "max": 2006,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Oscars", "Fantasy"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "04",
+      "ab": ["2004", "2005"],
+      "narrow": "2004-2005"
+    },
+    "source": "wikipedia/The_Lord_of_the_Rings:_The_Return_of_the_King",
+    "license": "own"
+  },
+  {
+    "id": "movie_dark_knight_release",
+    "prompts": {
+      "en": "\"The Dark Knight\" premieres",
+      "uk": "Прем'єра \"Темного лицаря\"",
+      "ru": "Премьера \"Тёмного рыцаря\""
+    },
+    "year": 2008,
+    "min": 2005,
+    "max": 2012,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Superhero", "Nolan"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "08",
+      "ab": ["2008", "2010"],
+      "narrow": "2007-2009"
+    },
+    "source": "wikipedia/The_Dark_Knight_(film)",
+    "license": "own"
+  },
+  {
+    "id": "movie_avatar_release",
+    "prompts": {
+      "en": "\"Avatar\" releases",
+      "uk": "Прем'єра \"Аватара\"",
+      "ru": "Премьера \"Аватара\""
+    },
+    "year": 2009,
+    "min": 2007,
+    "max": 2015,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["3D", "James Cameron"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "09",
+      "ab": ["2009", "2012"],
+      "narrow": "2008-2010"
+    },
+    "source": "wikipedia/Avatar_(2009_film)",
+    "license": "own"
+  },
+  {
+    "id": "movie_inception_release",
+    "prompts": {
+      "en": "\"Inception\" premieres",
+      "uk": "Прем'єра \"Початку\"",
+      "ru": "Премьера \"Начала\""
+    },
+    "year": 2010,
+    "min": 2008,
+    "max": 2015,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Sci-Fi", "Nolan"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "10",
+      "ab": ["2010", "2012"],
+      "narrow": "2009-2011"
+    },
+    "source": "wikipedia/Inception",
+    "license": "own"
+  },
+  {
+    "id": "movie_avengers_release",
+    "prompts": {
+      "en": "Marvel's \"The Avengers\" premieres",
+      "uk": "Прем'єра \"Месників\"",
+      "ru": "Премьера \"Мстителей\""
+    },
+    "year": 2012,
+    "min": 2010,
+    "max": 2015,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Marvel", "Superhero"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "12",
+      "ab": ["2012", "2014"],
+      "narrow": "2011-2013"
+    },
+    "source": "wikipedia/The_Avengers_(2012_film)",
+    "license": "own"
+  },
+  {
+    "id": "movie_interstellar_release",
+    "prompts": {
+      "en": "\"Interstellar\" premieres",
+      "uk": "Прем'єра \"Інтерстеллара\"",
+      "ru": "Премьера \"Интерстеллара\""
+    },
+    "year": 2014,
+    "min": 2012,
+    "max": 2017,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Sci-Fi", "Nolan"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "14",
+      "ab": ["2014", "2016"],
+      "narrow": "2013-2015"
+    },
+    "source": "wikipedia/Interstellar_(film)",
+    "license": "own"
+  },
+  {
+    "id": "movie_force_awakens_release",
+    "prompts": {
+      "en": "\"The Force Awakens\" premieres",
+      "uk": "Прем'єра \"Пробудження сили\"",
+      "ru": "Премьера \"Пробуждения силы\""
+    },
+    "year": 2015,
+    "min": 2013,
+    "max": 2018,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Star Wars", "Sequel Trilogy"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "15",
+      "ab": ["2015", "2017"],
+      "narrow": "2014-2016"
+    },
+    "source": "wikipedia/Star_Wars:_The_Force_Awakens",
+    "license": "own"
+  },
+  {
+    "id": "movie_la_la_land_oscar",
+    "prompts": {
+      "en": "\"La La Land\" dominates the Oscars",
+      "uk": "\"Ла-Ла Ленд\" тріумфує на Оскарах",
+      "ru": "\"Ла-Ла Ленд\" триумфует на Оскарах"
+    },
+    "year": 2017,
+    "min": 2015,
+    "max": 2019,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Musical", "Awards"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "17",
+      "ab": ["2017", "2016"],
+      "narrow": "2016-2017"
+    },
+    "source": "wikipedia/La_La_Land",
+    "license": "own"
+  },
+  {
+    "id": "movie_parasite_palme_dor",
+    "prompts": {
+      "en": "\"Parasite\" wins the Palme d'Or",
+      "uk": "\"Паразити\" отримують Золоту пальмову гілку",
+      "ru": "\"Паразиты\" получают Золотую пальмовую ветвь"
+    },
+    "year": 2019,
+    "min": 2018,
+    "max": 2021,
+    "era": "CE",
+    "category": "movies",
+    "region": "asia",
+    "tags": ["Bong Joon-ho", "Awards"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "19",
+      "ab": ["2019", "2020"],
+      "narrow": "2019-2020"
+    },
+    "source": "wikipedia/Parasite_(film)",
+    "license": "own"
+  },
+  {
+    "id": "movie_parasite_oscar",
+    "prompts": {
+      "en": "\"Parasite\" wins Best Picture",
+      "uk": "\"Паразити\" отримують Оскар за найкращий фільм",
+      "ru": "\"Паразиты\" получают Оскар за лучший фильм"
+    },
+    "year": 2020,
+    "min": 2018,
+    "max": 2022,
+    "era": "CE",
+    "category": "movies",
+    "region": "asia",
+    "tags": ["Oscars", "Bong Joon-ho"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "20",
+      "ab": ["2020", "2019"],
+      "narrow": "2019-2021"
+    },
+    "source": "wikipedia/92nd_Academy_Awards",
+    "license": "own"
+  },
+  {
+    "id": "movie_dune_release",
+    "prompts": {
+      "en": "Denis Villeneuve's \"Dune\" premieres",
+      "uk": "Прем'єра \"Дюни\" Дені Вільнева",
+      "ru": "Премьера \"Дюны\" Дени Вильнёва"
+    },
+    "year": 2021,
+    "min": 2020,
+    "max": 2023,
+    "era": "CE",
+    "category": "movies",
+    "region": "usa",
+    "tags": ["Sci-Fi", "Denis Villeneuve"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "21",
+      "ab": ["2021", "2022"],
+      "narrow": "2021-2022"
+    },
+    "source": "wikipedia/Dune_(2021_film)",
+    "license": "own"
+  }
+]

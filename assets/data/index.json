@@ -1,0 +1,46 @@
+{
+  "categories": [
+    {
+      "id": "history",
+      "file": "history.json",
+      "name": {
+        "en": "History",
+        "uk": "Історія",
+        "ru": "История"
+      },
+      "description": {
+        "en": "Global milestones that shaped civilizations.",
+        "uk": "Віхи, що сформували цивілізації.",
+        "ru": "Вехи, которые сформировали цивилизации."
+      }
+    },
+    {
+      "id": "movies",
+      "file": "movies.json",
+      "name": {
+        "en": "Movies",
+        "uk": "Кіно",
+        "ru": "Кино"
+      },
+      "description": {
+        "en": "Premieres, awards, and iconic scenes from cinema.",
+        "uk": "Прем'єри, нагороди та культові моменти кіно.",
+        "ru": "Премьеры, награды и культовые моменты кино."
+      }
+    },
+    {
+      "id": "world",
+      "file": "world.json",
+      "name": {
+        "en": "World",
+        "uk": "Світ",
+        "ru": "Мир"
+      },
+      "description": {
+        "en": "Geography, discoveries, and global achievements.",
+        "uk": "Географія, відкриття та світові досягнення.",
+        "ru": "География, открытия и мировые достижения."
+      }
+    }
+  ]
+}

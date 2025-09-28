@@ -1,0 +1,196 @@
+{
+  "@@locale": "ru",
+  "appTitle": "DataG Викторина",
+  "homeTitle": "DataG Викторина",
+  "homeWeeklyChallengeTitle": "Неделя X",
+  "homeStubEventTitle": "Событие",
+  "homeStubFriendsTitle": "Друзья",
+  "homePlayWithFriends": "Играй с друзьями",
+  "homePlayButton": "Играть",
+  "homeChangeCategory": "Сменить категорию",
+  "categoriesTitle": "Категории",
+  "categoriesBack": "Назад",
+  "categoriesEmpty": "Категории пока недоступны.",
+  "roundDetailsComingSoon": "Экран с подробностями появится позже.",
+  "roundTitleFallback": "Раунд",
+  "roundNoQuestions": "Нет доступных вопросов для этой категории.",
+  "roundHintLast": "Последние цифры (-{cost})",
+  "@roundHintLast": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "roundHintAB": "A/B (-{cost})",
+  "@roundHintAB": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "roundHintNarrow": "Сузить (-{cost})",
+  "@roundHintNarrow": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "roundLastDigitsHint": "Оканчивается на {digits}",
+  "@roundLastDigitsHint": {
+    "placeholders": {
+      "digits": {
+        "type": "String"
+      }
+    }
+  },
+  "roundSubmit": "Проверить ответ",
+  "resultPerfect": "Точный ответ!",
+  "resultMissedBy": "Промах на {delta, plural, one {# год} few {# года} many {# лет} other {# лет}}",
+  "@resultMissedBy": {
+    "placeholders": {
+      "delta": {
+        "type": "int"
+      }
+    }
+  },
+  "resultBaseScore": "Базовые очки: {value}",
+  "@resultBaseScore": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "resultBonus": "Бонусы: {value}",
+  "@resultBonus": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "resultHintPenalty": "Штраф за подсказки: -{value}",
+  "@resultHintPenalty": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "resultQuestionPoints": "Очки за вопрос: {value}",
+  "@resultQuestionPoints": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "resultNoHints": "Без подсказок",
+  "resultHintsPrefix": "Подсказки: {list}",
+  "@resultHintsPrefix": {
+    "placeholders": {
+      "list": {
+        "type": "String"
+      }
+    }
+  },
+  "resultStreak": "Серия {count}: множитель 1,5×!",
+  "@resultStreak": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "resultYourAnswer": "Твой ответ: {year} {era}",
+  "@resultYourAnswer": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      },
+      "era": {
+        "type": "String"
+      }
+    }
+  },
+  "resultCorrectAnswer": "Правильный ответ: {year} {era}",
+  "@resultCorrectAnswer": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      },
+      "era": {
+        "type": "String"
+      }
+    }
+  },
+  "resultNext": "Дальше",
+  "resultFinish": "Завершить",
+  "resultDetails": "Подробнее",
+  "hintLabelLastDigits": "Последние цифры",
+  "hintLabelAB": "A/B",
+  "hintLabelNarrow": "Сузить",
+  "summaryTitle": "Итоги",
+  "summaryHeader": "Раунд завершён!",
+  "summaryPoints": "{value} очков",
+  "@summaryPoints": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "summaryAccuracy": "Попадания ≤5 лет: {value}",
+  "@summaryAccuracy": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "summaryAccuracyValue": "{hits} из {total}",
+  "@summaryAccuracyValue": {
+    "placeholders": {
+      "hits": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "summaryAverageDelta": "Средняя дельта: {value}",
+  "@summaryAverageDelta": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "summaryBestStreak": "Лучшая серия: {value}",
+  "@summaryBestStreak": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "summaryPlayAgain": "Играть снова",
+  "summaryHome": "Домой",
+  "summaryNoValue": "—",
+  "stubComingSoon": "Экран «{title}» появится позже",
+  "@stubComingSoon": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "localeEnglish": "Английский",
+  "localeUkrainian": "Украинский",
+  "localeRussian": "Русский",
+  "localeMenuTooltip": "Сменить язык"
+}

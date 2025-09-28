@@ -1,0 +1,674 @@
+[
+  {
+    "id": "hist_founding_rome",
+    "prompts": {
+      "en": "Traditional founding of Rome",
+      "uk": "Легендарне заснування Риму",
+      "ru": "Легендарное основание Рима"
+    },
+    "year": 753,
+    "min": 700,
+    "max": 800,
+    "era": "BCE",
+    "category": "history",
+    "region": "mediterranean",
+    "tags": ["Rome", "Antiquity"],
+    "difficulty": 3,
+    "acceptable_delta": 5,
+    "hints": {
+      "last_digits": "53",
+      "ab": ["0753", "0733"],
+      "narrow": "740-760"
+    },
+    "source": "wikipedia/Rome",
+    "license": "own"
+  },
+  {
+    "id": "hist_christianization_kyivan_rus",
+    "prompts": {
+      "en": "Christianization of Kyivan Rus",
+      "uk": "Хрещення Київської Русі",
+      "ru": "Крещение Киевской Руси"
+    },
+    "year": 988,
+    "min": 900,
+    "max": 1100,
+    "era": "CE",
+    "category": "history",
+    "region": "eastern_europe",
+    "tags": ["Kyiv", "Religion"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "88",
+      "ab": ["0988", "0996"],
+      "narrow": "970-1000"
+    },
+    "source": "wikipedia/Christianization_of_Kievan_Rus'",
+    "license": "own"
+  },
+  {
+    "id": "hist_magna_carta",
+    "prompts": {
+      "en": "Magna Carta is sealed",
+      "uk": "Підписання Великої хартії вольностей",
+      "ru": "Подписание Великой хартии вольностей"
+    },
+    "year": 1215,
+    "min": 1180,
+    "max": 1250,
+    "era": "CE",
+    "category": "history",
+    "region": "western_europe",
+    "tags": ["England", "Law"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "15",
+      "ab": ["1215", "1225"],
+      "narrow": "1200-1230"
+    },
+    "source": "wikipedia/Magna_Carta",
+    "license": "own"
+  },
+  {
+    "id": "hist_mongols_take_kyiv",
+    "prompts": {
+      "en": "Mongols sack Kyiv",
+      "uk": "Монголи взяли Київ",
+      "ru": "Монголы взяли Киев"
+    },
+    "year": 1240,
+    "min": 1200,
+    "max": 1300,
+    "era": "CE",
+    "category": "history",
+    "region": "eastern_europe",
+    "tags": ["Mongol", "Kyiv"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "40",
+      "ab": ["1240", "1256"],
+      "narrow": "1230-1250"
+    },
+    "source": "wikipedia/Sack_of_Kiev",
+    "license": "own"
+  },
+  {
+    "id": "hist_printing_press_gutenberg",
+    "prompts": {
+      "en": "Gutenberg perfects the movable-type press",
+      "uk": "Гутенберг удосконалює друкарський верстат",
+      "ru": "Гутенберг завершає печатный станок"
+    },
+    "year": 1450,
+    "min": 1400,
+    "max": 1500,
+    "era": "CE",
+    "category": "history",
+    "region": "western_europe",
+    "tags": ["Printing", "Invention"],
+    "difficulty": 2,
+    "acceptable_delta": 5,
+    "hints": {
+      "last_digits": "50",
+      "ab": ["1450", "1445"],
+      "narrow": "1440-1460"
+    },
+    "source": "wikipedia/Johannes_Gutenberg",
+    "license": "own"
+  },
+  {
+    "id": "hist_fall_constantinople",
+    "prompts": {
+      "en": "Fall of Constantinople",
+      "uk": "Падіння Константинополя",
+      "ru": "Падение Константинополя"
+    },
+    "year": 1453,
+    "min": 1400,
+    "max": 1500,
+    "era": "CE",
+    "category": "history",
+    "region": "mediterranean",
+    "tags": ["Byzantium", "Ottoman"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "53",
+      "ab": ["1453", "1449"],
+      "narrow": "1445-1460"
+    },
+    "source": "wikipedia/Fall_of_Constantinople",
+    "license": "own"
+  },
+  {
+    "id": "hist_columbus_america",
+    "prompts": {
+      "en": "Columbus reaches the Americas",
+      "uk": "Колумб дістається Америки",
+      "ru": "Колумб достигает Америки"
+    },
+    "year": 1492,
+    "min": 1450,
+    "max": 1550,
+    "era": "CE",
+    "category": "history",
+    "region": "atlantic",
+    "tags": ["Exploration", "Spain"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "92",
+      "ab": ["1492", "1502"],
+      "narrow": "1480-1500"
+    },
+    "source": "wikipedia/Christopher_Columbus",
+    "license": "own"
+  },
+  {
+    "id": "hist_reformation_theses",
+    "prompts": {
+      "en": "Martin Luther posts his 95 theses",
+      "uk": "Мартін Лютер оприлюднює 95 тез",
+      "ru": "Мартин Лютер публикует 95 тезисов"
+    },
+    "year": 1517,
+    "min": 1500,
+    "max": 1600,
+    "era": "CE",
+    "category": "history",
+    "region": "western_europe",
+    "tags": ["Reformation", "Religion"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "17",
+      "ab": ["1517", "1527"],
+      "narrow": "1510-1530"
+    },
+    "source": "wikipedia/Ninety-five_Theses",
+    "license": "own"
+  },
+  {
+    "id": "hist_spanish_armada",
+    "prompts": {
+      "en": "Defeat of the Spanish Armada",
+      "uk": "Розгром Непереможної армади",
+      "ru": "Разгром Непобедимой армады"
+    },
+    "year": 1588,
+    "min": 1550,
+    "max": 1650,
+    "era": "CE",
+    "category": "history",
+    "region": "atlantic",
+    "tags": ["England", "Spain"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "88",
+      "ab": ["1588", "1598"],
+      "narrow": "1575-1600"
+    },
+    "source": "wikipedia/Spanish_Armada",
+    "license": "own"
+  },
+  {
+    "id": "hist_kyiv_academy",
+    "prompts": {
+      "en": "Kyiv-Mohyla Academy is established",
+      "uk": "Засновано Києво-Могилянську академію",
+      "ru": "Основана Киево-Могилянская академия"
+    },
+    "year": 1632,
+    "min": 1600,
+    "max": 1700,
+    "era": "CE",
+    "category": "history",
+    "region": "eastern_europe",
+    "tags": ["Ukraine", "Education"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "32",
+      "ab": ["1632", "1642"],
+      "narrow": "1620-1640"
+    },
+    "source": "wikipedia/National_University_of_Kyiv-Mohyla_Academy",
+    "license": "own"
+  },
+  {
+    "id": "hist_glorious_revolution",
+    "prompts": {
+      "en": "Glorious Revolution in England",
+      "uk": "Славна революція в Англії",
+      "ru": "Славная революция в Англии"
+    },
+    "year": 1688,
+    "min": 1650,
+    "max": 1750,
+    "era": "CE",
+    "category": "history",
+    "region": "western_europe",
+    "tags": ["England", "Politics"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "88",
+      "ab": ["1688", "1698"],
+      "narrow": "1670-1700"
+    },
+    "source": "wikipedia/Glorious_Revolution",
+    "license": "own"
+  },
+  {
+    "id": "hist_great_northern_war",
+    "prompts": {
+      "en": "Great Northern War begins",
+      "uk": "Початок Північної війни",
+      "ru": "Начало Северной войны"
+    },
+    "year": 1700,
+    "min": 1680,
+    "max": 1750,
+    "era": "CE",
+    "category": "history",
+    "region": "northern_europe",
+    "tags": ["Sweden", "Russia"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "00",
+      "ab": ["1700", "1712"],
+      "narrow": "1695-1705"
+    },
+    "source": "wikipedia/Great_Northern_War",
+    "license": "own"
+  },
+  {
+    "id": "hist_declaration_independence_us",
+    "prompts": {
+      "en": "Declaration of Independence signed",
+      "uk": "Підписано Декларацію незалежності США",
+      "ru": "Подписана Декларация независимости США"
+    },
+    "year": 1776,
+    "min": 1750,
+    "max": 1800,
+    "era": "CE",
+    "category": "history",
+    "region": "north_america",
+    "tags": ["USA", "Revolution"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "76",
+      "ab": ["1776", "1783"],
+      "narrow": "1765-1785"
+    },
+    "source": "wikipedia/United_States_Declaration_of_Independence",
+    "license": "own"
+  },
+  {
+    "id": "hist_french_revolution",
+    "prompts": {
+      "en": "Storming of the Bastille",
+      "uk": "Штурм Бастилії",
+      "ru": "Штурм Бастилии"
+    },
+    "year": 1789,
+    "min": 1750,
+    "max": 1820,
+    "era": "CE",
+    "category": "history",
+    "region": "western_europe",
+    "tags": ["France", "Revolution"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "89",
+      "ab": ["1789", "1793"],
+      "narrow": "1775-1800"
+    },
+    "source": "wikipedia/Storming_of_the_Bastille",
+    "license": "own"
+  },
+  {
+    "id": "hist_napoleon_emperor",
+    "prompts": {
+      "en": "Napoleon crowns himself Emperor",
+      "uk": "Наполеон проголошує себе імператором",
+      "ru": "Наполеон провозглашает себя императором"
+    },
+    "year": 1804,
+    "min": 1780,
+    "max": 1820,
+    "era": "CE",
+    "category": "history",
+    "region": "western_europe",
+    "tags": ["France", "Empire"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "04",
+      "ab": ["1804", "1814"],
+      "narrow": "1795-1810"
+    },
+    "source": "wikipedia/Napoleon",
+    "license": "own"
+  },
+  {
+    "id": "hist_abolition_serfdom_russia",
+    "prompts": {
+      "en": "Serfdom abolished in the Russian Empire",
+      "uk": "Скасування кріпацтва в Російській імперії",
+      "ru": "Отмена крепостного права в Российской империи"
+    },
+    "year": 1861,
+    "min": 1800,
+    "max": 1900,
+    "era": "CE",
+    "category": "history",
+    "region": "eastern_europe",
+    "tags": ["Russia", "Reform"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "61",
+      "ab": ["1861", "1865"],
+      "narrow": "1850-1870"
+    },
+    "source": "wikipedia/Emancipation_reform_of_1861",
+    "license": "own"
+  },
+  {
+    "id": "hist_american_civil_war_end",
+    "prompts": {
+      "en": "American Civil War ends",
+      "uk": "Закінчується Громадянська війна в США",
+      "ru": "Завершается Гражданская война в США"
+    },
+    "year": 1865,
+    "min": 1850,
+    "max": 1900,
+    "era": "CE",
+    "category": "history",
+    "region": "north_america",
+    "tags": ["USA", "Civil War"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "65",
+      "ab": ["1865", "1875"],
+      "narrow": "1860-1870"
+    },
+    "source": "wikipedia/American_Civil_War",
+    "license": "own"
+  },
+  {
+    "id": "hist_first_world_war_begins",
+    "prompts": {
+      "en": "World War I begins",
+      "uk": "Початок Першої світової війни",
+      "ru": "Начало Первой мировой войны"
+    },
+    "year": 1914,
+    "min": 1900,
+    "max": 1950,
+    "era": "CE",
+    "category": "history",
+    "region": "global",
+    "tags": ["WWI", "Europe"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "14",
+      "ab": ["1914", "1918"],
+      "narrow": "1905-1920"
+    },
+    "source": "wikipedia/World_War_I",
+    "license": "own"
+  },
+  {
+    "id": "hist_ukrainian_peoples_republic",
+    "prompts": {
+      "en": "Ukrainian People's Republic declared",
+      "uk": "Проголошено Українську Народну Республіку",
+      "ru": "Провозглашена Украинская Народная Республика"
+    },
+    "year": 1917,
+    "min": 1900,
+    "max": 1950,
+    "era": "CE",
+    "category": "history",
+    "region": "eastern_europe",
+    "tags": ["Ukraine", "Independence"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "17",
+      "ab": ["1917", "1919"],
+      "narrow": "1916-1918"
+    },
+    "source": "wikipedia/Ukrainian_People's_Republic",
+    "license": "own"
+  },
+  {
+    "id": "hist_holodomor_famine",
+    "prompts": {
+      "en": "Holodomor famine peaks",
+      "uk": "Апогей Голодомору",
+      "ru": "Апогей Голодомора"
+    },
+    "year": 1932,
+    "min": 1925,
+    "max": 1940,
+    "era": "CE",
+    "category": "history",
+    "region": "eastern_europe",
+    "tags": ["Ukraine", "Famine"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "32",
+      "ab": ["1932", "1934"],
+      "narrow": "1930-1933"
+    },
+    "source": "wikipedia/Holodomor",
+    "license": "own"
+  },
+  {
+    "id": "hist_world_war_two_ends",
+    "prompts": {
+      "en": "World War II ends",
+      "uk": "Кінець Другої світової війни",
+      "ru": "Конец Второй мировой войны"
+    },
+    "year": 1945,
+    "min": 1939,
+    "max": 1950,
+    "era": "CE",
+    "category": "history",
+    "region": "global",
+    "tags": ["WWII", "Victory"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "45",
+      "ab": ["1945", "1944"],
+      "narrow": "1943-1946"
+    },
+    "source": "wikipedia/World_War_II",
+    "license": "own"
+  },
+  {
+    "id": "hist_un_founded",
+    "prompts": {
+      "en": "United Nations founded",
+      "uk": "Створено Організацію Об'єднаних Націй",
+      "ru": "Создана Организация Объединенных Наций"
+    },
+    "year": 1945,
+    "min": 1940,
+    "max": 1955,
+    "era": "CE",
+    "category": "history",
+    "region": "global",
+    "tags": ["UN", "Diplomacy"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "45",
+      "ab": ["1945", "1955"],
+      "narrow": "1944-1947"
+    },
+    "source": "wikipedia/United_Nations",
+    "license": "own"
+  },
+  {
+    "id": "hist_moon_landing",
+    "prompts": {
+      "en": "Apollo 11 Moon landing",
+      "uk": "Посадка Apollo 11 на Місяць",
+      "ru": "Посадка Apollo 11 на Луну"
+    },
+    "year": 1969,
+    "min": 1950,
+    "max": 1975,
+    "era": "CE",
+    "category": "history",
+    "region": "global",
+    "tags": ["Space", "USA"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "69",
+      "ab": ["1969", "1972"],
+      "narrow": "1965-1972"
+    },
+    "source": "wikipedia/Apollo_11",
+    "license": "own"
+  },
+  {
+    "id": "hist_cuban_missile_crisis",
+    "prompts": {
+      "en": "Cuban Missile Crisis standoff",
+      "uk": "Карибська криза",
+      "ru": "Карибский кризис"
+    },
+    "year": 1962,
+    "min": 1950,
+    "max": 1970,
+    "era": "CE",
+    "category": "history",
+    "region": "americas",
+    "tags": ["Cold War", "Cuba"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "62",
+      "ab": ["1962", "1968"],
+      "narrow": "1960-1965"
+    },
+    "source": "wikipedia/Cuban_Missile_Crisis",
+    "license": "own"
+  },
+  {
+    "id": "hist_prypiat_founded",
+    "prompts": {
+      "en": "City of Pripyat founded",
+      "uk": "Заснування міста Прип'ять",
+      "ru": "Основание города Припять"
+    },
+    "year": 1970,
+    "min": 1965,
+    "max": 1980,
+    "era": "CE",
+    "category": "history",
+    "region": "eastern_europe",
+    "tags": ["Ukraine", "Chernobyl"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "70",
+      "ab": ["1970", "1976"],
+      "narrow": "1968-1972"
+    },
+    "source": "wikipedia/Pripyat",
+    "license": "own"
+  },
+  {
+    "id": "hist_chernobyl_disaster",
+    "prompts": {
+      "en": "Chernobyl nuclear disaster",
+      "uk": "Аварія на Чорнобильській АЕС",
+      "ru": "Авария на Чернобыльской АЭС"
+    },
+    "year": 1986,
+    "min": 1975,
+    "max": 1990,
+    "era": "CE",
+    "category": "history",
+    "region": "eastern_europe",
+    "tags": ["Ukraine", "Nuclear"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "86",
+      "ab": ["1986", "1989"],
+      "narrow": "1984-1988"
+    },
+    "source": "wikipedia/Chernobyl_disaster",
+    "license": "own"
+  },
+  {
+    "id": "hist_fall_berlin_wall",
+    "prompts": {
+      "en": "Fall of the Berlin Wall",
+      "uk": "Падіння Берлінського муру",
+      "ru": "Падение Берлинской стены"
+    },
+    "year": 1989,
+    "min": 1980,
+    "max": 1995,
+    "era": "CE",
+    "category": "history",
+    "region": "europe",
+    "tags": ["Germany", "Cold War"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "89",
+      "ab": ["1989", "1991"],
+      "narrow": "1985-1990"
+    },
+    "source": "wikipedia/Berlin_Wall",
+    "license": "own"
+  },
+  {
+    "id": "hist_ussr_dissolution",
+    "prompts": {
+      "en": "Dissolution of the USSR",
+      "uk": "Розпад СРСР",
+      "ru": "Распад СССР"
+    },
+    "year": 1991,
+    "min": 1985,
+    "max": 1995,
+    "era": "CE",
+    "category": "history",
+    "region": "eastern_europe",
+    "tags": ["USSR", "Politics"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "91",
+      "ab": ["1991", "1988"],
+      "narrow": "1989-1992"
+    },
+    "source": "wikipedia/Dissolution_of_the_Soviet_Union",
+    "license": "own"
+  }
+]

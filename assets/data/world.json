@@ -1,0 +1,602 @@
+[
+  {
+    "id": "world_greenwich_meridian_agreed",
+    "prompts": {
+      "en": "Prime Meridian fixed in Greenwich",
+      "uk": "Грінвічську обсерваторію обрано нульовим меридіаном",
+      "ru": "Гринвичскую обсерваторию выбрали нулевым меридианом"
+    },
+    "year": 1884,
+    "min": 1850,
+    "max": 1900,
+    "era": "CE",
+    "category": "world",
+    "region": "global",
+    "tags": ["Navigation", "Conference"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "84",
+      "ab": ["1884", "1894"],
+      "narrow": "1880-1885"
+    },
+    "source": "wikipedia/International_Meridian_Conference",
+    "license": "own"
+  },
+  {
+    "id": "world_modern_olympics_begin",
+    "prompts": {
+      "en": "First modern Olympic Games in Athens",
+      "uk": "Перші сучасні Олімпійські ігри в Афінах",
+      "ru": "Первые современные Олимпийские игры в Афинах"
+    },
+    "year": 1896,
+    "min": 1880,
+    "max": 1910,
+    "era": "CE",
+    "category": "world",
+    "region": "europe",
+    "tags": ["Sports", "Olympics"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "96",
+      "ab": ["1896", "1900"],
+      "narrow": "1894-1898"
+    },
+    "source": "wikipedia/1896_Summer_Olympics",
+    "license": "own"
+  },
+  {
+    "id": "world_suez_canal_opens",
+    "prompts": {
+      "en": "Suez Canal officially opens",
+      "uk": "Офіційне відкриття Суецького каналу",
+      "ru": "Официальное открытие Суэцкого канала"
+    },
+    "year": 1869,
+    "min": 1850,
+    "max": 1880,
+    "era": "CE",
+    "category": "world",
+    "region": "africa",
+    "tags": ["Canal", "Engineering"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "69",
+      "ab": ["1869", "1874"],
+      "narrow": "1865-1870"
+    },
+    "source": "wikipedia/Suez_Canal",
+    "license": "own"
+  },
+  {
+    "id": "world_panama_canal_opens",
+    "prompts": {
+      "en": "Panama Canal opens for transit",
+      "uk": "Панамський канал відкрито для судноплавства",
+      "ru": "Панамский канал открыт для судоходства"
+    },
+    "year": 1914,
+    "min": 1900,
+    "max": 1925,
+    "era": "CE",
+    "category": "world",
+    "region": "americas",
+    "tags": ["Canal", "Engineering"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "14",
+      "ab": ["1914", "1917"],
+      "narrow": "1910-1915"
+    },
+    "source": "wikipedia/Panama_Canal",
+    "license": "own"
+  },
+  {
+    "id": "world_first_nobel_prizes",
+    "prompts": {
+      "en": "First Nobel Prizes awarded",
+      "uk": "Вперше вручені Нобелівські премії",
+      "ru": "Впервые вручены Нобелевские премии"
+    },
+    "year": 1901,
+    "min": 1895,
+    "max": 1910,
+    "era": "CE",
+    "category": "world",
+    "region": "europe",
+    "tags": ["Science", "Awards"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "01",
+      "ab": ["1901", "1905"],
+      "narrow": "1900-1902"
+    },
+    "source": "wikipedia/Nobel_Prize",
+    "license": "own"
+  },
+  {
+    "id": "world_titanic_sinks",
+    "prompts": {
+      "en": "Sinking of RMS Titanic",
+      "uk": "Загибель лайнера \"Титанік\"",
+      "ru": "Гибель лайнера \"Титаник\""
+    },
+    "year": 1912,
+    "min": 1905,
+    "max": 1920,
+    "era": "CE",
+    "category": "world",
+    "region": "atlantic",
+    "tags": ["Maritime", "Disaster"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "12",
+      "ab": ["1912", "1915"],
+      "narrow": "1910-1913"
+    },
+    "source": "wikipedia/RMS_Titanic",
+    "license": "own"
+  },
+  {
+    "id": "world_antarctic_treaty_signed",
+    "prompts": {
+      "en": "Antarctic Treaty is signed",
+      "uk": "Підписано Договір про Антарктику",
+      "ru": "Подписан Договор об Антарктике"
+    },
+    "year": 1959,
+    "min": 1950,
+    "max": 1970,
+    "era": "CE",
+    "category": "world",
+    "region": "antarctica",
+    "tags": ["Diplomacy", "Exploration"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "59",
+      "ab": ["1959", "1961"],
+      "narrow": "1958-1960"
+    },
+    "source": "wikipedia/Antarctic_Treaty_System",
+    "license": "own"
+  },
+  {
+    "id": "world_mount_everest_climbed",
+    "prompts": {
+      "en": "First ascent of Mount Everest",
+      "uk": "Перше сходження на Еверест",
+      "ru": "Первое восхождение на Эверест"
+    },
+    "year": 1953,
+    "min": 1945,
+    "max": 1960,
+    "era": "CE",
+    "category": "world",
+    "region": "asia",
+    "tags": ["Exploration", "Himalaya"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "53",
+      "ab": ["1953", "1956"],
+      "narrow": "1952-1954"
+    },
+    "source": "wikipedia/1953_British_Mount_Everest_expedition",
+    "license": "own"
+  },
+  {
+    "id": "world_first_human_spaceflight",
+    "prompts": {
+      "en": "Yuri Gagarin orbits Earth",
+      "uk": "Юрій Гагарін облітає Землю",
+      "ru": "Юрий Гагарин облетает Землю"
+    },
+    "year": 1961,
+    "min": 1955,
+    "max": 1970,
+    "era": "CE",
+    "category": "world",
+    "region": "space",
+    "tags": ["Space", "Gagarin"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "61",
+      "ab": ["1961", "1965"],
+      "narrow": "1960-1962"
+    },
+    "source": "wikipedia/Vostok_1",
+    "license": "own"
+  },
+  {
+    "id": "world_first_woman_space",
+    "prompts": {
+      "en": "Valentina Tereshkova flies into space",
+      "uk": "Валентина Терешкова летить у космос",
+      "ru": "Валентина Терешкова летит в космос"
+    },
+    "year": 1963,
+    "min": 1960,
+    "max": 1970,
+    "era": "CE",
+    "category": "world",
+    "region": "space",
+    "tags": ["Space", "Tereshkova"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "63",
+      "ab": ["1963", "1969"],
+      "narrow": "1962-1964"
+    },
+    "source": "wikipedia/Vostok_6",
+    "license": "own"
+  },
+  {
+    "id": "world_sputnik_launch",
+    "prompts": {
+      "en": "Sputnik 1 launch",
+      "uk": "Запуск \"Супутника-1\"",
+      "ru": "Запуск \"Спутника-1\""
+    },
+    "year": 1957,
+    "min": 1950,
+    "max": 1965,
+    "era": "CE",
+    "category": "world",
+    "region": "space",
+    "tags": ["Space", "Satellite"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "57",
+      "ab": ["1957", "1962"],
+      "narrow": "1956-1958"
+    },
+    "source": "wikipedia/Sputnik_1",
+    "license": "own"
+  },
+  {
+    "id": "world_who_founded",
+    "prompts": {
+      "en": "World Health Organization established",
+      "uk": "Засновано Всесвітню організацію охорони здоров'я",
+      "ru": "Основана Всемирная организация здравоохранения"
+    },
+    "year": 1948,
+    "min": 1940,
+    "max": 1960,
+    "era": "CE",
+    "category": "world",
+    "region": "global",
+    "tags": ["Health", "UN"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "48",
+      "ab": ["1948", "1950"],
+      "narrow": "1947-1949"
+    },
+    "source": "wikipedia/World_Health_Organization",
+    "license": "own"
+  },
+  {
+    "id": "world_universal_human_rights",
+    "prompts": {
+      "en": "UN adopts the Universal Declaration of Human Rights",
+      "uk": "ООН приймає Загальну декларацію прав людини",
+      "ru": "ООН принимает Всеобщую декларацию прав человека"
+    },
+    "year": 1948,
+    "min": 1945,
+    "max": 1955,
+    "era": "CE",
+    "category": "world",
+    "region": "global",
+    "tags": ["UN", "Law"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "48",
+      "ab": ["1948", "1952"],
+      "narrow": "1947-1949"
+    },
+    "source": "wikipedia/Universal_Declaration_of_Human_Rights",
+    "license": "own"
+  },
+  {
+    "id": "world_first_geostationary_satellite",
+    "prompts": {
+      "en": "First geostationary satellite Syncom 3",
+      "uk": "Перший геостаціонарний супутник Syncom 3",
+      "ru": "Первый геостационарный спутник Syncom 3"
+    },
+    "year": 1964,
+    "min": 1960,
+    "max": 1970,
+    "era": "CE",
+    "category": "world",
+    "region": "space",
+    "tags": ["Satellite", "Telecom"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "64",
+      "ab": ["1964", "1967"],
+      "narrow": "1963-1965"
+    },
+    "source": "wikipedia/Syncom",
+    "license": "own"
+  },
+  {
+    "id": "world_aps_first_email",
+    "prompts": {
+      "en": "First network email sent",
+      "uk": "Надіслано перший мережевий електронний лист",
+      "ru": "Отправлено первое сетевое электронное письмо"
+    },
+    "year": 1971,
+    "min": 1965,
+    "max": 1980,
+    "era": "CE",
+    "category": "world",
+    "region": "usa",
+    "tags": ["Internet", "Communication"],
+    "difficulty": 3,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "71",
+      "ab": ["1971", "1975"],
+      "narrow": "1970-1972"
+    },
+    "source": "wikipedia/Email",
+    "license": "own"
+  },
+  {
+    "id": "world_gps_operational",
+    "prompts": {
+      "en": "Global Positioning System becomes fully operational",
+      "uk": "GPS стає повністю оперативною",
+      "ru": "GPS становится полностью оперативной"
+    },
+    "year": 1995,
+    "min": 1990,
+    "max": 2000,
+    "era": "CE",
+    "category": "world",
+    "region": "global",
+    "tags": ["Navigation", "Technology"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "95",
+      "ab": ["1995", "1997"],
+      "narrow": "1994-1996"
+    },
+    "source": "wikipedia/Global_Positioning_System",
+    "license": "own"
+  },
+  {
+    "id": "world_cern_web_opened",
+    "prompts": {
+      "en": "World Wide Web opened to the public",
+      "uk": "WWW стає відкритою для всіх",
+      "ru": "Всемирная паутина открывается для всех"
+    },
+    "year": 1991,
+    "min": 1985,
+    "max": 1995,
+    "era": "CE",
+    "category": "world",
+    "region": "europe",
+    "tags": ["Internet", "CERN"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "91",
+      "ab": ["1991", "1993"],
+      "narrow": "1990-1992"
+    },
+    "source": "wikipedia/World_Wide_Web",
+    "license": "own"
+  },
+  {
+    "id": "world_hubble_launch",
+    "prompts": {
+      "en": "Hubble Space Telescope launched",
+      "uk": "Запуск космічного телескопа Хаббл",
+      "ru": "Запуск космического телескопа Хаббл"
+    },
+    "year": 1990,
+    "min": 1985,
+    "max": 1995,
+    "era": "CE",
+    "category": "world",
+    "region": "space",
+    "tags": ["Astronomy", "NASA"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "90",
+      "ab": ["1990", "1992"],
+      "narrow": "1989-1991"
+    },
+    "source": "wikipedia/Hubble_Space_Telescope",
+    "license": "own"
+  },
+  {
+    "id": "world_euro_currency_introduced",
+    "prompts": {
+      "en": "Euro currency introduced for electronic use",
+      "uk": "Євро запроваджено як безготівкову валюту",
+      "ru": "Евро введено как безналичную валюту"
+    },
+    "year": 1999,
+    "min": 1995,
+    "max": 2005,
+    "era": "CE",
+    "category": "world",
+    "region": "europe",
+    "tags": ["Economy", "EU"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "99",
+      "ab": ["1999", "2002"],
+      "narrow": "1998-2000"
+    },
+    "source": "wikipedia/Euro",
+    "license": "own"
+  },
+  {
+    "id": "world_human_genome_project",
+    "prompts": {
+      "en": "Human Genome Project declared complete",
+      "uk": "Проєкт \"Геном людини\" оголошено завершеним",
+      "ru": "Проект \"Геном человека\" объявлен завершённым"
+    },
+    "year": 2003,
+    "min": 1995,
+    "max": 2005,
+    "era": "CE",
+    "category": "world",
+    "region": "global",
+    "tags": ["Science", "Genetics"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "03",
+      "ab": ["2003", "2002"],
+      "narrow": "2003-2004"
+    },
+    "source": "wikipedia/Human_Genome_Project",
+    "license": "own"
+  },
+  {
+    "id": "world_lhc_first_beam",
+    "prompts": {
+      "en": "Large Hadron Collider circulates first beam",
+      "uk": "Великий адронний колайдер запускає перший пучок",
+      "ru": "Большой адронный коллайдер запускает первый пучок"
+    },
+    "year": 2008,
+    "min": 2005,
+    "max": 2012,
+    "era": "CE",
+    "category": "world",
+    "region": "europe",
+    "tags": ["Physics", "CERN"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "08",
+      "ab": ["2008", "2010"],
+      "narrow": "2007-2009"
+    },
+    "source": "wikipedia/Large_Hadron_Collider",
+    "license": "own"
+  },
+  {
+    "id": "world_curiosity_mars_landing",
+    "prompts": {
+      "en": "Curiosity rover lands on Mars",
+      "uk": "Марсохід Curiosity сідає на Марс",
+      "ru": "Марсоход Curiosity садится на Марс"
+    },
+    "year": 2012,
+    "min": 2010,
+    "max": 2015,
+    "era": "CE",
+    "category": "world",
+    "region": "space",
+    "tags": ["Mars", "NASA"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "12",
+      "ab": ["2012", "2014"],
+      "narrow": "2011-2013"
+    },
+    "source": "wikipedia/Curiosity_(rover)",
+    "license": "own"
+  },
+  {
+    "id": "world_paris_climate_agreement",
+    "prompts": {
+      "en": "Paris Agreement on climate enters into force",
+      "uk": "Паризька угода щодо клімату набирає чинності",
+      "ru": "Парижское соглашение по климату вступает в силу"
+    },
+    "year": 2016,
+    "min": 2015,
+    "max": 2020,
+    "era": "CE",
+    "category": "world",
+    "region": "global",
+    "tags": ["Climate", "UN"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "16",
+      "ab": ["2016", "2018"],
+      "narrow": "2016-2017"
+    },
+    "source": "wikipedia/Paris_Agreement",
+    "license": "own"
+  },
+  {
+    "id": "world_first_image_black_hole",
+    "prompts": {
+      "en": "First direct image of a black hole released",
+      "uk": "Опубліковано перше зображення чорної діри",
+      "ru": "Опубликован первый снимок чёрной дыры"
+    },
+    "year": 2019,
+    "min": 2015,
+    "max": 2021,
+    "era": "CE",
+    "category": "world",
+    "region": "space",
+    "tags": ["Astronomy", "Imaging"],
+    "difficulty": 2,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "19",
+      "ab": ["2019", "2018"],
+      "narrow": "2019-2020"
+    },
+    "source": "wikipedia/Event_Horizon_Telescope",
+    "license": "own"
+  },
+  {
+    "id": "world_james_webb_launch",
+    "prompts": {
+      "en": "James Webb Space Telescope launches",
+      "uk": "Запуск космічного телескопа Джеймса Вебба",
+      "ru": "Запуск космического телескопа Джеймса Уэбба"
+    },
+    "year": 2021,
+    "min": 2020,
+    "max": 2023,
+    "era": "CE",
+    "category": "world",
+    "region": "space",
+    "tags": ["Astronomy", "NASA"],
+    "difficulty": 1,
+    "acceptable_delta": 0,
+    "hints": {
+      "last_digits": "21",
+      "ab": ["2021", "2022"],
+      "narrow": "2021-2022"
+    },
+    "source": "wikipedia/James_Webb_Space_Telescope",
+    "license": "own"
+  }
+]

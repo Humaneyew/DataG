@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 import '../components/app_top_bar.dart';
 import '../components/primary_button.dart';
+import '../components/locale_menu.dart';
 import '../components/secondary_text_button.dart';
 import '../state/round_controller.dart';
 import '../tokens.dart';
@@ -14,17 +17,19 @@ class SummaryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final data = summary;
     final totalScore = data?.score ?? 0;
+    final locale = Localizations.localeOf(context);
     final averageDelta = data == null
-        ? '—'
-        : data.averageDelta.toStringAsFixed(1).replaceAll('.', ',');
+        ? l.summaryNoValue
+        : NumberFormat('0.0', locale.toLanguageTag()).format(data.averageDelta);
     final streak = data?.bestStreak ?? 0;
     final closeHits = data?.closeHits ?? 0;
     final totalQuestions = data?.totalQuestions ?? 0;
     final accuracyText = totalQuestions == 0
-        ? '—'
-        : '$closeHits из $totalQuestions';
+        ? l.summaryNoValue
+        : l.summaryAccuracyValue(closeHits, totalQuestions);
 
     return Scaffold(
       appBar: AppTopBar(
@@ -32,7 +37,8 @@ class SummaryScreen extends StatelessWidget {
           onPressed: () => context.go('/home'),
           icon: const Icon(Icons.close),
         ),
-        title: const Text('Итоги'),
+        title: Text(l.summaryTitle),
+        actions: const [LocaleMenu()],
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppSpacing.screenPadding),
@@ -40,10 +46,10 @@ class SummaryScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: AppSpacing.grid * 2),
-            const Text(
-              'Раунд завершён!',
+            Text(
+              l.summaryHeader,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,
@@ -51,7 +57,7 @@ class SummaryScreen extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.grid * 2),
             Text(
-              '$totalScore очков',
+              l.summaryPoints(totalScore),
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 32,
@@ -71,17 +77,17 @@ class SummaryScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Попадания ≤5 лет: $accuracyText',
+                    l.summaryAccuracy(accuracyText),
                     style: AppTypography.secondary,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Средняя дельта: $averageDelta',
+                    l.summaryAverageDelta(averageDelta),
                     style: AppTypography.secondary,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Лучшая серия: $streak',
+                    l.summaryBestStreak(streak),
                     style: AppTypography.secondary,
                   ),
                 ],
@@ -89,7 +95,7 @@ class SummaryScreen extends StatelessWidget {
             ),
             const Spacer(),
             PrimaryButton(
-              label: 'Играть снова',
+              label: l.summaryPlayAgain,
               onPressed: () {
                 final category = summary?.categoryId ?? 'history';
                 context.go('/round/$category');
@@ -97,7 +103,7 @@ class SummaryScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             SecondaryTextButton(
-              label: 'Домой',
+              label: l.summaryHome,
               onPressed: () => context.go('/home'),
             ),
             const SizedBox(height: AppSpacing.grid),

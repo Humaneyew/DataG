@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 import 'ui/screens/categories_screen.dart';
@@ -9,16 +10,17 @@ import 'ui/screens/summary_screen.dart';
 import 'ui/screens/stub_screen.dart';
 import 'ui/tokens.dart';
 import 'ui/state/round_controller.dart';
+import 'ui/state/locale_controller.dart';
 
 void main() {
   runApp(const ProviderScope(child: DataGApp()));
 }
 
-class DataGApp extends StatelessWidget {
+class DataGApp extends ConsumerWidget {
   const DataGApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final router = GoRouter(
       initialLocation: '/home',
       routes: [
@@ -54,8 +56,13 @@ class DataGApp extends StatelessWidget {
       ],
     );
 
+    final locale = ref.watch(localeControllerProvider);
+
     return MaterialApp.router(
-      title: 'DataG',
+      onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
+      locale: locale,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       theme: ThemeData(
         scaffoldBackgroundColor: AppColors.bgBase,
         colorScheme: const ColorScheme.dark(

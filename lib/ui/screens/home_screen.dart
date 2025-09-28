@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 import '../components/app_top_bar.dart';
 import '../components/card_tile.dart';
+import '../components/locale_menu.dart';
 import '../components/primary_button.dart';
 import '../components/resource_chip.dart';
 import '../components/secondary_text_button.dart';
@@ -13,14 +15,17 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppTopBar(
         leading: IconButton(
           onPressed: () {},
           icon: const Icon(Icons.menu),
         ),
-        title: const Text('DataG Trivia'),
+        title: Text(l.homeTitle),
         actions: const [
+          LocaleMenu(),
           ResourceChip(icon: Icons.favorite, label: '5'),
           ResourceChip(icon: Icons.flash_on, label: '120'),
           ResourceChip(icon: Icons.ac_unit, label: '42'),
@@ -34,7 +39,7 @@ class HomeScreen extends StatelessWidget {
             CardTile(
               leading: const Icon(Icons.local_fire_department,
                   color: AppColors.accentSecondary, size: 32),
-              title: const Text('Неделя X'),
+              title: Text(l.homeWeeklyChallengeTitle),
               subtitle: LinearProgressIndicator(
                 value: 0.45,
                 minHeight: AppComponentSpecs.progressBarHeight,
@@ -43,23 +48,27 @@ class HomeScreen extends StatelessWidget {
                   AppColors.accentSecondary,
                 ),
               ),
-              onTap: () => context.go('/stub?title=Событие'),
+              onTap: () => context.go(
+                '/stub?title=${Uri.encodeComponent(l.homeStubEventTitle)}',
+              ),
             ),
             const SizedBox(height: AppSpacing.grid),
             CardTile(
               leading: const Icon(Icons.group,
                   color: AppColors.accentSecondary, size: 32),
-              title: const Text('Играй с друзьями'),
-              onTap: () => context.go('/stub?title=Друзья'),
+              title: Text(l.homePlayWithFriends),
+              onTap: () => context.go(
+                '/stub?title=${Uri.encodeComponent(l.homeStubFriendsTitle)}',
+              ),
             ),
             const SizedBox(height: AppSpacing.grid * 1.5),
             PrimaryButton(
-              label: 'Играть',
+              label: l.homePlayButton,
               onPressed: () => context.go('/round/history'),
             ),
             const SizedBox(height: 8),
             SecondaryTextButton(
-              label: 'Сменить категорию',
+              label: l.homeChangeCategory,
               onPressed: () => context.go('/categories'),
             ),
           ],

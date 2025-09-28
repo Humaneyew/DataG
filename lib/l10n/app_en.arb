@@ -1,0 +1,196 @@
+{
+  "@@locale": "en",
+  "appTitle": "DataG Trivia",
+  "homeTitle": "DataG Trivia",
+  "homeWeeklyChallengeTitle": "Week X",
+  "homeStubEventTitle": "Event",
+  "homeStubFriendsTitle": "Friends",
+  "homePlayWithFriends": "Play with friends",
+  "homePlayButton": "Play",
+  "homeChangeCategory": "Change category",
+  "categoriesTitle": "Categories",
+  "categoriesBack": "Back",
+  "categoriesEmpty": "No categories available yet.",
+  "roundDetailsComingSoon": "Details screen will arrive later.",
+  "roundTitleFallback": "Round",
+  "roundNoQuestions": "No questions are available for this category.",
+  "roundHintLast": "Last digits (-{cost})",
+  "@roundHintLast": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "roundHintAB": "A/B (-{cost})",
+  "@roundHintAB": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "roundHintNarrow": "Narrow (-{cost})",
+  "@roundHintNarrow": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "roundLastDigitsHint": "Ends with {digits}",
+  "@roundLastDigitsHint": {
+    "placeholders": {
+      "digits": {
+        "type": "String"
+      }
+    }
+  },
+  "roundSubmit": "Check answer",
+  "resultPerfect": "Exact hit!",
+  "resultMissedBy": "You missed by {delta, plural, one {# year} other {# years}}",
+  "@resultMissedBy": {
+    "placeholders": {
+      "delta": {
+        "type": "int"
+      }
+    }
+  },
+  "resultBaseScore": "Base score: {value}",
+  "@resultBaseScore": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "resultBonus": "Bonus: {value}",
+  "@resultBonus": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "resultHintPenalty": "Hint penalty: -{value}",
+  "@resultHintPenalty": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "resultQuestionPoints": "Question points: {value}",
+  "@resultQuestionPoints": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "resultNoHints": "No hints used",
+  "resultHintsPrefix": "Hints: {list}",
+  "@resultHintsPrefix": {
+    "placeholders": {
+      "list": {
+        "type": "String"
+      }
+    }
+  },
+  "resultStreak": "Streak {count}: 1.5× boost!",
+  "@resultStreak": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "resultYourAnswer": "Your answer: {year} {era}",
+  "@resultYourAnswer": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      },
+      "era": {
+        "type": "String"
+      }
+    }
+  },
+  "resultCorrectAnswer": "Correct answer: {year} {era}",
+  "@resultCorrectAnswer": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      },
+      "era": {
+        "type": "String"
+      }
+    }
+  },
+  "resultNext": "Next",
+  "resultFinish": "Finish",
+  "resultDetails": "Details",
+  "hintLabelLastDigits": "Last digits",
+  "hintLabelAB": "A/B",
+  "hintLabelNarrow": "Narrow",
+  "summaryTitle": "Summary",
+  "summaryHeader": "Round complete!",
+  "summaryPoints": "{value} points",
+  "@summaryPoints": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "summaryAccuracy": "Hits ≤5 years: {value}",
+  "@summaryAccuracy": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "summaryAccuracyValue": "{hits} of {total}",
+  "@summaryAccuracyValue": {
+    "placeholders": {
+      "hits": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "summaryAverageDelta": "Average delta: {value}",
+  "@summaryAverageDelta": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "summaryBestStreak": "Best streak: {value}",
+  "@summaryBestStreak": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "summaryPlayAgain": "Play again",
+  "summaryHome": "Home",
+  "summaryNoValue": "—",
+  "stubComingSoon": "{title} screen coming soon",
+  "@stubComingSoon": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "localeEnglish": "English",
+  "localeUkrainian": "Ukrainian",
+  "localeRussian": "Russian",
+  "localeMenuTooltip": "Change language"
+}
