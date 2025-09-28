@@ -1,0 +1,142 @@
+[
+  {
+    "id": "hist_kyivan_rus_baptism",
+    "prompt": "Крещение Киевской Руси",
+    "correctYear": 988,
+    "minYear": 700,
+    "maxYear": 1200,
+    "era": "CE",
+    "categoryId": "history",
+    "hints": ["Владимир Святославич", "Принятие христианства", "Днепр"]
+  },
+  {
+    "id": "hist_fall_of_rome",
+    "prompt": "Падение Западной Римской империи",
+    "correctYear": 476,
+    "minYear": 200,
+    "maxYear": 800,
+    "era": "CE",
+    "categoryId": "history",
+    "hints": ["Од варваров", "Одоакр", "Последний император"]
+  },
+  {
+    "id": "hist_magna_carta",
+    "prompt": "Подписание Великой хартии вольностей",
+    "correctYear": 1215,
+    "minYear": 1000,
+    "maxYear": 1500,
+    "era": "CE",
+    "categoryId": "history",
+    "hints": ["Англия", "Иоанн Безземельный", "Права баронов"]
+  },
+  {
+    "id": "hist_columbus_america",
+    "prompt": "Экспедиция Колумба к берегам Америки",
+    "correctYear": 1492,
+    "minYear": 1200,
+    "maxYear": 1700,
+    "era": "CE",
+    "categoryId": "history",
+    "hints": ["Новый Свет", "Испания", "Генуя"]
+  },
+  {
+    "id": "hist_french_revolution",
+    "prompt": "Взятие Бастилии и начало Французской революции",
+    "correctYear": 1789,
+    "minYear": 1600,
+    "maxYear": 1900,
+    "era": "CE",
+    "categoryId": "history",
+    "hints": ["Париж", "Людовик XVI", "Свобода"]
+  },
+  {
+    "id": "hist_industrial_revolution",
+    "prompt": "Первое промышленное революционное ткачество",
+    "correctYear": 1764,
+    "minYear": 1500,
+    "maxYear": 1900,
+    "era": "CE",
+    "categoryId": "history",
+    "hints": ["Прялка Дженни", "Великобритания", "Мануфактуры"]
+  },
+  {
+    "id": "hist_battle_of_hastings",
+    "prompt": "Битва при Гастингсе",
+    "correctYear": 1066,
+    "minYear": 800,
+    "maxYear": 1300,
+    "era": "CE",
+    "categoryId": "history",
+    "hints": ["Вильгельм Завоеватель", "Нормандское завоевание", "Англия"]
+  },
+  {
+    "id": "hist_printing_press",
+    "prompt": "Иоганн Гутенберг завершает печатный станок",
+    "correctYear": 1450,
+    "minYear": 1200,
+    "maxYear": 1600,
+    "era": "CE",
+    "categoryId": "history",
+    "hints": ["Майнц", "Библия", "Типография"]
+  },
+  {
+    "id": "hist_moon_landing",
+    "prompt": "Высадка человека на Луну",
+    "correctYear": 1969,
+    "minYear": 1900,
+    "maxYear": 2020,
+    "era": "CE",
+    "categoryId": "history",
+    "hints": ["NASA", "Аполлон-11", "Нил Армстронг"]
+  },
+  {
+    "id": "hist_berlin_wall_fall",
+    "prompt": "Падение Берлинской стены",
+    "correctYear": 1989,
+    "minYear": 1940,
+    "maxYear": 2020,
+    "era": "CE",
+    "categoryId": "history",
+    "hints": ["ГДР", "Перестройка", "Холодная война"]
+  },
+  {
+    "id": "hist_printing_decl_of_independence",
+    "prompt": "Подписание Декларации независимости США",
+    "correctYear": 1776,
+    "minYear": 1600,
+    "maxYear": 1900,
+    "era": "CE",
+    "categoryId": "history",
+    "hints": ["Филадельфия", "Колонии", "4 июля"]
+  },
+  {
+    "id": "hist_renaissance_david",
+    "prompt": "Микеланджело завершает Давида",
+    "correctYear": 1504,
+    "minYear": 1200,
+    "maxYear": 1700,
+    "era": "CE",
+    "categoryId": "history",
+    "hints": ["Флоренция", "Мрамор", "Скульптура"]
+  },
+  {
+    "id": "culture_first_grammy",
+    "prompt": "Первая церемония вручения премии Грэмми",
+    "correctYear": 1959,
+    "minYear": 1900,
+    "maxYear": 2020,
+    "era": "CE",
+    "categoryId": "culture",
+    "hints": ["США", "Музыка", "Grammy"]
+  },
+  {
+    "id": "movies_star_wars",
+    "prompt": "Премьера фильма 'Звёздные войны: Новая надежда'",
+    "correctYear": 1977,
+    "minYear": 1950,
+    "maxYear": 2020,
+    "era": "CE",
+    "categoryId": "movies",
+    "hints": ["Джордж Лукас", "Эпизод IV", "Научная фантастика"]
+  }
+]

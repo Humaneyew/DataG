@@ -4,13 +4,28 @@ import 'package:go_router/go_router.dart';
 import '../components/app_top_bar.dart';
 import '../components/primary_button.dart';
 import '../components/secondary_text_button.dart';
+import '../state/round_controller.dart';
 import '../tokens.dart';
 
 class SummaryScreen extends StatelessWidget {
-  const SummaryScreen({super.key});
+  const SummaryScreen({super.key, this.summary});
+
+  final RoundSummary? summary;
 
   @override
   Widget build(BuildContext context) {
+    final data = summary;
+    final totalScore = data?.score ?? 0;
+    final averageDelta = data == null
+        ? '—'
+        : data.averageDelta.toStringAsFixed(1).replaceAll('.', ',');
+    final streak = data?.bestStreak ?? 0;
+    final closeHits = data?.closeHits ?? 0;
+    final totalQuestions = data?.totalQuestions ?? 0;
+    final accuracyText = totalQuestions == 0
+        ? '—'
+        : '$closeHits из $totalQuestions';
+
     return Scaffold(
       appBar: AppTopBar(
         leading: IconButton(
@@ -35,10 +50,10 @@ class SummaryScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.grid * 2),
-            const Text(
-              '1 250 очков',
+            Text(
+              '$totalScore очков',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w700,
                 color: AppColors.accentPrimary,
@@ -54,17 +69,31 @@ class SummaryScreen extends StatelessWidget {
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text('Правильно: 7/10', style: AppTypography.secondary),
-                  SizedBox(height: 8),
-                  Text('Средняя дельта: 12 лет', style: AppTypography.secondary),
+                children: [
+                  Text(
+                    'Попадания ≤5 лет: $accuracyText',
+                    style: AppTypography.secondary,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Средняя дельта: $averageDelta',
+                    style: AppTypography.secondary,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Лучшая серия: $streak',
+                    style: AppTypography.secondary,
+                  ),
                 ],
               ),
             ),
             const Spacer(),
             PrimaryButton(
               label: 'Играть снова',
-              onPressed: () => context.go('/round/history'),
+              onPressed: () {
+                final category = summary?.categoryId ?? 'history';
+                context.go('/round/$category');
+              },
             ),
             const SizedBox(height: 8),
             SecondaryTextButton(

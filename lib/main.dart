@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'ui/screens/categories_screen.dart';
@@ -7,9 +8,10 @@ import 'ui/screens/round_screen.dart';
 import 'ui/screens/summary_screen.dart';
 import 'ui/screens/stub_screen.dart';
 import 'ui/tokens.dart';
+import 'ui/state/round_controller.dart';
 
 void main() {
-  runApp(const DataGApp());
+  runApp(const ProviderScope(child: DataGApp()));
 }
 
 class DataGApp extends StatelessWidget {
@@ -37,7 +39,10 @@ class DataGApp extends StatelessWidget {
         ),
         GoRoute(
           path: '/summary',
-          builder: (context, state) => const SummaryScreen(),
+          builder: (context, state) {
+            final summary = state.extra as RoundSummary?;
+            return SummaryScreen(summary: summary);
+          },
         ),
         GoRoute(
           path: '/stub',

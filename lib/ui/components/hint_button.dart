@@ -18,6 +18,7 @@ class HintButton extends StatelessWidget {
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
         foregroundColor: AppColors.textPrimary,
+        disabledForegroundColor: AppColors.textSecondary,
         side: const BorderSide(color: AppColors.borderMuted),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         shape: RoundedRectangleBorder(borderRadius: AppRadius.medium),
