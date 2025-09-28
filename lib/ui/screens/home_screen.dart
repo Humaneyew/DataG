@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../analytics/analytics_service.dart';
 import '../../features/modes/game_mode.dart';
 import '../../features/modes/mode_controller.dart';
 import '../components/app_top_bar.dart';
@@ -54,9 +55,14 @@ class HomeScreen extends ConsumerWidget {
                   AppColors.accentSecondary,
                 ),
               ),
-              onTap: () => context.go(
-                '/stub?title=${Uri.encodeComponent(l.homeStubEventTitle)}',
-              ),
+              onTap: () {
+                ref
+                    .read(analyticsServiceProvider)
+                    .logOpenEventBanner('weekly_challenge');
+                context.go(
+                  '/stub?title=${Uri.encodeComponent(l.homeStubEventTitle)}',
+                );
+              },
             ),
             const SizedBox(height: AppSpacing.grid),
             CardTile(

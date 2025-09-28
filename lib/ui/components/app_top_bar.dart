@@ -1,8 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../analytics/dev_diagnostics.dart';
 import '../tokens.dart';
 
-class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
+class AppTopBar extends ConsumerWidget implements PreferredSizeWidget {
   const AppTopBar({
     super.key,
     this.leading,
@@ -18,7 +21,16 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(64);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    Widget titleWidget = title ?? const SizedBox.shrink();
+    if (kDebugMode) {
+      titleWidget = GestureDetector(
+        onLongPress: () => showDevToolsMenu(context),
+        behavior: HitTestBehavior.opaque,
+        child: titleWidget,
+      );
+    }
+
     return SafeArea(
       bottom: false,
       child: Container(
@@ -40,7 +52,7 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
                     AppTypography.textTheme.titleSmall ??
                     AppTypography.textTheme.bodyLarge!,
                 textAlign: TextAlign.center,
-                child: title ?? const SizedBox.shrink(),
+                child: titleWidget,
               ),
             ),
             const SizedBox(width: AppSpacing.m),

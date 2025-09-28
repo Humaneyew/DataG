@@ -16,6 +16,9 @@ dependencies:
   csv: ^5.0.2
   lucide_icons: ^0.322.0
   shimmer: ^3.0.0
+  firebase_core: ^2.31.1
+  firebase_analytics: ^10.10.7
+  firebase_crashlytics: ^3.4.18
 
 dev_dependencies:
   flutter_test:
