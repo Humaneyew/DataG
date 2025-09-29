@@ -8,7 +8,6 @@ const _reportFile = 'tool/out/report.txt';
 const _requiredHeaders = <String>{
   'id',
   'prompt_en',
-  'prompt_uk',
   'prompt_ru',
   'year',
   'min',
@@ -88,7 +87,6 @@ void main(List<String> args) async {
 
       final prompts = <String, String>{
         'en': _readString(row, indices['prompt_en']!, ''),
-        'uk': _readString(row, indices['prompt_uk']!, ''),
         'ru': _readString(row, indices['prompt_ru']!, ''),
       };
       if (prompts.values.any((value) => value.trim().isEmpty)) {
