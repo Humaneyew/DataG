@@ -1,51 +1,33 @@
 {
   "@@locale": "ru",
   "appTitle": "Угадай дату",
-  "localeMenuTooltip": "Изменить язык",
-  "localeUkrainian": "Украинский",
-  "localeRussian": "Русский",
-  "localeEnglish": "Английский",
-  "homeTitle": "Главная",
-  "homeWeeklyChallengeTitle": "Еженедельный челлендж",
-  "homeStubEventTitle": "Еженедельный челлендж",
+  "roundTitleFallback": "Раунд",
+  "roundDetailsComingSoon": "Скоро появятся подробности.",
+  "roundNoQuestions": "Вопросов пока нет.",
+  "roundSubmit": "Ответить",
+  "roundHintAB": "50/50",
+  "roundHintLast": "Последние цифры",
+  "roundHintNarrow": "Сузить шкалу",
+  "roundLastDigitsHint": "Последние цифры: {digits}",
+  "@roundLastDigitsHint": {
+    "placeholders": {
+      "digits": {}
+    }
+  },
+  "categoriesTitle": "Категории",
+  "categoriesEmpty": "Категории недоступны.",
+  "categoriesBack": "Назад на главный экран",
+  "homeTitle": "Выберите испытание",
+  "homeWeeklyChallengeTitle": "Еженедельный вызов",
+  "homeStubEventTitle": "Еженедельный вызов",
   "homePlayWithFriends": "Играть с друзьями",
   "homeStubFriendsTitle": "Играть с друзьями",
-  "homePlayButton": "Начать раунд",
-  "homeChangeCategory": "Выбрать категорию",
-  "resultPerfect": "Идеально! Вы попали точно.",
-  "resultMissedBy": "Промах на {delta} лет.",
-  "@resultMissedBy": {
-    "placeholders": {
-      "delta": {
-        "type": "int"
-      }
-    }
-  },
-  "resultNoHints": "Подсказки не использовались.",
-  "resultHintsPrefix": "Использованы подсказки: {hints}",
-  "@resultHintsPrefix": {
-    "placeholders": {
-      "hints": {
-        "type": "String"
-      }
-    }
-  },
-  "resultStreak": "Серия! {streak} подряд.",
-  "@resultStreak": {
-    "placeholders": {
-      "streak": {
-        "type": "int"
-      }
-    }
-  },
-  "resultBonus": "Бонус: {value}",
-  "@resultBonus": {
-    "placeholders": {
-      "value": {
-        "type": "String"
-      }
-    }
-  },
+  "homePlayButton": "Играть",
+  "homeChangeCategory": "Сменить категорию",
+  "localeMenuTooltip": "Сменить язык",
+  "localeEnglish": "Английский",
+  "localeRussian": "Русский",
+  "localeUkrainian": "Украинский",
   "resultYourAnswer": "Ваш ответ: {year} ({era})",
   "@resultYourAnswer": {
     "placeholders": {
@@ -76,10 +58,18 @@
       }
     }
   },
-  "resultHintPenalty": "Штраф за подсказки: -{penalty}",
+  "resultBonus": "Бонус: {bonus}",
+  "@resultBonus": {
+    "placeholders": {
+      "bonus": {
+        "type": "String"
+      }
+    }
+  },
+  "resultHintPenalty": "Штраф за подсказки: -{value}",
   "@resultHintPenalty": {
     "placeholders": {
-      "penalty": {
+      "value": {
         "type": "int"
       }
     }
@@ -92,92 +82,68 @@
       }
     }
   },
-  "resultFinish": "Завершить раунд",
-  "resultNext": "Следующий вопрос",
-  "resultDetails": "Подробнее",
-  "hintLabelLastDigits": "Последние цифры",
-  "hintLabelAB": "50/50",
-  "hintLabelNarrow": "Узкий диапазон",
-  "roundDetailsComingSoon": "Подробная статистика появится позже.",
-  "roundTitleFallback": "Раунд викторины",
-  "roundNoQuestions": "Вопросов пока нет.",
-  "roundLastDigitsHint": "Заканчивается на: {digits}",
-  "@roundLastDigitsHint": {
+  "resultHintsPrefix": "Использованы подсказки: {hints}",
+  "@resultHintsPrefix": {
     "placeholders": {
-      "digits": {
+      "hints": {
         "type": "String"
       }
     }
   },
-  "roundHintLast": "Последние цифры (-{cost})",
-  "@roundHintLast": {
-    "placeholders": {
-      "cost": {
-        "type": "int"
-      }
-    }
-  },
-  "roundHintAB": "50/50 (-{cost})",
-  "@roundHintAB": {
-    "placeholders": {
-      "cost": {
-        "type": "int"
-      }
-    }
-  },
-  "roundHintNarrow": "Узкий диапазон (-{cost})",
-  "@roundHintNarrow": {
-    "placeholders": {
-      "cost": {
-        "type": "int"
-      }
-    }
-  },
-  "roundSubmit": "Ответить",
-  "stubComingSoon": "\"{feature}\" скоро появится.",
-  "@stubComingSoon": {
-    "placeholders": {
-      "feature": {
-        "type": "String"
-      }
-    }
-  },
-  "stubSoundToggle": "Звуковые эффекты",
-  "stubHapticsToggle": "Виброотклик",
-  "summaryNoValue": "—",
-  "summaryAccuracyValue": "{closeHits} из {totalQuestions} точных попаданий",
-  "@summaryAccuracyValue": {
-    "placeholders": {
-      "closeHits": {
-        "type": "int"
-      },
-      "totalQuestions": {
-        "type": "int"
-      }
-    }
-  },
-  "summaryTitle": "Итоги",
-  "summaryHeader": "Раунд завершён!",
-  "summaryPoints": "{score} очков",
-  "@summaryPoints": {
-    "placeholders": {
-      "score": {
-        "type": "int"
-      }
-    }
-  },
-  "summaryAccuracy": "Точность: {accuracy}",
-  "@summaryAccuracy": {
-    "placeholders": {
-      "accuracy": {
-        "type": "String"
-      }
-    }
-  },
-  "summaryAverageDelta": "Средний промах: {delta}",
-  "@summaryAverageDelta": {
+  "resultNoHints": "Без подсказок",
+  "resultPerfect": "Идеально!",
+  "resultMissedBy": "Промах на {delta} лет",
+  "@resultMissedBy": {
     "placeholders": {
       "delta": {
+        "type": "int"
+      }
+    }
+  },
+  "resultStreak": "Серия: {streak}",
+  "@resultStreak": {
+    "placeholders": {
+      "streak": {
+        "type": "int"
+      }
+    }
+  },
+  "resultFinish": "Завершить",
+  "resultNext": "Следующий вопрос",
+  "resultDetails": "Подробнее",
+  "summaryTitle": "Итоги",
+  "summaryHeader": "Ваши результаты",
+  "summaryPoints": "{points} очков",
+  "@summaryPoints": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
+  "summaryAccuracy": "Точность: {value}",
+  "@summaryAccuracy": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "summaryAccuracyValue": "{hits} из {total}",
+  "@summaryAccuracyValue": {
+    "placeholders": {
+      "hits": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "summaryAverageDelta": "Среднее отклонение: {value} лет",
+  "@summaryAverageDelta": {
+    "placeholders": {
+      "value": {
         "type": "String"
       }
     }
@@ -191,8 +157,16 @@
     }
   },
   "summaryPlayAgain": "Сыграть ещё",
-  "summaryHome": "На главную",
-  "categoriesTitle": "Категории",
-  "categoriesEmpty": "Категории пока не доступны.",
-  "categoriesBack": "Назад на главную"
+  "summaryHome": "На главный экран",
+  "summaryNoValue": "—",
+  "stubComingSoon": "Раздел «{title}» скоро появится!",
+  "@stubComingSoon": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stubSoundToggle": "Звуки",
+  "stubHapticsToggle": "Виброотклик"
 }

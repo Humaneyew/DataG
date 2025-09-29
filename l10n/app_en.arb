@@ -1,51 +1,33 @@
 {
   "@@locale": "en",
   "appTitle": "Date Guesser",
-  "localeMenuTooltip": "Change language",
-  "localeUkrainian": "Ukrainian",
-  "localeRussian": "Russian",
-  "localeEnglish": "English",
-  "homeTitle": "Home",
+  "roundTitleFallback": "Round",
+  "roundDetailsComingSoon": "More details coming soon.",
+  "roundNoQuestions": "No questions available yet.",
+  "roundSubmit": "Submit answer",
+  "roundHintAB": "50/50",
+  "roundHintLast": "Last digits",
+  "roundHintNarrow": "Narrow timeline",
+  "roundLastDigitsHint": "Last digits: {digits}",
+  "@roundLastDigitsHint": {
+    "placeholders": {
+      "digits": {}
+    }
+  },
+  "categoriesTitle": "Categories",
+  "categoriesEmpty": "Categories are not available right now.",
+  "categoriesBack": "Back to home",
+  "homeTitle": "Pick a challenge",
   "homeWeeklyChallengeTitle": "Weekly challenge",
   "homeStubEventTitle": "Weekly challenge",
   "homePlayWithFriends": "Play with friends",
   "homeStubFriendsTitle": "Play with friends",
-  "homePlayButton": "Start round",
-  "homeChangeCategory": "Choose category",
-  "resultPerfect": "Perfect! You nailed it.",
-  "resultMissedBy": "Missed by {delta} years.",
-  "@resultMissedBy": {
-    "placeholders": {
-      "delta": {
-        "type": "int"
-      }
-    }
-  },
-  "resultNoHints": "No hints used.",
-  "resultHintsPrefix": "Hints used: {hints}",
-  "@resultHintsPrefix": {
-    "placeholders": {
-      "hints": {
-        "type": "String"
-      }
-    }
-  },
-  "resultStreak": "Streak bonus! {streak} in a row.",
-  "@resultStreak": {
-    "placeholders": {
-      "streak": {
-        "type": "int"
-      }
-    }
-  },
-  "resultBonus": "Bonus: {value}",
-  "@resultBonus": {
-    "placeholders": {
-      "value": {
-        "type": "String"
-      }
-    }
-  },
+  "homePlayButton": "Play",
+  "homeChangeCategory": "Change category",
+  "localeMenuTooltip": "Change language",
+  "localeEnglish": "English",
+  "localeRussian": "Russian",
+  "localeUkrainian": "Ukrainian",
   "resultYourAnswer": "Your answer: {year} ({era})",
   "@resultYourAnswer": {
     "placeholders": {
@@ -76,10 +58,18 @@
       }
     }
   },
-  "resultHintPenalty": "Hint penalty: -{penalty}",
+  "resultBonus": "Bonus: {bonus}",
+  "@resultBonus": {
+    "placeholders": {
+      "bonus": {
+        "type": "String"
+      }
+    }
+  },
+  "resultHintPenalty": "Hint penalty: -{value}",
   "@resultHintPenalty": {
     "placeholders": {
-      "penalty": {
+      "value": {
         "type": "int"
       }
     }
@@ -92,92 +82,68 @@
       }
     }
   },
-  "resultFinish": "Finish round",
-  "resultNext": "Next question",
-  "resultDetails": "View details",
-  "hintLabelLastDigits": "Last digits",
-  "hintLabelAB": "50/50",
-  "hintLabelNarrow": "Narrow timeline",
-  "roundDetailsComingSoon": "Detailed breakdown coming soon.",
-  "roundTitleFallback": "Timeline Trivia",
-  "roundNoQuestions": "No questions available.",
-  "roundLastDigitsHint": "Ends with: {digits}",
-  "@roundLastDigitsHint": {
+  "resultHintsPrefix": "Hints used: {hints}",
+  "@resultHintsPrefix": {
     "placeholders": {
-      "digits": {
+      "hints": {
         "type": "String"
       }
     }
   },
-  "roundHintLast": "Last digits (-{cost})",
-  "@roundHintLast": {
-    "placeholders": {
-      "cost": {
-        "type": "int"
-      }
-    }
-  },
-  "roundHintAB": "50/50 (-{cost})",
-  "@roundHintAB": {
-    "placeholders": {
-      "cost": {
-        "type": "int"
-      }
-    }
-  },
-  "roundHintNarrow": "Narrow timeline (-{cost})",
-  "@roundHintNarrow": {
-    "placeholders": {
-      "cost": {
-        "type": "int"
-      }
-    }
-  },
-  "roundSubmit": "Submit answer",
-  "stubComingSoon": "\"{feature}\" is coming soon.",
-  "@stubComingSoon": {
-    "placeholders": {
-      "feature": {
-        "type": "String"
-      }
-    }
-  },
-  "stubSoundToggle": "Sound effects",
-  "stubHapticsToggle": "Haptic feedback",
-  "summaryNoValue": "—",
-  "summaryAccuracyValue": "{closeHits} of {totalQuestions} close hits",
-  "@summaryAccuracyValue": {
-    "placeholders": {
-      "closeHits": {
-        "type": "int"
-      },
-      "totalQuestions": {
-        "type": "int"
-      }
-    }
-  },
-  "summaryTitle": "Summary",
-  "summaryHeader": "Round complete!",
-  "summaryPoints": "{score} pts",
-  "@summaryPoints": {
-    "placeholders": {
-      "score": {
-        "type": "int"
-      }
-    }
-  },
-  "summaryAccuracy": "Accuracy: {accuracy}",
-  "@summaryAccuracy": {
-    "placeholders": {
-      "accuracy": {
-        "type": "String"
-      }
-    }
-  },
-  "summaryAverageDelta": "Average miss: {delta}",
-  "@summaryAverageDelta": {
+  "resultNoHints": "No hints used",
+  "resultPerfect": "Perfect!",
+  "resultMissedBy": "Missed by {delta} years",
+  "@resultMissedBy": {
     "placeholders": {
       "delta": {
+        "type": "int"
+      }
+    }
+  },
+  "resultStreak": "Streak bonus: {streak}",
+  "@resultStreak": {
+    "placeholders": {
+      "streak": {
+        "type": "int"
+      }
+    }
+  },
+  "resultFinish": "Finish",
+  "resultNext": "Next question",
+  "resultDetails": "Details",
+  "summaryTitle": "Summary",
+  "summaryHeader": "Here's how you did",
+  "summaryPoints": "{points} pts",
+  "@summaryPoints": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
+  "summaryAccuracy": "Accuracy: {value}",
+  "@summaryAccuracy": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "summaryAccuracyValue": "{hits} / {total} correct",
+  "@summaryAccuracyValue": {
+    "placeholders": {
+      "hits": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "summaryAverageDelta": "Average miss: {value} years",
+  "@summaryAverageDelta": {
+    "placeholders": {
+      "value": {
         "type": "String"
       }
     }
@@ -192,7 +158,15 @@
   },
   "summaryPlayAgain": "Play again",
   "summaryHome": "Back to home",
-  "categoriesTitle": "Categories",
-  "categoriesEmpty": "No categories yet.",
-  "categoriesBack": "Back to home"
+  "summaryNoValue": "—",
+  "stubComingSoon": "\"{title}\" is coming soon!",
+  "@stubComingSoon": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stubSoundToggle": "Sound effects",
+  "stubHapticsToggle": "Haptic feedback"
 }
