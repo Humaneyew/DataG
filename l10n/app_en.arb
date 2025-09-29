@@ -5,9 +5,30 @@
   "roundDetailsComingSoon": "More details coming soon.",
   "roundNoQuestions": "No questions available yet.",
   "roundSubmit": "Submit answer",
-  "roundHintAB": "50/50",
-  "roundHintLast": "Last digits",
-  "roundHintNarrow": "Narrow timeline",
+  "roundHintAB": "50/50 (−{cost})",
+  "@roundHintAB": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "roundHintLast": "Last digits (−{cost})",
+  "@roundHintLast": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "roundHintNarrow": "Narrow timeline (−{cost})",
+  "@roundHintNarrow": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
   "roundLastDigitsHint": "Last digits: {digits}",
   "@roundLastDigitsHint": {
     "placeholders": {
@@ -159,6 +180,9 @@
   "summaryPlayAgain": "Play again",
   "summaryHome": "Back to home",
   "summaryNoValue": "—",
+  "hintLabelLastDigits": "Last digits",
+  "hintLabelAB": "50/50",
+  "hintLabelNarrow": "Narrow timeline",
   "stubComingSoon": "\"{title}\" is coming soon!",
   "@stubComingSoon": {
     "placeholders": {
