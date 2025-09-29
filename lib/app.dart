@@ -78,15 +78,16 @@ class _DataGAppState extends ConsumerState<DataGApp> {
 
     final locale = ref.watch(localeControllerProvider);
 
-    final app = MaterialApp.router(
+    return MaterialApp.router(
       onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
       locale: locale,
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       theme: AppTheme.dark,
       routerConfig: router,
+      builder: (context, child) => DevToolsOverlay(
+        child: child ?? const SizedBox.shrink(),
+      ),
     );
-
-    return DevToolsOverlay(child: app);
   }
 }
