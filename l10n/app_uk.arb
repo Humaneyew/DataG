@@ -56,18 +56,18 @@
       }
     }
   },
-  "resultBaseScore": "Базові очки: {value}",
+  "resultBaseScore": "Базові очки: {score}",
   "@resultBaseScore": {
     "placeholders": {
-      "value": {
+      "score": {
         "type": "int"
       }
     }
   },
-  "resultBonus": "Бонуси: {value}",
+  "resultBonus": "Бонуси: {bonus}",
   "@resultBonus": {
     "placeholders": {
-      "value": {
+      "bonus": {
         "type": "String"
       }
     }
@@ -80,27 +80,27 @@
       }
     }
   },
-  "resultQuestionPoints": "Очки за запитання: {value}",
+  "resultQuestionPoints": "Очки за запитання: {points}",
   "@resultQuestionPoints": {
     "placeholders": {
-      "value": {
+      "points": {
         "type": "String"
       }
     }
   },
   "resultNoHints": "Без підказок",
-  "resultHintsPrefix": "Підказки: {list}",
+  "resultHintsPrefix": "Підказки: {hints}",
   "@resultHintsPrefix": {
     "placeholders": {
-      "list": {
+      "hints": {
         "type": "String"
       }
     }
   },
-  "resultStreak": "Серія {count}: множник 1,5×!",
+  "resultStreak": "Серія {streak}: множник 1,5×!",
   "@resultStreak": {
     "placeholders": {
-      "count": {
+      "streak": {
         "type": "int"
       }
     }
@@ -135,10 +135,10 @@
   "hintLabelNarrow": "Звузити",
   "summaryTitle": "Підсумки",
   "summaryHeader": "Раунд завершено!",
-  "summaryPoints": "{value} очок",
+  "summaryPoints": "{points} очок",
   "@summaryPoints": {
     "placeholders": {
-      "value": {
+      "points": {
         "type": "int"
       }
     }
@@ -170,10 +170,10 @@
       }
     }
   },
-  "summaryBestStreak": "Найкраща серія: {value}",
+  "summaryBestStreak": "Найкраща серія: {streak}",
   "@summaryBestStreak": {
     "placeholders": {
-      "value": {
+      "streak": {
         "type": "int"
       }
     }
