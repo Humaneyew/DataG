@@ -42,7 +42,7 @@
   "@roundLastDigitsHint": {
     "placeholders": {
       "digits": {
-        "type": "String"
+        "type": "Object"
       }
     }
   },
