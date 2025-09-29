@@ -7,9 +7,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'app.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
   await runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+
     runApp(const ProviderScope(child: DataGApp()));
   }, (error, stack) {
     if (kDebugMode) {
