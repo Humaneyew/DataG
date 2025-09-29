@@ -5,9 +5,30 @@
   "roundDetailsComingSoon": "Скоро появятся подробности.",
   "roundNoQuestions": "Вопросов пока нет.",
   "roundSubmit": "Ответить",
-  "roundHintAB": "50/50",
-  "roundHintLast": "Последние цифры",
-  "roundHintNarrow": "Сузить шкалу",
+  "roundHintAB": "50/50 (−{cost})",
+  "@roundHintAB": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "roundHintLast": "Последние цифры (−{cost})",
+  "@roundHintLast": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "roundHintNarrow": "Сузить шкалу (−{cost})",
+  "@roundHintNarrow": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
   "roundLastDigitsHint": "Последние цифры: {digits}",
   "@roundLastDigitsHint": {
     "placeholders": {
@@ -159,6 +180,9 @@
   "summaryPlayAgain": "Сыграть ещё",
   "summaryHome": "На главный экран",
   "summaryNoValue": "—",
+  "hintLabelLastDigits": "Последние цифры",
+  "hintLabelAB": "50/50",
+  "hintLabelNarrow": "Сузить шкалу",
   "stubComingSoon": "Раздел «{title}» скоро появится!",
   "@stubComingSoon": {
     "placeholders": {
