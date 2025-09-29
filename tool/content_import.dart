@@ -196,7 +196,7 @@ void main(List<String> args) async {
     }
 
     final outputName =
-        '${csvFile.uri.pathSegments.last.replaceAll('.csv', '.json')}';
+        csvFile.uri.pathSegments.last.replaceAll('.csv', '.json');
     final outputFile = File('$_outputDir/$outputName');
     await outputFile.writeAsString(jsonEncoder.convert(records));
 

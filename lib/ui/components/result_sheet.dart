@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:datag/l10n/generated/app_localizations.dart';
 
 import '../../content/models.dart';
 import '../../features/round/round_models.dart';

@@ -370,7 +370,7 @@ class RoundController extends StateNotifier<RoundState> {
               ? question.correctYear + delta
               : question.correctYear - delta)
           .clamp(question.minYear, question.maxYear);
-      final alt = altValue is double ? altValue.round() : altValue as int;
+      final alt = altValue.round();
       options.add(alt);
     }
     final shuffled = options.toList();
