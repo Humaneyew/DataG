@@ -27,8 +27,8 @@ class AppLocalizations {
   ];
 
   String get appTitle => _select(
-        en: 'DataG',
-        ru: 'DataG',
+        en: 'Date Guesser',
+        ru: 'Угадай дату',
       );
 
   String get homeTitle => _select(
@@ -79,26 +79,6 @@ class AppLocalizations {
   String get categoriesBack => _select(
         en: 'Back to home',
         ru: 'Назад на главный экран',
-      );
-
-  String get resourcesLives => _select(
-        en: 'Lives',
-        ru: 'Жизни',
-      );
-
-  String get resourcesEnergy => _select(
-        en: 'Energy',
-        ru: 'Энергия',
-      );
-
-  String get resourcesGems => _select(
-        en: 'Gems',
-        ru: 'Гемы',
-      );
-
-  String get resourcesLevel => _select(
-        en: 'Level',
-        ru: 'Уровень',
       );
 
   String get roundDetailsComingSoon => _select(
