@@ -1,0 +1,198 @@
+{
+  "@@locale": "en",
+  "appTitle": "DataG",
+  "localeMenuTooltip": "Change language",
+  "localeUkrainian": "Ukrainian",
+  "localeRussian": "Russian",
+  "localeEnglish": "English",
+  "homeTitle": "Home",
+  "homeWeeklyChallengeTitle": "Weekly challenge",
+  "homeStubEventTitle": "Weekly challenge",
+  "homePlayWithFriends": "Play with friends",
+  "homeStubFriendsTitle": "Play with friends",
+  "homePlayButton": "Start round",
+  "homeChangeCategory": "Choose category",
+  "resultPerfect": "Perfect! You nailed it.",
+  "resultMissedBy": "Missed by {delta} years.",
+  "@resultMissedBy": {
+    "placeholders": {
+      "delta": {
+        "type": "int"
+      }
+    }
+  },
+  "resultNoHints": "No hints used.",
+  "resultHintsPrefix": "Hints used: {hints}",
+  "@resultHintsPrefix": {
+    "placeholders": {
+      "hints": {
+        "type": "String"
+      }
+    }
+  },
+  "resultStreak": "Streak bonus! {streak} in a row.",
+  "@resultStreak": {
+    "placeholders": {
+      "streak": {
+        "type": "int"
+      }
+    }
+  },
+  "resultBonus": "Bonus: {value}",
+  "@resultBonus": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "resultYourAnswer": "Your answer: {year} ({era})",
+  "@resultYourAnswer": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      },
+      "era": {
+        "type": "String"
+      }
+    }
+  },
+  "resultCorrectAnswer": "Correct answer: {year} ({era})",
+  "@resultCorrectAnswer": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      },
+      "era": {
+        "type": "String"
+      }
+    }
+  },
+  "resultBaseScore": "Base score: {score}",
+  "@resultBaseScore": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "resultHintPenalty": "Hint penalty: -{penalty}",
+  "@resultHintPenalty": {
+    "placeholders": {
+      "penalty": {
+        "type": "int"
+      }
+    }
+  },
+  "resultQuestionPoints": "Question points: {points}",
+  "@resultQuestionPoints": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "resultFinish": "Finish round",
+  "resultNext": "Next question",
+  "resultDetails": "View details",
+  "hintLabelLastDigits": "Last digits",
+  "hintLabelAB": "50/50",
+  "hintLabelNarrow": "Narrow timeline",
+  "roundDetailsComingSoon": "Detailed breakdown coming soon.",
+  "roundTitleFallback": "Timeline Trivia",
+  "roundNoQuestions": "No questions available.",
+  "roundLastDigitsHint": "Ends with: {digits}",
+  "@roundLastDigitsHint": {
+    "placeholders": {
+      "digits": {
+        "type": "String"
+      }
+    }
+  },
+  "roundHintLast": "Last digits (-{cost})",
+  "@roundHintLast": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "roundHintAB": "50/50 (-{cost})",
+  "@roundHintAB": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "roundHintNarrow": "Narrow timeline (-{cost})",
+  "@roundHintNarrow": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "roundSubmit": "Submit answer",
+  "stubComingSoon": "\"{feature}\" is coming soon.",
+  "@stubComingSoon": {
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      }
+    }
+  },
+  "stubSoundToggle": "Sound effects",
+  "stubHapticsToggle": "Haptic feedback",
+  "summaryNoValue": "—",
+  "summaryAccuracyValue": "{closeHits} of {totalQuestions} close hits",
+  "@summaryAccuracyValue": {
+    "placeholders": {
+      "closeHits": {
+        "type": "int"
+      },
+      "totalQuestions": {
+        "type": "int"
+      }
+    }
+  },
+  "summaryTitle": "Summary",
+  "summaryHeader": "Round complete!",
+  "summaryPoints": "{score} pts",
+  "@summaryPoints": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "summaryAccuracy": "Accuracy: {accuracy}",
+  "@summaryAccuracy": {
+    "placeholders": {
+      "accuracy": {
+        "type": "String"
+      }
+    }
+  },
+  "summaryAverageDelta": "Average miss: {delta}",
+  "@summaryAverageDelta": {
+    "placeholders": {
+      "delta": {
+        "type": "String"
+      }
+    }
+  },
+  "summaryBestStreak": "Best streak: {streak}",
+  "@summaryBestStreak": {
+    "placeholders": {
+      "streak": {
+        "type": "int"
+      }
+    }
+  },
+  "summaryPlayAgain": "Play again",
+  "summaryHome": "Back to home",
+  "categoriesTitle": "Categories",
+  "categoriesEmpty": "No categories yet.",
+  "categoriesBack": "Back to home"
+}
