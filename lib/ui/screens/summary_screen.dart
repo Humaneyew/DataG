@@ -23,15 +23,16 @@ class SummaryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final data = completion?.summary;
-    final totalScore = data?.score ?? 0;
+    final summary = completion?.summary;
+    final dailyLeaderboard = completion?.dailyLeaderboard;
+    final totalScore = summary?.score ?? 0;
     final locale = Localizations.localeOf(context);
-    final averageDelta = data == null
+    final averageDelta = summary == null
         ? l.summaryNoValue
-        : NumberFormat('0.0', locale.toLanguageTag()).format(data.averageDelta);
-    final streak = data?.bestStreak ?? 0;
-    final closeHits = data?.closeHits ?? 0;
-    final totalQuestions = data?.totalQuestions ?? 0;
+        : NumberFormat('0.0', locale.toLanguageTag()).format(summary.averageDelta);
+    final streak = summary?.bestStreak ?? 0;
+    final closeHits = summary?.closeHits ?? 0;
+    final totalQuestions = summary?.totalQuestions ?? 0;
     final accuracyText = totalQuestions == 0
         ? l.summaryNoValue
         : l.summaryAccuracyValue(closeHits, totalQuestions);
@@ -95,10 +96,10 @@ class SummaryScreen extends StatelessWidget {
                     l.summaryBestStreak(streak),
                     style: AppTypography.secondary,
                   ),
-                  if (data != null) ...[
+                  if (summary != null) ...[
                     const SizedBox(height: 8),
                     Text(
-                      'Time bonus: ${data.timeBonusTotal}',
+                      'Time bonus: ${summary.timeBonusTotal}',
                       style: AppTypography.secondary,
                     ),
                   ],
@@ -108,19 +109,20 @@ class SummaryScreen extends StatelessWidget {
             const Spacer(),
             if (completion?.duelReport != null)
               _DuelResultCard(report: completion!.duelReport!),
-            if (completion?.dailyLeaderboard != null &&
-                completion!.dailyLeaderboard!.isNotEmpty)
+            if (summary != null &&
+                dailyLeaderboard != null &&
+                dailyLeaderboard.isNotEmpty)
               _DailyLeaderboardCard(
-                leaderboard: completion!.dailyLeaderboard!,
-                current: completion!.summary,
+                leaderboard: dailyLeaderboard,
+                current: summary,
               ),
             const SizedBox(height: AppSpacing.grid * 2),
             PrimaryButton(
               label: l.summaryPlayAgain,
               onPressed: () {
-                final category = completion?.summary.categoryId ?? 'history';
-                final mode = completion?.summary.modeId ?? GameModeId.classic10;
-                context.go('/round/$category?mode=${mode.key}');
+                final categoryId = summary?.categoryId ?? 'history';
+                final modeId = summary?.modeId ?? GameModeId.classic10;
+                context.go('/round/$categoryId?mode=${modeId.key}');
               },
             ),
             const SizedBox(height: 8),
