@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "app_title": "DataG",
+  "appTitle": "Date Guesser",
   "roundTitleFallback": "Round",
   "roundDetailsComingSoon": "More details coming soon.",
   "roundNoQuestions": "No questions available yet.",
@@ -45,10 +45,6 @@
   "homeStubFriendsTitle": "Play with friends",
   "homePlayButton": "Play",
   "homeChangeCategory": "Change category",
-  "resources_lives": "Lives",
-  "resources_energy": "Energy",
-  "resources_gems": "Gems",
-  "resources_level": "Level",
   "localeMenuTooltip": "Change language",
   "localeEnglish": "English",
   "localeRussian": "Russian",
