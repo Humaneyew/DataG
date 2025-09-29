@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lucide_flutter/lucide_flutter.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../features/modes/game_mode.dart';
 import '../../features/modes/mode_controller.dart';
@@ -36,7 +36,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
     'history': LucideIcons.library,
     'movies': LucideIcons.film,
     'world': LucideIcons.globe,
-    'culture': LucideIcons.drama,
+    'culture': LucideIcons.landmark,
     'art': LucideIcons.paintbrush,
     'games': LucideIcons.gamepad2,
     'music': LucideIcons.music,

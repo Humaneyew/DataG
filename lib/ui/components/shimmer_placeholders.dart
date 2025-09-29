@@ -66,8 +66,8 @@ class _ShimmerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: AppColors.bgElevated.withOpacity(0.7),
-      highlightColor: AppColors.bgElevated.withOpacity(0.4),
+      baseColor: AppColors.bgElevated.withValues(alpha: 0.7),
+      highlightColor: AppColors.bgElevated.withValues(alpha: 0.4),
       period: const Duration(milliseconds: 1300),
       child: Container(
         height: height,

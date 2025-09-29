@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_flutter/lucide_flutter.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 import '../tokens.dart';
 
@@ -49,18 +49,18 @@ class _CardTileState extends State<CardTile> {
 
   @override
   Widget build(BuildContext context) {
-    final states = <MaterialState>{};
+    final states = <WidgetState>{};
     if (!widget.enabled) {
-      states.add(MaterialState.disabled);
+      states.add(WidgetState.disabled);
     }
     if (_hovered) {
-      states.add(MaterialState.hovered);
+      states.add(WidgetState.hovered);
     }
     if (_focused) {
-      states.add(MaterialState.focused);
+      states.add(WidgetState.focused);
     }
     if (_pressed) {
-      states.add(MaterialState.pressed);
+      states.add(WidgetState.pressed);
     }
 
     final background = AppStateLayers.elevatedSurface(states);
@@ -69,7 +69,7 @@ class _CardTileState extends State<CardTile> {
         : AppBorders.muted.copyWith(
             color: widget.enabled
                 ? AppColors.borderMuted
-                : AppColors.borderMuted.withOpacity(0.5),
+                : AppColors.borderMuted.withValues(alpha: 0.5),
           );
     final shadow = _hovered ? AppShadows.soft : null;
 
@@ -133,7 +133,7 @@ class _CardTileState extends State<CardTile> {
                     size: 20,
                     color: widget.enabled
                         ? AppColors.textSecondary
-                        : AppColors.textSecondary.withOpacity(0.4),
+                        : AppColors.textSecondary.withValues(alpha: 0.4),
                   ),
                 ],
               ],
