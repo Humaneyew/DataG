@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../content/models.dart';
-import '../state/round_controller.dart';
+import '../../features/round/round_models.dart';
 import '../tokens.dart';
 import 'primary_button.dart';
 
