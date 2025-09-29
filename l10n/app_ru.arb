@@ -48,7 +48,6 @@
   "localeMenuTooltip": "Сменить язык",
   "localeEnglish": "Английский",
   "localeRussian": "Русский",
-  "localeUkrainian": "Украинский",
   "resultYourAnswer": "Ваш ответ: {year} ({era})",
   "@resultYourAnswer": {
     "placeholders": {

@@ -40,8 +40,6 @@ class LocaleMenu extends ConsumerWidget {
 
   String _labelFor(Locale locale, AppLocalizations l) {
     switch (locale.languageCode) {
-      case 'uk':
-        return l.localeUkrainian;
       case 'ru':
         return l.localeRussian;
       case 'en':

@@ -16,7 +16,7 @@ Localized timeline trivia prototype for the DataG experience.
    `tool/out/report.txt`.
 3. Commit both the generated JSON and the updated report for traceability.
 
-Each question row must provide localized prompts (`_en`, `_uk`, `_ru`), a
+Each question row must provide localized prompts (`_en`, `_ru`), a
 unique id, valid year bounds (`min < year < max`), category metadata, and any
 optional hint fields. The import script enforces these requirements and skips
 invalid rows.
@@ -24,7 +24,7 @@ invalid rows.
 ## Localization workflow
 - Run `flutter gen-l10n` whenever ARB files change to regenerate
   `AppLocalizations`.
-- Supported locales: English (`en`), Ukrainian (`uk`), and Russian (`ru`). The
+- Supported locales: English (`en`) and Russian (`ru`). The
   UI falls back to English strings when a translation is unavailable.
 
 ## Running the app

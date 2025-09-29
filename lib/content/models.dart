@@ -21,8 +21,6 @@ extension EraX on Era {
 
   String labelForLocale(Locale locale) {
     switch (locale.languageCode) {
-      case 'uk':
-        return this == Era.bce ? 'до н. е.' : 'н. е.';
       case 'ru':
         return this == Era.bce ? 'до н. э.' : 'н. э.';
       default:
