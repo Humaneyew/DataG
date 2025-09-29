@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../round/round_models.dart';
+import 'game_mode.dart';
 
 class DuelReport {
   const DuelReport._({
