@@ -6,7 +6,7 @@ import '../tokens.dart';
 class EmptyState extends StatelessWidget {
   const EmptyState({
     super.key,
-    this.icon = LucideIcons.archiveX,
+    this.icon = Icons.archive_outlined,
     required this.title,
     required this.message,
   });

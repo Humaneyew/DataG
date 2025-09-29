@@ -59,7 +59,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
         actions: [
           const LocaleMenu(),
           const ResourceChip(icon: LucideIcons.heart, label: '5'),
-          const ResourceChip(icon: LucideIcons.bolt, label: '120'),
+          const ResourceChip(icon: Icons.bolt, label: '120'),
           const ResourceChip(icon: LucideIcons.snowflake, label: '42'),
         ],
       ),
