@@ -8,6 +8,7 @@ import 'analytics/dev_diagnostics.dart';
 import 'ui/screens/categories_screen.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/screens/round_screen.dart';
+import 'ui/screens/stub_screen.dart';
 import 'ui/state/locale_controller.dart';
 import 'ui/state/strings.dart';
 import 'ui/theme/app_theme.dart';
@@ -43,10 +44,27 @@ class _DataGAppState extends ConsumerState<DataGApp> {
           ),
         ),
         GoRoute(
+          path: '/stub',
+          pageBuilder: (context, state) {
+            final title = state.uri.queryParameters['title'] ?? strings.appTitle;
+            return _buildPage(
+              state,
+              StubScreen(title: title),
+            );
+          },
+        ),
+        GoRoute(
           path: '/categories',
           pageBuilder: (context, state) => _buildPage(
             state,
             const CategoriesScreen(),
+          ),
+        ),
+        GoRoute(
+          path: '/round',
+          pageBuilder: (context, state) => _buildPage(
+            state,
+            const RoundEntryScreen(),
           ),
         ),
         GoRoute(

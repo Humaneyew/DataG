@@ -1,0 +1,58 @@
+[
+  {
+    "id": "history",
+    "titleKey": "cat_history",
+    "colorKey": "history",
+    "iconKey": "bank",
+    "progress": 0.42,
+    "locked": false
+  },
+  {
+    "id": "sport",
+    "titleKey": "cat_sport",
+    "colorKey": "sport",
+    "iconKey": "basketball",
+    "progress": 0.18,
+    "locked": false
+  },
+  {
+    "id": "movies",
+    "titleKey": "cat_movies",
+    "colorKey": "movies",
+    "iconKey": "movie",
+    "progress": 0.27,
+    "locked": false
+  },
+  {
+    "id": "art",
+    "titleKey": "cat_art",
+    "colorKey": "art",
+    "iconKey": "palette",
+    "progress": 0.36,
+    "locked": false
+  },
+  {
+    "id": "games",
+    "titleKey": "cat_games",
+    "colorKey": "games",
+    "iconKey": "gamepad",
+    "progress": 0.12,
+    "locked": false
+  },
+  {
+    "id": "books",
+    "titleKey": "cat_books",
+    "colorKey": "books",
+    "iconKey": "book",
+    "progress": 0.58,
+    "locked": false
+  },
+  {
+    "id": "world",
+    "titleKey": "cat_world",
+    "colorKey": "world",
+    "iconKey": "public",
+    "progress": 0.21,
+    "locked": false
+  }
+]

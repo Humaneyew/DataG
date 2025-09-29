@@ -5,11 +5,9 @@ import 'package:go_router/go_router.dart';
 import '../components/app_badge.dart';
 import '../components/app_button.dart';
 import '../components/app_card.dart';
-import '../components/app_progress.dart';
 import '../components/app_scaffold.dart';
 import '../components/app_top_bar.dart';
 import '../state/category_selection.dart';
-import '../state/player_resources.dart';
 import '../state/strings.dart';
 import '../theme/tokens.dart';
 
@@ -20,200 +18,304 @@ class HomeScreen extends ConsumerStatefulWidget {
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen>
+    with TickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
+  late AnimationController _introController;
+  late AnimationController _pulseController;
+  late Animation<double> _pulseAnimation;
+  bool _didAnimate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _introController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 620),
+    );
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 720),
+    );
+    _pulseAnimation = TweenSequence<double>([
+      TweenSequenceItem<double>(
+        tween: Tween(begin: 1.0, end: 1.08)
+            .chain(CurveTween(curve: Curves.easeOut)),
+        weight: 50,
+      ),
+      TweenSequenceItem<double>(
+        tween: Tween(begin: 1.08, end: 1.0)
+            .chain(CurveTween(curve: Curves.easeIn)),
+        weight: 50,
+      ),
+    ]).animate(_pulseController);
+
+    ref.listen<AsyncValue<List<CategoryDefinition>>>(
+      categoryListProvider,
+      (_, next) {
+        next.whenData((_) {
+          if (!_didAnimate && mounted) {
+            _didAnimate = true;
+            _introController.forward();
+            _pulseController.forward();
+          }
+        });
+      },
+    );
+  }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _introController.dispose();
+    _pulseController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final strings = ref.watch(stringsProvider);
-    final selectedCategory = ref.watch(selectedCategoryProvider);
-    final categoryToken = AppCategories.byId(selectedCategory);
-    final resources = ref.watch(playerResourcesProvider);
+    final categoriesAsync = ref.watch(categoryListProvider);
+    final selectedCategoryId = ref.watch(selectedCategoryProvider);
 
     return AppScaffold(
       scrollController: _scrollController,
       topBar: AppTopBar(
-        title: strings.homeHeadline,
-        subtitle: strings.homeSubheading,
-        onMenuTap: () => ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${strings.appTitle} UI shell')), // placeholder
-        ),
+        title: strings.appTitle,
       ),
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            AppCard(
-              variant: AppCardVariant.gradient,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      AppBadge(
-                        label: strings.weeklyBadge.toUpperCase(),
-                        variant: AppBadgeVariant.neon,
-                        color: AppColors.primary,
-                      ),
-                      const SizedBox(width: AppSpacing.sm),
-                      AppBadge(
-                        label: '${categoryToken.label} League',
-                        variant: AppBadgeVariant.outline,
-                        color: categoryToken.gradient == null
-                            ? categoryToken.color
-                            : AppColors.primary,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  Text('${categoryToken.label} Mastery', style: AppTypography.h2),
-                  const SizedBox(height: AppSpacing.sm),
-                  Text(
-                    'Climb to level ${resources.level + 1} and unlock elite cosmetics.',
-                    style: AppTypography.body,
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  AppProgress(
-                    value: (resources.xp % 1000) / 1000,
-                    color: categoryToken.gradient == null
-                        ? categoryToken.color
-                        : AppColors.primary,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: AppSpacing.xxl),
-            Text(strings.modesBadge, style: AppTypography.h3),
-            const SizedBox(height: AppSpacing.md),
-            Wrap(
-              spacing: AppSpacing.md,
-              runSpacing: AppSpacing.md,
-              children: [
-                _ModePill(label: 'Classic 10', accent: categoryToken.color),
-                _ModePill(label: 'Marathon 30', accent: AppColors.primary),
-                _ModePill(label: 'Blitz 5', accent: AppColors.warning),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.xxl),
-            AppCard(
-              variant: AppCardVariant.outlined,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Chosen category', style: AppTypography.caption.copyWith(color: AppColors.textMuted)),
-                  const SizedBox(height: AppSpacing.xs),
-                  Row(
-                    children: [
-                      _CategoryBadge(token: categoryToken),
-                      const Spacer(),
-                      AppButton(
-                        label: strings.homeSecondaryAction,
-                        variant: AppButtonVariant.ghost,
-                        icon: Icons.grid_view_rounded,
-                        expand: false,
-                        onPressed: () {
-                          context.go('/categories');
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: AppSpacing.xxl),
-            AppButton(
-              label: strings.homePrimaryAction,
-              icon: Icons.play_arrow_rounded,
-              onPressed: () {
-                context.go('/round/${categoryToken.id}');
-              },
-            ),
-            const SizedBox(height: AppSpacing.md),
-            AppButton(
-              label: 'Boost resources',
-              variant: AppButtonVariant.secondary,
-              icon: Icons.auto_awesome,
-              onPressed: () {
-                ref.read(playerResourcesProvider.notifier).gain(gems: 120, xp: 230);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ModePill extends StatelessWidget {
-  const _ModePill({required this.label, required this.accent});
-
-  final String label;
-  final Color accent;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: accent.withOpacity(0.32)),
-        color: accent.withOpacity(0.12),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
-          vertical: AppSpacing.sm,
-        ),
-        child: Text(
-          label,
-          style: AppTypography.body.copyWith(
-            color: accent,
-            fontWeight: FontWeight.w600,
+      body: categoriesAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) => Center(
+          child: Text(
+            strings.categoriesEmpty,
+            style: AppTypography.body,
+            textAlign: TextAlign.center,
           ),
         ),
+        data: (categories) {
+          if (categories.isEmpty) {
+            return Center(
+              child: Text(
+                strings.categoriesEmpty,
+                style: AppTypography.body,
+                textAlign: TextAlign.center,
+              ),
+            );
+          }
+
+          final selected = categories.firstWhere(
+            (category) => category.id == selectedCategoryId,
+            orElse: () => categories.first,
+          );
+          final categoryTitle = selected.localizedTitle(strings);
+
+          return SingleChildScrollView(
+            controller: _scrollController,
+            padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _AnimatedFadeSlide(
+                  controller: _introController,
+                  interval: const Interval(0.0, 0.36, curve: Curves.easeOut),
+                  child: ShaderMask(
+                    shaderCallback: (bounds) {
+                      return const LinearGradient(
+                        colors: [AppColors.primary, Colors.white],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ).createShader(bounds);
+                    },
+                    blendMode: BlendMode.srcIn,
+                    child: Text(
+                      strings.appTitle,
+                      style: AppTypography.display.copyWith(
+                        fontSize: 36,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xl),
+                _AnimatedFadeSlide(
+                  controller: _introController,
+                  interval: const Interval(0.12, 0.6, curve: Curves.easeOut),
+                  child: AppCard(
+                    variant: AppCardVariant.outlined,
+                    onTap: () {
+                      final uri = Uri(
+                        path: '/stub',
+                        queryParameters: {'title': strings.homeWeeklyTitle},
+                      );
+                      context.go(uri.toString());
+                    },
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 56,
+                          height: 56,
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withOpacity(0.12),
+                            borderRadius:
+                                BorderRadius.circular(AppRadii.medium),
+                            border: Border.all(
+                              color: AppColors.primary.withOpacity(0.4),
+                            ),
+                          ),
+                          child: const Icon(
+                            Icons.calendar_today_rounded,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        const SizedBox(width: AppSpacing.lg),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                strings.homeWeeklyTitle,
+                                style: AppTypography.h2,
+                              ),
+                              const SizedBox(height: AppSpacing.xs),
+                              Text(
+                                'Elite timeline drops every Thursday.',
+                                style: AppTypography.body,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: AppSpacing.md),
+                        const AppBadge(
+                          label: '22-28.09',
+                          variant: AppBadgeVariant.outline,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                _AnimatedFadeSlide(
+                  controller: _introController,
+                  interval: const Interval(0.18, 0.66, curve: Curves.easeOut),
+                  child: AppCard(
+                    variant: AppCardVariant.outlined,
+                    onTap: () {
+                      final uri = Uri(
+                        path: '/stub',
+                        queryParameters: {'title': strings.homePlayWithFriends},
+                      );
+                      context.go(uri.toString());
+                    },
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 56,
+                          height: 56,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.08),
+                            borderRadius:
+                                BorderRadius.circular(AppRadii.medium),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.2),
+                            ),
+                          ),
+                          child: const Icon(
+                            Icons.groups_rounded,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(width: AppSpacing.lg),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                strings.homePlayWithFriends,
+                                style: AppTypography.h2,
+                              ),
+                              const SizedBox(height: AppSpacing.xs),
+                              Text(
+                                'Host a private lobby and share rewards.',
+                                style: AppTypography.body,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: AppSpacing.md),
+                        const Icon(Icons.chevron_right_rounded,
+                            color: AppColors.textSecondary),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+                _AnimatedFadeSlide(
+                  controller: _introController,
+                  interval: const Interval(0.32, 0.9, curve: Curves.easeOut),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ScaleTransition(
+                        scale: _pulseAnimation,
+                        child: AppButton(
+                          label: strings.homePlayButton,
+                          icon: Icons.play_arrow_rounded,
+                          onPressed: () {
+                            context.go('/round');
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      AppBadge(
+                        label: categoryTitle,
+                        color: selected.accentColor,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                _AnimatedFadeSlide(
+                  controller: _introController,
+                  interval: const Interval(0.42, 1, curve: Curves.easeOut),
+                  child: AppButton(
+                    label: strings.homeChangeCategory,
+                    icon: Icons.grid_view_rounded,
+                    variant: AppButtonVariant.ghost,
+                    onPressed: () {
+                      context.go('/categories');
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 }
 
-class _CategoryBadge extends StatelessWidget {
-  const _CategoryBadge({required this.token});
+class _AnimatedFadeSlide extends StatelessWidget {
+  const _AnimatedFadeSlide({
+    required this.controller,
+    required this.interval,
+    required this.child,
+    this.offset = const Offset(0, 0.06),
+  });
 
-  final CategoryToken token;
+  final AnimationController controller;
+  final Interval interval;
+  final Widget child;
+  final Offset offset;
 
   @override
   Widget build(BuildContext context) {
-    final decoration = token.gradient != null
-        ? BoxDecoration(
-            gradient: token.gradient,
-            borderRadius: BorderRadius.circular(AppRadii.large),
-            border: Border.all(color: Colors.white.withOpacity(0.24)),
-          )
-        : BoxDecoration(
-            color: token.color.withOpacity(0.18),
-            borderRadius: BorderRadius.circular(AppRadii.large),
-            border: Border.all(color: token.color.withOpacity(0.32)),
-          );
-
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.lg,
-        vertical: AppSpacing.sm,
-      ),
-      decoration: decoration,
-      child: Text(
-        token.label,
-        style: AppTypography.h3.copyWith(
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
-        ),
+    final animation = CurvedAnimation(parent: controller, curve: interval);
+    return FadeTransition(
+      opacity: animation,
+      child: SlideTransition(
+        position: Tween<Offset>(begin: offset, end: Offset.zero).animate(animation),
+        child: child,
       ),
     );
   }

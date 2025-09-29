@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../components/app_badge.dart';
 import '../components/app_card.dart';
+import '../components/app_progress.dart';
 import '../components/app_scaffold.dart';
 import '../components/app_top_bar.dart';
 import '../state/category_selection.dart';
@@ -16,12 +18,36 @@ class CategoriesScreen extends ConsumerStatefulWidget {
   ConsumerState<CategoriesScreen> createState() => _CategoriesScreenState();
 }
 
-class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
+class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
+    with TickerProviderStateMixin {
   final ScrollController _controller = ScrollController();
+  late AnimationController _introController;
+  bool _didAnimate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _introController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 560),
+    );
+    ref.listen<AsyncValue<List<CategoryDefinition>>>(
+      categoryListProvider,
+      (_, next) {
+        next.whenData((_) {
+          if (!_didAnimate && mounted) {
+            _didAnimate = true;
+            _introController.forward();
+          }
+        });
+      },
+    );
+  }
 
   @override
   void dispose() {
     _controller.dispose();
+    _introController.dispose();
     super.dispose();
   }
 
@@ -29,33 +55,71 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
   Widget build(BuildContext context) {
     final strings = ref.watch(stringsProvider);
     final selected = ref.watch(selectedCategoryProvider);
+    final categoriesAsync = ref.watch(categoryListProvider);
 
     return AppScaffold(
       scrollController: _controller,
       topBar: AppTopBar(
         title: strings.categoriesTitle,
-        subtitle: 'Tap a capsule to focus your next round.',
-        onMenuTap: () => context.pop(),
+        subtitle: strings.categoriesSubtitle,
+        onMenuTap: () => context.go('/home'),
       ),
-      body: GridView.builder(
-        controller: _controller,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: AppSpacing.md,
-          mainAxisSpacing: AppSpacing.md,
-          childAspectRatio: 1.1,
+      body: categoriesAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) => Center(
+          child: Text(
+            strings.categoriesEmpty,
+            style: AppTypography.body,
+            textAlign: TextAlign.center,
+          ),
         ),
-        itemCount: AppCategories.values.length,
-        padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
-        itemBuilder: (context, index) {
-          final token = AppCategories.values[index];
-          final isSelected = token.id == selected;
-          return _CategoryCard(
-            token: token,
-            selected: isSelected,
-            onTap: () {
-              ref.read(selectedCategoryProvider.notifier).state = token.id;
-              context.go('/home');
+        data: (categories) {
+          if (categories.isEmpty) {
+            return Center(
+              child: Text(
+                strings.categoriesEmpty,
+                style: AppTypography.body,
+              ),
+            );
+          }
+
+          return ListView.separated(
+            controller: _controller,
+            padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
+            itemCount: categories.length,
+            separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.md),
+            itemBuilder: (context, index) {
+              final category = categories[index];
+              final animation = CurvedAnimation(
+                parent: _introController,
+                curve: Interval(
+                  (0.12 + index * 0.08).clamp(0.0, 1.0),
+                  1,
+                  curve: Curves.easeOut,
+                ),
+              );
+              return FadeTransition(
+                opacity: animation,
+                child: SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(0, 0.08),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: _CategoryCard(
+                    definition: category,
+                    selected: category.id == selected,
+                    onTap: () async {
+                      await ref
+                          .read(selectedCategoryProvider.notifier)
+                          .select(category.id);
+                      if (context.mounted) {
+                        context.go('/home');
+                      }
+                    },
+                    strings: strings,
+                  ),
+                ),
+              );
             },
           );
         },
@@ -66,73 +130,76 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
 
 class _CategoryCard extends StatelessWidget {
   const _CategoryCard({
-    required this.token,
+    required this.definition,
     required this.selected,
     required this.onTap,
+    required this.strings,
   });
 
-  final CategoryToken token;
+  final CategoryDefinition definition;
   final bool selected;
   final VoidCallback onTap;
+  final AppStrings strings;
 
   @override
   Widget build(BuildContext context) {
-    final decoration = token.gradient != null
-        ? BoxDecoration(
-            gradient: token.gradient,
-            borderRadius: BorderRadius.circular(AppRadii.large),
-            border: Border.all(color: Colors.white.withOpacity(selected ? 0.6 : 0.2), width: 1.8),
-          )
-        : BoxDecoration(
-            color: token.color.withOpacity(0.22),
-            borderRadius: BorderRadius.circular(AppRadii.large),
-            border: Border.all(color: token.color.withOpacity(selected ? 0.7 : 0.24), width: 1.6),
-          );
+    final accent = definition.accentColor;
+    final title = definition.localizedTitle(strings);
 
     return AppCard(
-      variant: AppCardVariant.elevated,
+      variant: AppCardVariant.gradient,
       onTap: onTap,
-      padding: EdgeInsets.zero,
-      child: Container(
-        decoration: decoration,
-        child: Stack(
-          children: [
-            Positioned(
-              right: -24,
-              bottom: -24,
-              child: Icon(
-                Icons.bubble_chart,
-                size: 120,
-                color: Colors.white.withOpacity(0.08),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 52,
+                height: 52,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppRadii.medium),
+                  border: Border.all(color: accent.withOpacity(0.5)),
+                  color: accent.withOpacity(0.15),
+                ),
+                child: Icon(
+                  definition.iconData,
+                  color: accent,
+                  size: 28,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(AppSpacing.xl),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    token.label,
-                    style: AppTypography.h2,
-                  ),
-                  const Spacer(),
-                  AnimatedOpacity(
-                    opacity: selected ? 1 : 0.0,
-                    duration: AppDurations.medium,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.check_circle, color: AppColors.success, size: 20),
-                        const SizedBox(width: AppSpacing.xs),
-                        Text('Selected', style: AppTypography.body),
-                      ],
-                    ),
-                  ),
-                ],
+              const SizedBox(width: AppSpacing.lg),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: AppTypography.h2),
+                    if (selected) ...[
+                      const SizedBox(height: AppSpacing.xs),
+                      AppBadge(
+                        label: strings.categorySelectedLabel,
+                        variant: AppBadgeVariant.outline,
+                        color: accent,
+                      ),
+                    ],
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
+              AppBadge(
+                label: '0',
+                icon: Icons.emoji_events_rounded,
+                variant: AppBadgeVariant.outline,
+                color: accent,
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          AppProgress(
+            value: definition.progress.clamp(0, 1),
+            color: accent,
+            height: 4,
+          ),
+        ],
       ),
     );
   }
