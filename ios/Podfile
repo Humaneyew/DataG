@@ -2,22 +2,19 @@
 require File.expand_path('../flutter/podhelper', __FILE__)
 
 platform :ios, '13.0'
-
 use_frameworks!
 use_modular_headers!
 
 flutter_ios_podfile_setup
 
 target 'Runner' do
-  use_frameworks!
-  use_modular_headers!
-
   flutter_install_all_ios_pods File.dirname(__FILE__)
 end
 
 post_install do |installer|
+  flutter_post_install(installer)
+
   installer.pods_project.targets.each do |target|
-    flutter_post_install(installer, target)
     target.build_configurations.each do |config|
       config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = ''
     end
