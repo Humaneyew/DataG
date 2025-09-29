@@ -184,60 +184,60 @@ class AppComponentSpecs {
 class AppStateLayers {
   const AppStateLayers._();
 
-  static Color primary(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return AppColors.accentPrimary.withOpacity(0.28);
+  static Color primary(Set<WidgetState> states) {
+    if (states.contains(WidgetState.disabled)) {
+      return AppColors.accentPrimary.withValues(alpha: 0.28);
     }
     var color = AppColors.accentPrimary;
-    if (states.contains(MaterialState.pressed)) {
+    if (states.contains(WidgetState.pressed)) {
       color = _blend(color, Colors.black, 0.18);
-    } else if (states.contains(MaterialState.hovered)) {
+    } else if (states.contains(WidgetState.hovered)) {
       color = _blend(color, Colors.white, 0.08);
     }
     return color;
   }
 
-  static Color secondary(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return AppColors.bgBase.withOpacity(0.32);
+  static Color secondary(Set<WidgetState> states) {
+    if (states.contains(WidgetState.disabled)) {
+      return AppColors.bgBase.withValues(alpha: 0.32);
     }
     var color = AppColors.bgBase;
-    if (states.contains(MaterialState.pressed)) {
+    if (states.contains(WidgetState.pressed)) {
       color = _blend(color, Colors.white, 0.08);
-    } else if (states.contains(MaterialState.hovered)) {
+    } else if (states.contains(WidgetState.hovered)) {
       color = _blend(color, Colors.white, 0.04);
     }
     return color;
   }
 
-  static Color elevatedSurface(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return AppColors.bgElevated.withOpacity(0.5);
+  static Color elevatedSurface(Set<WidgetState> states) {
+    if (states.contains(WidgetState.disabled)) {
+      return AppColors.bgElevated.withValues(alpha: 0.5);
     }
     var color = AppColors.bgElevated;
-    if (states.contains(MaterialState.pressed)) {
+    if (states.contains(WidgetState.pressed)) {
       color = _blend(color, Colors.black, 0.22);
-    } else if (states.contains(MaterialState.hovered)) {
+    } else if (states.contains(WidgetState.hovered)) {
       color = _blend(color, Colors.white, 0.06);
     }
     return color;
   }
 
-  static Color accentSurface(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return AppColors.accentSecondary.withOpacity(0.12);
+  static Color accentSurface(Set<WidgetState> states) {
+    if (states.contains(WidgetState.disabled)) {
+      return AppColors.accentSecondary.withValues(alpha: 0.12);
     }
-    var color = AppColors.accentSecondary.withOpacity(0.18);
-    if (states.contains(MaterialState.pressed)) {
-      color = AppColors.accentSecondary.withOpacity(0.26);
-    } else if (states.contains(MaterialState.hovered)) {
-      color = AppColors.accentSecondary.withOpacity(0.22);
+    var color = AppColors.accentSecondary.withValues(alpha: 0.18);
+    if (states.contains(WidgetState.pressed)) {
+      color = AppColors.accentSecondary.withValues(alpha: 0.26);
+    } else if (states.contains(WidgetState.hovered)) {
+      color = AppColors.accentSecondary.withValues(alpha: 0.22);
     }
     return color;
   }
 
   static Color _blend(Color base, Color overlay, double opacity) {
-    return Color.alphaBlend(overlay.withOpacity(opacity), base);
+    return Color.alphaBlend(overlay.withValues(alpha: opacity), base);
   }
 }
 
@@ -245,41 +245,41 @@ class AppButtonStyles {
   const AppButtonStyles._();
 
   static final ButtonStyle primary = ButtonStyle(
-    minimumSize: MaterialStatePropertyAll<Size>(
+    minimumSize: WidgetStatePropertyAll<Size>(
       const Size.fromHeight(AppComponentSpecs.primaryButtonHeight),
     ),
-    padding: const MaterialStatePropertyAll<EdgeInsets>(
+    padding: const WidgetStatePropertyAll<EdgeInsets>(
       EdgeInsets.symmetric(horizontal: AppSpacing.l),
     ),
-    shape: const MaterialStatePropertyAll<OutlinedBorder>(
+    shape: const WidgetStatePropertyAll<OutlinedBorder>(
       RoundedRectangleBorder(borderRadius: AppRadius.medium),
     ),
-    textStyle: MaterialStatePropertyAll<TextStyle>(AppTypography.buttonLarge),
+    textStyle: WidgetStatePropertyAll<TextStyle>(AppTypography.buttonLarge),
     backgroundColor:
-        MaterialStateProperty.resolveWith(AppStateLayers.primary),
-    foregroundColor: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.disabled)) {
-        return AppColors.textSecondary.withOpacity(0.6);
+        WidgetStateProperty.resolveWith(AppStateLayers.primary),
+    foregroundColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.disabled)) {
+        return AppColors.textSecondary.withValues(alpha: 0.6);
       }
       return Colors.black;
     }),
-    side: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.focused)) {
+    side: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.focused)) {
         return AppBorders.focus;
       }
       return const BorderSide(color: Colors.transparent, width: 0);
     }),
-    shadowColor: const MaterialStatePropertyAll<Color>(
+    shadowColor: const WidgetStatePropertyAll<Color>(
       Color(0x33FFD66B),
     ),
-    elevation: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.disabled)) {
+    elevation: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.disabled)) {
         return 0.0;
       }
-      if (states.contains(MaterialState.pressed)) {
+      if (states.contains(WidgetState.pressed)) {
         return 1.0;
       }
-      if (states.contains(MaterialState.hovered)) {
+      if (states.contains(WidgetState.hovered)) {
         return 4.0;
       }
       return 2.0;
@@ -290,52 +290,52 @@ class AppButtonStyles {
   );
 
   static final ButtonStyle outline = ButtonStyle(
-    minimumSize: const MaterialStatePropertyAll<Size>(
+    minimumSize: const WidgetStatePropertyAll<Size>(
       Size.fromHeight(AppComponentSpecs.minTouchTarget),
     ),
-    padding: const MaterialStatePropertyAll<EdgeInsets>(
+    padding: const WidgetStatePropertyAll<EdgeInsets>(
       EdgeInsets.symmetric(horizontal: AppSpacing.l, vertical: AppSpacing.s),
     ),
-    shape: const MaterialStatePropertyAll<OutlinedBorder>(
+    shape: const WidgetStatePropertyAll<OutlinedBorder>(
       RoundedRectangleBorder(borderRadius: AppRadius.medium),
     ),
-    side: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.focused)) {
+    side: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.focused)) {
         return AppBorders.focus;
       }
       return AppBorders.muted;
     }),
-    foregroundColor: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.disabled)) {
-        return AppColors.textSecondary.withOpacity(0.6);
+    foregroundColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.disabled)) {
+        return AppColors.textSecondary.withValues(alpha: 0.6);
       }
       return AppColors.textPrimary;
     }),
     backgroundColor:
-        MaterialStateProperty.resolveWith(AppStateLayers.secondary),
-    textStyle: MaterialStatePropertyAll<TextStyle>(AppTypography.label),
+        WidgetStateProperty.resolveWith(AppStateLayers.secondary),
+    textStyle: WidgetStatePropertyAll<TextStyle>(AppTypography.label),
     splashFactory: InkRipple.splashFactory,
     animationDuration: AppAnimations.standard,
   );
 
   static final ButtonStyle text = ButtonStyle(
-    foregroundColor: const MaterialStatePropertyAll<Color>(
+    foregroundColor: const WidgetStatePropertyAll<Color>(
       AppColors.accentSecondary,
     ),
-    textStyle: MaterialStatePropertyAll<TextStyle>(
+    textStyle: WidgetStatePropertyAll<TextStyle>(
       AppTypography.label.copyWith(color: AppColors.accentSecondary),
     ),
-    overlayColor: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.pressed)) {
-        return AppColors.accentSecondary.withOpacity(0.24);
+    overlayColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.pressed)) {
+        return AppColors.accentSecondary.withValues(alpha: 0.24);
       }
-      if (states.contains(MaterialState.hovered)) {
-        return AppColors.accentSecondary.withOpacity(0.12);
+      if (states.contains(WidgetState.hovered)) {
+        return AppColors.accentSecondary.withValues(alpha: 0.12);
       }
-      return AppColors.accentSecondary.withOpacity(0.06);
+      return AppColors.accentSecondary.withValues(alpha: 0.06);
     }),
-    side: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.focused)) {
+    side: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.focused)) {
         return AppBorders.focus;
       }
       return const BorderSide(color: Colors.transparent);
@@ -344,25 +344,25 @@ class AppButtonStyles {
   );
 
   static final ButtonStyle icon = ButtonStyle(
-    minimumSize: const MaterialStatePropertyAll<Size>(
+    minimumSize: const WidgetStatePropertyAll<Size>(
       Size.square(AppComponentSpecs.minTouchTarget),
     ),
-    shape: const MaterialStatePropertyAll<OutlinedBorder>(CircleBorder()),
-    padding: const MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.zero),
-    foregroundColor: const MaterialStatePropertyAll<Color>(
+    shape: const WidgetStatePropertyAll<OutlinedBorder>(CircleBorder()),
+    padding: const WidgetStatePropertyAll<EdgeInsets>(EdgeInsets.zero),
+    foregroundColor: const WidgetStatePropertyAll<Color>(
       AppColors.textPrimary,
     ),
-    overlayColor: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.pressed)) {
-        return AppColors.textPrimary.withOpacity(0.24);
+    overlayColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.pressed)) {
+        return AppColors.textPrimary.withValues(alpha: 0.24);
       }
-      if (states.contains(MaterialState.hovered)) {
-        return AppColors.textPrimary.withOpacity(0.12);
+      if (states.contains(WidgetState.hovered)) {
+        return AppColors.textPrimary.withValues(alpha: 0.12);
       }
-      return AppColors.textPrimary.withOpacity(0.08);
+      return AppColors.textPrimary.withValues(alpha: 0.08);
     }),
-    side: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.focused)) {
+    side: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.focused)) {
         return AppBorders.focus;
       }
       return const BorderSide(color: Colors.transparent);
@@ -371,42 +371,42 @@ class AppButtonStyles {
   );
 
   static final ButtonStyle segmented = ButtonStyle(
-    minimumSize: const MaterialStatePropertyAll<Size>(
+    minimumSize: const WidgetStatePropertyAll<Size>(
       Size(AppComponentSpecs.minTouchTarget, AppComponentSpecs.minTouchTarget),
     ),
-    padding: const MaterialStatePropertyAll<EdgeInsets>(
+    padding: const WidgetStatePropertyAll<EdgeInsets>(
       EdgeInsets.symmetric(horizontal: AppSpacing.m, vertical: AppSpacing.s),
     ),
     backgroundColor:
-        MaterialStateProperty.resolveWith(AppStateLayers.elevatedSurface),
-    foregroundColor: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.disabled)) {
-        return AppColors.textSecondary.withOpacity(0.5);
+        WidgetStateProperty.resolveWith(AppStateLayers.elevatedSurface),
+    foregroundColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.disabled)) {
+        return AppColors.textSecondary.withValues(alpha: 0.5);
       }
-      if (states.contains(MaterialState.selected)) {
+      if (states.contains(WidgetState.selected)) {
         return AppColors.accentSecondary;
       }
       return AppColors.textPrimary;
     }),
-    side: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.focused)) {
+    side: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.focused)) {
         return AppBorders.focus;
       }
-      if (states.contains(MaterialState.selected)) {
+      if (states.contains(WidgetState.selected)) {
         return BorderSide(color: AppColors.accentSecondary, width: 1.5);
       }
       return AppBorders.muted;
     }),
-    overlayColor: MaterialStateProperty.resolveWith((states) {
-      if (states.contains(MaterialState.pressed)) {
-        return AppColors.accentSecondary.withOpacity(0.24);
+    overlayColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.pressed)) {
+        return AppColors.accentSecondary.withValues(alpha: 0.24);
       }
-      if (states.contains(MaterialState.hovered)) {
-        return AppColors.accentSecondary.withOpacity(0.12);
+      if (states.contains(WidgetState.hovered)) {
+        return AppColors.accentSecondary.withValues(alpha: 0.12);
       }
       return Colors.transparent;
     }),
-    shape: const MaterialStatePropertyAll<OutlinedBorder>(
+    shape: const WidgetStatePropertyAll<OutlinedBorder>(
       RoundedRectangleBorder(borderRadius: AppRadius.pill),
     ),
     splashFactory: InkRipple.splashFactory,
@@ -419,11 +419,9 @@ class AppTheme {
   static ThemeData get dark {
     final colorScheme = const ColorScheme.dark(
       surface: AppColors.bgElevated,
-      background: AppColors.bgBase,
       primary: AppColors.accentPrimary,
       secondary: AppColors.accentSecondary,
       error: AppColors.error,
-      onBackground: AppColors.textPrimary,
       onSurface: AppColors.textPrimary,
       onPrimary: Colors.black,
       onSecondary: AppColors.textPrimary,
@@ -446,9 +444,9 @@ class AppTheme {
           SegmentedButtonThemeData(style: AppButtonStyles.segmented),
       chipTheme: ChipThemeData(
         backgroundColor: AppColors.bgElevated,
-        disabledColor: AppColors.bgElevated.withOpacity(0.4),
-        selectedColor: AppColors.accentSecondary.withOpacity(0.2),
-        secondarySelectedColor: AppColors.accentSecondary.withOpacity(0.26),
+        disabledColor: AppColors.bgElevated.withValues(alpha: 0.4),
+        selectedColor: AppColors.accentSecondary.withValues(alpha: 0.2),
+        secondarySelectedColor: AppColors.accentSecondary.withValues(alpha: 0.26),
         labelStyle: AppTypography.chip,
         secondaryLabelStyle:
             AppTypography.chip.copyWith(color: AppColors.textSecondary),
@@ -469,7 +467,7 @@ class AppTheme {
       ),
       popupMenuTheme: PopupMenuThemeData(
         color: AppColors.bgElevated,
-        textStyle: AppTypography.bodyMedium,
+        textStyle: AppTypography.textTheme.bodyMedium,
         shape: RoundedRectangleBorder(borderRadius: AppRadius.medium),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
@@ -478,8 +476,8 @@ class AppTheme {
       ),
       dividerColor: AppColors.borderMuted,
       checkboxTheme: CheckboxThemeData(
-        fillColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) {
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
             return AppColors.accentSecondary;
           }
           return AppColors.borderMuted;

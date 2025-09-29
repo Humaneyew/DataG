@@ -1,4 +1,4 @@
-package com.example.datag
+package com.sudoku.uzor
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lucide_flutter/lucide_flutter.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 import '../components/app_top_bar.dart';
 import '../components/locale_menu.dart';
@@ -87,8 +87,8 @@ class _SettingsToggle extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppStateLayers.elevatedSurface(
           value
-              ? {MaterialState.selected}
-              : const <MaterialState>{},
+              ? {WidgetState.selected}
+              : const <WidgetState>{},
         ),
         borderRadius: AppRadius.medium,
         border: Border.all(
@@ -108,7 +108,8 @@ class _SettingsToggle extends StatelessWidget {
           ),
           Switch.adaptive(
             value: value,
-            activeColor: AppColors.accentSecondary,
+            activeTrackColor: AppColors.accentSecondary.withValues(alpha: 0.4),
+            activeThumbColor: AppColors.accentSecondary,
             onChanged: onChanged,
           ),
         ],

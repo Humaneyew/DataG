@@ -6,42 +6,25 @@ plugins {
 }
 
 android {
-    namespace "com.example.datag"
-    compileSdk = 34
+    namespace "com.sudoku.uzor"
+    compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.datag"
-        minSdk = 23
-        targetSdk = 34
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
-        multiDexEnabled true
+        applicationId "com.sudoku.uzor"
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0.0"
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = "17"
     }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            shrinkResources false
-            proguardFiles(getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro')
-        }
-        debug {
-            debuggable true
-            minifyEnabled false
-        }
-    }
-}
-
-dependencies {
-    implementation "androidx.multidex:multidex:2.0.1"
 }
 
 flutter {

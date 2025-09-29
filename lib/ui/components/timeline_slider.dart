@@ -41,11 +41,11 @@ class TimelineSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     final divisions = max(1, maxYear - minYear);
     final heatColor = Color.lerp(
-      AppColors.accentSecondary.withOpacity(0.4),
+      AppColors.accentSecondary.withValues(alpha: 0.4),
       AppColors.accentPrimary,
       _heat,
     )!;
-    final inactiveTrack = AppColors.borderMuted.withOpacity(0.6);
+    final inactiveTrack = AppColors.borderMuted.withValues(alpha: 0.6);
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.l),
@@ -62,7 +62,7 @@ class TimelineSlider extends StatelessWidget {
               trackHeight: 6,
               activeTrackColor: heatColor,
               inactiveTrackColor: inactiveTrack,
-              overlayColor: heatColor.withOpacity(0.2),
+              overlayColor: heatColor.withValues(alpha: 0.2),
               thumbColor: heatColor,
               valueIndicatorColor: AppColors.accentPrimary,
               thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10),

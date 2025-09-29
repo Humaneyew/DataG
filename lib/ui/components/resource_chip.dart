@@ -44,21 +44,21 @@ class _ResourceChipState extends State<ResourceChip> {
 
   @override
   Widget build(BuildContext context) {
-    final states = <MaterialState>{};
+    final states = <WidgetState>{};
     if (!widget.enabled) {
-      states.add(MaterialState.disabled);
+      states.add(WidgetState.disabled);
     }
     if (_hovered) {
-      states.add(MaterialState.hovered);
+      states.add(WidgetState.hovered);
     }
     if (_focused) {
-      states.add(MaterialState.focused);
+      states.add(WidgetState.focused);
     }
     if (_pressed) {
-      states.add(MaterialState.pressed);
+      states.add(WidgetState.pressed);
     }
     if (widget.selected) {
-      states.add(MaterialState.selected);
+      states.add(WidgetState.selected);
     }
 
     final background = widget.selected
@@ -69,7 +69,7 @@ class _ResourceChipState extends State<ResourceChip> {
         : AppBorders.muted.copyWith(
             color: widget.enabled
                 ? AppColors.borderMuted
-                : AppColors.borderMuted.withOpacity(0.4),
+                : AppColors.borderMuted.withValues(alpha: 0.4),
           );
 
     final iconColor = widget.selected
@@ -79,7 +79,7 @@ class _ResourceChipState extends State<ResourceChip> {
     final labelStyle = AppTypography.chip.copyWith(
       color: widget.enabled
           ? AppColors.textPrimary
-          : AppColors.textSecondary.withOpacity(0.6),
+          : AppColors.textSecondary.withValues(alpha: 0.6),
     );
 
     return FocusableActionDetector(
