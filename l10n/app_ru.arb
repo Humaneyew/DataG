@@ -1,6 +1,6 @@
 {
   "@@locale": "ru",
-  "appTitle": "Угадай дату",
+  "app_title": "DataG",
   "roundTitleFallback": "Раунд",
   "roundDetailsComingSoon": "Скоро появятся подробности.",
   "roundNoQuestions": "Вопросов пока нет.",
@@ -45,6 +45,10 @@
   "homeStubFriendsTitle": "Играть с друзьями",
   "homePlayButton": "Играть",
   "homeChangeCategory": "Сменить категорию",
+  "resources_lives": "Жизни",
+  "resources_energy": "Энергия",
+  "resources_gems": "Гемы",
+  "resources_level": "Уровень",
   "localeMenuTooltip": "Сменить язык",
   "localeEnglish": "Английский",
   "localeRussian": "Русский",
