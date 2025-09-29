@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:datag/l10n/generated/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 import 'analytics/analytics_service.dart';
 import 'analytics/dev_diagnostics.dart';
-import 'features/modes/game_mode.dart';
-import 'features/round/round_controller.dart';
 import 'ui/screens/categories_screen.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/screens/round_screen.dart';
-import 'ui/screens/summary_screen.dart';
-import 'ui/screens/stub_screen.dart';
 import 'ui/state/locale_controller.dart';
-import 'ui/tokens.dart';
+import 'ui/state/strings.dart';
+import 'ui/theme/app_theme.dart';
+import 'ui/theme/tokens.dart';
 
 class DataGApp extends ConsumerStatefulWidget {
   const DataGApp({super.key});
@@ -33,44 +31,32 @@ class _DataGAppState extends ConsumerState<DataGApp> {
 
   @override
   Widget build(BuildContext context) {
+    final strings = ref.watch(stringsProvider);
     final router = GoRouter(
       initialLocation: '/home',
       routes: [
         GoRoute(
           path: '/home',
-          builder: (context, state) => const HomeScreen(),
+          pageBuilder: (context, state) => _buildPage(
+            state,
+            const HomeScreen(),
+          ),
         ),
         GoRoute(
           path: '/categories',
-          builder: (context, state) => const CategoriesScreen(),
+          pageBuilder: (context, state) => _buildPage(
+            state,
+            const CategoriesScreen(),
+          ),
         ),
         GoRoute(
           path: '/round/:categoryId',
-          builder: (context, state) {
+          pageBuilder: (context, state) {
             final categoryId = state.pathParameters['categoryId'] ?? 'history';
-            final modeKey = state.uri.queryParameters['mode'];
-            final mode = GameModeId.values.firstWhere(
-              (mode) => mode.key == modeKey,
-              orElse: () => GameModeId.classic10,
+            return _buildPage(
+              state,
+              RoundScreen(categoryId: categoryId),
             );
-            return RoundScreen(
-              categoryId: categoryId,
-              modeId: mode,
-            );
-          },
-        ),
-        GoRoute(
-          path: '/summary',
-          builder: (context, state) {
-            final completion = state.extra as RoundCompletion?;
-            return SummaryScreen(completion: completion);
-          },
-        ),
-        GoRoute(
-          path: '/stub',
-          builder: (context, state) {
-            final title = state.uri.queryParameters['title'] ?? 'Stub';
-            return StubScreen(title: title);
           },
         ),
       ],
@@ -79,10 +65,14 @@ class _DataGAppState extends ConsumerState<DataGApp> {
     final locale = ref.watch(localeControllerProvider);
 
     return MaterialApp.router(
-      onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
+      onGenerateTitle: (_) => strings.appTitle,
       locale: locale,
-      supportedLocales: AppLocalizations.supportedLocales,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppStrings.supportedLocales,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       theme: AppTheme.dark,
       routerConfig: router,
       builder: (context, child) => DevToolsOverlay(
@@ -90,4 +80,25 @@ class _DataGAppState extends ConsumerState<DataGApp> {
       ),
     );
   }
+}
+
+CustomTransitionPage<void> _buildPage(GoRouterState state, Widget child) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    transitionsBuilder: (context, animation, secondaryAnimation, widget) {
+      final curved = CurvedAnimation(parent: animation, curve: Curves.easeOutCubic);
+      return FadeTransition(
+        opacity: curved,
+        child: SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0, 0.05),
+            end: Offset.zero,
+          ).animate(curved),
+          child: widget,
+        ),
+      );
+    },
+    transitionDuration: AppDurations.medium,
+    child: child,
+  );
 }

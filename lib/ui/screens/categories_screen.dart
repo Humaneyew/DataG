@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:datag/l10n/generated/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 
-import '../../features/modes/game_mode.dart';
-import '../../features/modes/mode_controller.dart';
-import '../../features/round/round_controller.dart';
+import '../components/app_card.dart';
+import '../components/app_scaffold.dart';
 import '../components/app_top_bar.dart';
-import '../components/category_tile.dart';
-import '../components/empty_error_state.dart';
-import '../components/locale_menu.dart';
-import '../components/primary_button.dart';
-import '../components/resource_chip.dart';
-import '../components/shimmer_placeholders.dart';
-import '../tokens.dart';
+import '../state/category_selection.dart';
+import '../state/strings.dart';
+import '../theme/tokens.dart';
 
 class CategoriesScreen extends ConsumerStatefulWidget {
   const CategoriesScreen({super.key});
@@ -24,111 +17,122 @@ class CategoriesScreen extends ConsumerStatefulWidget {
 }
 
 class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
-  int _reloadKey = 0;
+  final ScrollController _controller = ScrollController();
 
-  void _reload() {
-    setState(() {
-      _reloadKey++;
-    });
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
-
-  static const Map<String, IconData> _icons = {
-    'history': LucideIcons.library,
-    'movies': LucideIcons.film,
-    'world': LucideIcons.globe,
-    'culture': LucideIcons.landmark,
-    'art': LucideIcons.paintbrush,
-    'games': LucideIcons.gamepad2,
-    'music': LucideIcons.music,
-    'sport': LucideIcons.dumbbell,
-  };
 
   @override
   Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context)!;
-    final locale = Localizations.localeOf(context);
-    final repository = ref.watch(questionRepositoryProvider);
+    final strings = ref.watch(stringsProvider);
+    final selected = ref.watch(selectedCategoryProvider);
 
-    return Scaffold(
-      appBar: AppTopBar(
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: const Icon(LucideIcons.arrowLeft, size: 20),
-        ),
-        title: Text(l.categoriesTitle),
-        actions: [
-          const LocaleMenu(),
-          const ResourceChip(icon: LucideIcons.heart, label: '5'),
-          const ResourceChip(icon: Icons.bolt, label: '120'),
-          const ResourceChip(icon: LucideIcons.snowflake, label: '42'),
-        ],
+    return AppScaffold(
+      scrollController: _controller,
+      topBar: AppTopBar(
+        title: strings.categoriesTitle,
+        subtitle: 'Tap a capsule to focus your next round.',
+        onMenuTap: () => context.pop(),
       ),
-      body: FutureBuilder(
-        key: ValueKey(_reloadKey),
-        future: repository.loadIndex(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const CategoryListShimmer();
-          }
-          if (snapshot.hasError) {
-            return Center(
-              child: ErrorState(
-                icon: LucideIcons.alertTriangle,
-                title: l.categoriesTitle,
-                message: l.categoriesEmpty,
-                onRetry: _reload,
-              ),
-            );
-          }
-          final index = snapshot.data;
-          final categories = index?.categories ?? const [];
-          if (categories.isEmpty) {
-            return Center(
-              child: EmptyState(
-                icon: LucideIcons.inbox,
-                title: l.categoriesEmpty,
-                message: l.roundDetailsComingSoon,
-              ),
-            );
-          }
-          final selectedMode = ref.watch(selectedModeProvider);
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.separated(
-                  padding: const EdgeInsets.all(AppSpacing.screenPadding),
-                  itemBuilder: (context, idx) {
-                    final category = categories[idx];
-                    final icon = _icons[category.id] ?? LucideIcons.helpCircle;
-                    final progress = (idx + 1) / (categories.length + 1);
-                    return CategoryTile(
-                      icon: icon,
-                      title: category.nameFor(locale),
-                      progress: progress.clamp(0.0, 1.0),
-                      onTap: () => context
-                          .go('/round/${category.id}?mode=${selectedMode.key}'),
-                    );
-                  },
-                  separatorBuilder: (_, __) =>
-                      const SizedBox(height: AppSpacing.grid),
-                  itemCount: categories.length,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.screenPadding,
-                  0,
-                  AppSpacing.screenPadding,
-                  AppSpacing.screenPadding,
-                ),
-                child: PrimaryButton(
-                  label: l.categoriesBack,
-                  onPressed: () => context.go('/home'),
-                ),
-              ),
-            ],
+      body: GridView.builder(
+        controller: _controller,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: AppSpacing.md,
+          mainAxisSpacing: AppSpacing.md,
+          childAspectRatio: 1.1,
+        ),
+        itemCount: AppCategories.values.length,
+        padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
+        itemBuilder: (context, index) {
+          final token = AppCategories.values[index];
+          final isSelected = token.id == selected;
+          return _CategoryCard(
+            token: token,
+            selected: isSelected,
+            onTap: () {
+              ref.read(selectedCategoryProvider.notifier).state = token.id;
+              context.go('/home');
+            },
           );
         },
+      ),
+    );
+  }
+}
+
+class _CategoryCard extends StatelessWidget {
+  const _CategoryCard({
+    required this.token,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final CategoryToken token;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final decoration = token.gradient != null
+        ? BoxDecoration(
+            gradient: token.gradient,
+            borderRadius: BorderRadius.circular(AppRadii.large),
+            border: Border.all(color: Colors.white.withOpacity(selected ? 0.6 : 0.2), width: 1.8),
+          )
+        : BoxDecoration(
+            color: token.color.withOpacity(0.22),
+            borderRadius: BorderRadius.circular(AppRadii.large),
+            border: Border.all(color: token.color.withOpacity(selected ? 0.7 : 0.24), width: 1.6),
+          );
+
+    return AppCard(
+      variant: AppCardVariant.elevated,
+      onTap: onTap,
+      padding: EdgeInsets.zero,
+      child: Container(
+        decoration: decoration,
+        child: Stack(
+          children: [
+            Positioned(
+              right: -24,
+              bottom: -24,
+              child: Icon(
+                Icons.bubble_chart,
+                size: 120,
+                color: Colors.white.withOpacity(0.08),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(AppSpacing.xl),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    token.label,
+                    style: AppTypography.h2,
+                  ),
+                  const Spacer(),
+                  AnimatedOpacity(
+                    opacity: selected ? 1 : 0.0,
+                    duration: AppDurations.medium,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.check_circle, color: AppColors.success, size: 20),
+                        const SizedBox(width: AppSpacing.xs),
+                        Text('Selected', style: AppTypography.body),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
