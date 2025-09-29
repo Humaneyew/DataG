@@ -458,7 +458,7 @@ class AppTheme {
         shape: const StadiumBorder(),
         showCheckmark: false,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: AppColors.bgElevated,
         shape: const RoundedRectangleBorder(borderRadius: AppRadius.medium),
         elevation: 0,
